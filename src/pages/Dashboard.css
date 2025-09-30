@@ -1,4 +1,49 @@
-.bar-chart{ height:160px; display:flex; gap:10px; align-items:flex-end; padding:8px; background:#fafafa; border-radius:12px; }
-.bar{ width:22px; background:#b30018; border-radius:6px 6px 0 0; }
-.line-chart{ height:160px; background:#fafafa; border-radius:12px; padding:8px; }
-.line-chart svg{ width:100%; height:100%; }
+/* Header bo cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight: 800; }
+
+/* ===== KPI ===== */
+.kpi{ border-radius: 14px; }
+.kpi-row{ display:flex; align-items:center; gap:12px; }
+.kpi-ic{ font-size:28px; color:#b30018; }
+.kpi-label{ color:#6b7280; font-size:12px; }
+.kpi-value{ font-size:22px; font-weight:800; }
+.kpi-delta{ margin-left:auto; display:flex; align-items:center; gap:6px; }
+
+/* ===== Donut ===== */
+.donut-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px; }
+.donut{ text-align:center; }
+.donut svg{ width:100%; max-width:120px; }
+.donut-bg{ fill:none; stroke:#eee; stroke-width:10; }
+.donut-fg{ fill:none; stroke:#b30018; stroke-width:10; stroke-linecap:round; transform: rotate(-90deg); transform-origin: 40px 40px; }
+.donut-txt{ font-size:14px; font-weight:700; fill:#b30018; }
+.donut-label{ margin-top:6px; font-size:12px; }
+
+/* ===== Group bar ===== */
+.gbar-legend{ display:flex; gap:12px; font-size:12px; margin-bottom:8px; color:#555; }
+.gbar-legend i{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
+.gbar-wrap{ display:flex; align-items:flex-end; gap:18px; height:180px; padding:10px; background:#fafafa; border-radius:12px; }
+.gbar-group{ display:flex; align-items:flex-end; gap:6px; height:100%; }
+.gbar-bar{ width:12px; border-radius:6px 6px 0 0; opacity:.95; }
+.gbar-cat{ text-align:center; font-size:12px; margin-top:6px; color:#444; }
+
+/* ===== Line ===== */
+.line-box{ height:180px; background:#fafafa; border-radius:12px; padding:8px; }
+.line-box svg{ width:100%; height:100%; }
+
+/* ===== Rank ===== */
+.rank{ display:flex; flex-direction:column; gap:10px; }
+.rank-row{ display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; align-items:center; }
+.rank-name{ font-weight:600; }
+.rank-bar{ height:8px; background:#f0f0f0; border-radius:999px; overflow:hidden; }
+.rank-fill{ height:100%; background:#b30018; }
+.rank-meta{ font-size:12px; color:#555; }
+
+/* ===== Overview ===== */
+.overview{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.overview div{ background:#fafafa; border-radius:12px; padding:12px; display:flex; justify-content:space-between; }
+.overview span{ color:#6b7280; font-size:12px; }
+.overview b{ font-size:16px; }

@@ -143,17 +143,6 @@ function SignIn() {
 
       <div className="sep"><span>Or sign in with</span></div>
 
-      <div className="social-row centered">
-        <IonButton className="btn-google" fill="clear">
-          <img alt="g" src="https://www.svgrepo.com/show/475656/google-color.svg" />
-          <span>Google</span>
-        </IonButton>
-        <IonButton className="btn-facebook" fill="solid">
-          <img alt="f" src="https://www.svgrepo.com/show/452196/facebook-1.svg" />
-          <span>Facebook</span>
-        </IonButton>
-      </div>
-
       <div className="version-wrap">
         <div className="version-panel">
           <p>Version: DHNT-2025.09G.31</p>
