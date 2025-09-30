@@ -1,0 +1,4 @@
+.bar-chart{ height:160px; display:flex; gap:10px; align-items:flex-end; padding:8px; background:#fafafa; border-radius:12px; }
+.bar{ width:22px; background:#b30018; border-radius:6px 6px 0 0; }
+.line-chart{ height:160px; background:#fafafa; border-radius:12px; padding:8px; }
+.line-chart svg{ width:100%; height:100%; }

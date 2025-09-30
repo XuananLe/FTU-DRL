@@ -1,0 +1,52 @@
+/* ===== Header cong & Searchbar ===== */
+/* Bo cong phần nền của Toolbar qua Shadow Part 'background' */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.curved-toolbar{ --background: var(--ion-color-danger); --color:#fff; }
+.zone-title{ font-weight: 800; letter-spacing: .3px; }
+
+.search-toolbar{ --background: transparent; }
+.zone-search{
+  --background: rgba(255,255,255,.22);
+  --border-radius: 12px;
+  --icon-color: #fff;
+  --color: #fff;
+  --placeholder-color: #fff;
+}
+
+/* ===== DRL Card ===== */
+.drl-card{
+  background:#f7efe9; border:1px solid #f0e4db; border-radius:18px; padding:14px;
+}
+.drl-head{ display:flex; justify-content:space-between; align-items:center; font-weight:700; }
+.drl-status{ margin-left:8px; }
+
+.drl-row{ display:grid; grid-template-columns: 1fr auto; gap:12px; margin-top:8px; }
+.goal-title{ font-size:13px; font-weight:700; color:#374151; margin-bottom:6px; }
+.goal-progress{ height:10px; background:#eee; border-radius:999px; overflow:hidden; }
+.goal-progress .bar{ height:100%; background: var(--ion-color-danger); }
+.goal-note{ font-size:13px; color:#666; margin-top:6px; }
+
+/* vòng điểm 70/88 với ring mờ */
+.score-ring{
+  width:64px; height:64px; border-radius:999px;
+  display:grid; place-items:center; background:#fff;
+  border:3px solid #e48b8b; box-shadow:0 0 0 6px #ffd9d9 inset;
+  color: var(--ion-color-danger); font-weight:800; font-size:18px;
+}
+
+/* ===== Section & Event list ===== */
+.section-title{ margin:16px 0 8px; font-weight:800; }
+
+.event-item{ --padding-start: 10px; --inner-padding-end: 8px; }
+.event-avatar img{ object-fit: cover; }
+.event-title{ color:#0b4a83; font-weight:800; margin:2px 0 6px; } /* xanh tiêu đề */
+.event-meta{ margin:2px 0; font-size:13px; color:#111; }
+.muted{ color:#888; font-size:12px; }
+
+.event-state{ margin-top:4px; font-size:12px; }
+.event-state.ok{ color:#127c2e; }
+.event-state.warn{ color:#c41f1f; }
+.event-state.link{ color: var(--ion-color-danger); }
