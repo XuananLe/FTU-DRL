@@ -11,7 +11,6 @@ import '@ionic/react/css/padding.css';
 import '@ionic/react/css/flex-utils.css';
 
 
-
 setupIonicReact(); // khởi tạo Ionic (web components, platform, v.v.)
 defineCustomElements(window);
 const container = document.getElementById('root')!;

@@ -1,0 +1,450 @@
+.curved-toolbar::part(background) {
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.zone-title {
+  font-weight: 800;
+}
+
+.term-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 8px;
+}
+
+.term {
+  color: #fff;
+  opacity: .9;
+}
+
+/* Shell layout */
+.admin-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 16px;
+  padding: 12px 12px 24px;
+}
+
+.sidebar {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  height: fit-content;
+  position: sticky;
+  top: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #b30018;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu button {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: #fff;
+  cursor: pointer;
+}
+
+.menu button.active {
+  background: #fde8ea;
+  border-color: #f6c9cf;
+  color: #b30018;
+  font-weight: 700;
+}
+
+/* Main */
+.content {
+  min-width: 0;
+}
+
+.page-title {
+  margin: 0 0 12px;
+  font-weight: 800;
+}
+
+/* KPI row */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kpi-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+}
+
+.kpi-label {
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* Two-column section */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.card-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.sub {
+  color: #6b7280;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Top clubs */
+.topclubs-wrap {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.topclubs-list {
+  list-style: none;
+  padding: 8px 8px 8px 0;
+  margin: 0;
+}
+
+.topclubs-list li {
+  padding: 8px 0;
+  font-weight: 600;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #b30018;
+  margin-right: 8px;
+  position: relative;
+  top: 1px;
+}
+
+.topclubs-chart {
+  min-width: 0;
+}
+
+/* Pie legend */
+.legend-custom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.legend-custom .lg {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.lg-0 {
+  background: #0ea85f;
+}
+
+/* Xuất sắc */
+.lg-1 {
+  background: #f59e0b;
+}
+
+/* Tốt */
+.lg-2 {
+  background: #f97316;
+}
+
+/* Khá */
+.lg-3 {
+  background: #ef4444;
+}
+
+/* Yếu */
+/* Table */
+.table {
+  display: grid;
+  gap: 6px;
+}
+
+.tr {
+  display: grid;
+  grid-template-columns: 1.6fr .8fr .9fr .9fr .6fr;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.tr.th {
+  font-weight: 800;
+  border-bottom: 2px solid #eee;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  display: inline-block;
+  border: 1px solid #e5e7eb;
+}
+
+.badge.ok {
+  color: #0ea85f;
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.badge.pending {
+  color: #a16207;
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.btn-outline {
+  background: #fff;
+  border: 1px solid #b30018;
+  color: #b30018;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.placeholder {
+  background: #fafafa;
+  border: 1px dashed #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  color: #6b7280;
+}
+
+/* src/pages/admin/admin.css */
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+.topbar {
+  --background: #fff;
+  --color: #111;
+  border-bottom: 1px solid #eee;
+}
+
+.topbar .term {
+  margin-right: 12px;
+  color: #6b7280;
+}
+
+.menu {
+  --background: #fff;
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.owner .sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+ion-item.active {
+  --background: #fde7e7;
+  border-radius: 10px;
+  margin: 4px 8px;
+}
+
+.admin-body {
+  padding: 12px 16px;
+}
+
+.kpi-row .kpi-card {
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.kpi-title {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.kpi-value {
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.card-pad {
+  padding: 14px;
+}
+
+.board .muted {
+  color: #6b7280;
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+/* Simple table */
+.table {
+  width: 100%;
+}
+
+.t-head,
+.t-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+}
+
+.t-head {
+  font-weight: 700;
+  color: #374151;
+}
+
+.t-row {
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+}
+
+.dotline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #b30018;
+}
+
+.topclubs {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+}
+
+/* ===== Sidebar menu (Ionic) ===== */
+.admin-menu {
+  --background: #fff;
+  padding: 8px 4px;
+}
+
+.admin-menu ion-list {
+  background: transparent;
+}
+
+.admin-menu ion-item {
+  --background: transparent;
+  --color: #111;
+  /* text đậm, không còn bị mờ */
+  --border-radius: 10px;
+  margin: 4px 8px;
+  padding: 2px 6px;
+  /* cho cảm giác “pill” */
+}
+
+.admin-menu ion-item.active {
+  --background: #fde8ea;
+  /* nền hồng nhạt */
+  --color: #b30018;
+  /* chữ đỏ */
+  font-weight: 700;
+  border: 1px solid #f6c9cf;
+}
+
+.admin-menu .avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.owner .sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Tùy chọn: cố định bề rộng menu + đường viền phải nhẹ */
+ion-menu::part(container) {
+  width: 240px;
+  border-right: 1px solid #eee;
+  border-radius: 12px;
+}
