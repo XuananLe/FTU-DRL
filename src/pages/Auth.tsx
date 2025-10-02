@@ -85,12 +85,16 @@ function SignIn() {
   const [role, setRole] = useState<'sinhvien'|'clb'|'nhatruong'>('sinhvien'); // <— NEW
   const router = useIonRouter();                                               // <— NEW
 
-  const handleSignIn = () => { // <— NEW
+  const handleSignIn = () => {
+    // lưu role (để Tabs đọc)
+    localStorage.setItem('role', role); // chỉ lưu "vai trò", KHÔNG lưu token/mật khẩu ở đây
+
     if (role === 'sinhvien') router.push('/tabs/home', 'root');
-    else if (role === 'clb')  router.push('/tabs/clb',  'root');
+    else if (role === 'clb')  router.push('/tabs/qr',   'root');
     else                      router.push('/dashboard', 'root');
   };
 
+  
   return (
     <div style={{ maxWidth: 420, margin: "0 auto" }}>
       <div className="ion-text-center ion-margin-top">

@@ -1,0 +1,27 @@
+/* === scan.css (tối giản, không trùng lặp) === */
+.qr-wrap{
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto 12px auto;
+  aspect-ratio: 1 / 1;            /* khung luôn vuông */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+#qr-region.qr-cam{
+  position: absolute;
+  inset: 0;                       /* <video> của lib sẽ phủ kín */
+}
+
+/* Overlay là sibling, không nằm trong #qr-region */
+.qr-overlay{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(0,0,0,0.55);
+}
+
+/* Nút & card */
+.btn-row{ display:flex; gap:12px; justify-content:center; margin:8px 0 16px; }
+.event-card ion-item{ --background: transparent; }

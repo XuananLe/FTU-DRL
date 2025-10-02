@@ -8,3 +8,8 @@
 .zoom-track{ flex:1; height:8px; background:#ffffff66; border-radius:999px; overflow:hidden; }
 .zoom-thumb{ height:100%; background:#fff; }
 .zoom-plus{ color:#fff; font-weight:800; font-size:24px; }
+
+/* ---- form / preview ---- */
+.form-title{ font-weight:800; margin:10px 0 6px; }
+.qr-form ion-item::part(native){ border-radius:12px; }
+.btn-row{ margin-top:10px; display:flex; justify-content:center; gap:12px; }
