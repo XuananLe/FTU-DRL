@@ -1,0 +1,106 @@
+/* Header đỏ cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight:800; }
+
+/* Card block */
+.block-card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.block-head{
+  font-weight:800;
+  color:#374151;
+  padding:12px 16px 6px;
+}
+.p0{ padding:0 !important; }
+
+/* ===== Toggle: iOS style + đỏ như mockup ===== */
+ion-toggle{
+  --handle-background: #fff;
+  --handle-background-checked: #fff;
+  --track-background: #e5e7eb;             /* off */
+  --track-background-checked: #ef4444;      /* on (đỏ) */
+  --track-border-radius: 999px;
+  --handle-width: 20px;
+  --handle-height: 20px;
+  --track-height: 24px;
+}
+
+/* ===== Segment pill iOS (giống ảnh mẫu) ===== */
+.pill-segment{
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pill-segment ion-segment-button{
+  min-height: 40px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  color: #111827;
+}
+/* màu nền nút đang chọn */
+.pill-segment ion-segment-button::part(indicator){
+  background: transparent;           /* reset mặc định */
+  border-radius: 10px;
+}
+.pill-segment ion-segment-button[aria-pressed="true"]{
+  color: #fff;
+}
+.pill-segment ion-segment-button[aria-pressed="true"]::part(indicator){
+  background: #ef4444;               /* đỏ */
+}
+.hint{ display:block; margin-top:8px; color:#6b7280; }
+
+/* ===== Language buttons ===== */
+.lang-row{
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.lang-btn{
+  flex:1 1 120px;
+  border-radius:12px;
+  padding:10px 12px;
+  font-weight:700;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  color:#111827;
+}
+.lang-btn.outline{ background:#fff; }
+.lang-btn.active{
+  background:#ef4444;
+  color:#fff;
+  border-color:#ef4444;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.04);
+}
+
+/* dấu hỏi đỏ nhẹ */
+.qmark{ color:#ef4444; font-weight:800; }
+
+/* IonItem spacing */
+ion-item{
+  --padding-start:16px;
+  --padding-end:12px;
+  --inner-padding-end:6px;
+}
+/* Loại bỏ padding-end nội cho các dòng có toggle để border full-bleed */
+.block-card .p0 ion-item{
+  --padding-end: 0;        /* bỏ đệm ngoài bên phải */
+  --inner-padding-end: 0;  /* ⬅️ cái này mới quan trọng */
+}
+
+/* (tùy chọn) chỉnh border nhạt và chiều cao */
+.block-card ion-item{
+  --border-color: #eceff1;
+  --min-height: 52px;
+}
+
+/* (tuỳ chọn) áp cỡ chữ toàn app */
+:root[data-font-size="small"]{ font-size: 14px; }
+:root[data-font-size="medium"]{ font-size: 16px; }
+:root[data-font-size="large"]{ font-size: 18px; }

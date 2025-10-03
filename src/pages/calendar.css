@@ -1,0 +1,38 @@
+/* tái dùng header cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight:800; }
+
+.calendar-wrap{
+  padding: 12px;
+}
+
+/* FullCalendar mobile tweaks cho Ionic */
+.fc .fc-toolbar.fc-header-toolbar{
+  margin: 8px 0 12px;
+}
+.fc .fc-toolbar-title{
+  font-weight: 800;
+}
+.fc .fc-button{
+  border-radius: 10px;
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #111827;
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:focus{
+  box-shadow: none;
+}
+.fc .fc-daygrid-day-number{
+  font-weight: 700;
+}
+.fc-theme-standard td, .fc-theme-standard th{
+  border-color: #eceff1;
+}
+.fc .fc-day-today{
+  background: #fff7ed; /* nhấn nhẹ ngày hôm nay */
+}

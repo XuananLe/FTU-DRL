@@ -1,0 +1,89 @@
+/* Header cong đồng bộ */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight:800; }
+
+/* Card tài liệu */
+.terms-card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  padding:16px;
+}
+
+/* Tiêu đề tài liệu */
+.doc-title{
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  color:#b91c1c; /* đỏ nhấn */
+}
+.doc-sub{
+  color:#6b7280;
+  margin:4px 0 8px;
+}
+
+/* Section */
+.sec-title{
+  margin-top:14px;
+  font-weight:800;
+  font-size:16px;
+}
+
+/* Bullets */
+.bullets{
+  list-style: disc;
+  margin: 6px 0 8px 20px;
+  color:#374151;
+}
+.bullets li{
+  margin: 6px 0;
+  line-height: 1.45;
+}
+.bullets li + li{
+  border-top: 1px dashed #eee;
+  padding-top: 6px;
+}
+
+/* Contact card */
+.contact-card{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:12px;
+  margin-top:12px;
+}
+.contact-title{
+  font-weight:800;
+  margin-bottom:8px;
+}
+.contact-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#374151;
+  margin:6px 0;
+}
+.contact-row ion-icon{ font-size:18px; }
+.contact-row a{ color:inherit; text-decoration:underline; }
+
+/* Acknowledge box */
+.ack-box{
+  margin-top:12px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  border-left:4px solid #10b981;
+  color:#065f46;
+  border-radius:10px;
+  padding:10px 12px;
+}
+
+/* Mobile spacing cho item mặc định (nếu có) */
+ion-item{
+  --padding-start:16px;
+  --padding-end:12px;
+  --inner-padding-end:6px;
+}

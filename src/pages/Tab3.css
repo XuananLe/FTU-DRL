@@ -52,3 +52,39 @@
 .pill-item::part(native){
   border-radius: 14px;
 }
+
+
+/* Card kiểu pill (đã có từ trước, giữ nguyên nếu bạn đang dùng) */
+.pill-card{
+  --background:#fff;
+  margin: 10px 0;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 2px 0 0 #eee;
+}
+.pill-card::part(native){ border-radius: 14px; }
+
+/* Tiêu đề card màu đỏ, đậm, căn giữa */
+.pill-card .app-title{
+  color: var(--ion-color-danger);
+  font-weight: 800;
+  font-size: 22px;
+  text-align: center;
+  margin: 4px 0 12px;
+}
+
+/* Danh sách thông tin ứng dụng */
+.app-info-list{
+  list-style: none;
+  padding: 0; margin: 0 0 12px;
+  color: #555;
+  line-height: 1.6;
+}
+.app-info-list b{ color:#333; }
+
+/* Cụm 2 nút nằm cạnh nhau (mobile-first) */
+.app-actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+  margin-top: 8px;
+}

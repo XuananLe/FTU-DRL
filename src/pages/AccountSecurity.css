@@ -1,0 +1,25 @@
+/* Header cong tái sử dụng */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight: 800; }
+
+/* Section title */
+.section-title{
+  margin: 8px 0 10px;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+/* Thẻ list giống “card” */
+.card-like{
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.item-title{ font-weight: 600; }
+.muted{ color: #6b7280; } /* text-gray-500 */

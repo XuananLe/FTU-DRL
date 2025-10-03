@@ -1,0 +1,68 @@
+/* Tận dụng header cong đồng bộ */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight: 800; }
+
+/* Card container */
+.events-card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  overflow:hidden;
+}
+
+/* Header trong card */
+.events-card__head{
+  padding:14px 16px 10px;
+  border-bottom:1px solid #eee;
+}
+.head-title{ font-weight:800; font-size:18px; }
+.head-sub{ color:#6b7280; font-size:14px; margin-top:2px; }
+
+/* List */
+.events-list{
+  --ion-item-background: transparent;
+}
+
+/* Tựa đề sự kiện + badge Online */
+.event-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.badge-soft{
+  background: #eef2ff;
+  color:#4f46e5;
+  border-radius:999px;
+  padding:2px 8px;
+  font-size:11px;
+  font-weight:600;
+}
+
+/* Meta rows */
+.event-meta{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.meta-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  color:#6b7280;
+}
+.meta-row ion-icon{
+  font-size:16px;
+}
+
+/* Mobile spacing niceness */
+ion-item{
+  --padding-start: 16px;
+  --padding-end: 12px;
+  --inner-padding-end: 6px;
+}

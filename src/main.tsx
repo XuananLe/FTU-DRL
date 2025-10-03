@@ -9,6 +9,7 @@ import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/flex-utils.css';
+import "./styles/tailwind.css";
 
 
 setupIonicReact(); // khởi tạo Ionic (web components, platform, v.v.)
