@@ -3,13 +3,13 @@ import {
   IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent,
 } from "@ionic/react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, Fragment, useEffect } from "react";
 import { Printer, ChevronLeft, ChevronRight, Settings } from "lucide-react";
 
 /** ======= Types ======= */
@@ -35,7 +35,7 @@ const DEMO: ClassEvent[] = [
     group: "ESP341(2526.1-GD1).1",
     room: "B508 - Nhà B 508",
     teacher: "GV: Lưu Thị Thuỳ Hương",
-    dow: 2, startPeriod: 4, endPeriod: 5, color: "#e6f0ff",
+    dow: 3, startPeriod: 4, endPeriod: 5, color: "#e6f0ff",
   },
   {
     id: "esp341-2",
@@ -43,7 +43,7 @@ const DEMO: ClassEvent[] = [
     group: "ESP341(2526.1-GD1).1",
     room: "B508 - Nhà B 508",
     teacher: "GV: Lưu Thị Thuỳ Hương",
-    dow: 6, startPeriod: 4, endPeriod: 5, color: "#e6f0ff",
+    dow: 6, startPeriod: 2, endPeriod: 3, color: "#e6f0ff",
   },
 ];
 
@@ -84,6 +84,16 @@ export default function WeeklyTimetable() {
   const [semesterId, setSemesterId] = useState(SEMESTERS[0].id);
   const [viewId, setViewId] = useState(VIEWS[0].id);
   const [weekOffset, setWeekOffset] = useState(0); // 0 = tuần hiện tại
+  const [isPortraitMode, setIsPortraitMode] = useState(window.innerWidth < 768);
+
+  // Responsive design detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsPortraitMode(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const weekStart = useMemo(() => {
     const today = new Date();
@@ -101,6 +111,120 @@ export default function WeeklyTimetable() {
   // TODO: gọi API theo semesterId + viewId + khoảng tuần => set events
   const events = DEMO;
 
+  // Choose display mode based on screen orientation
+  const renderTimetable = () => {
+    if (!isPortraitMode) {
+      // Desktop/Landscape view - Full week grid
+      return (
+        <Card className="mt-2">
+          <CardContent className="p-0">
+            {/* Header row */}
+            <div className="grid grid-cols-[80px_repeat(7,1fr)]">
+              <div className="bg-red-700 text-white font-semibold p-2 border-r border-red-800"></div>
+              {["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"].map((d) => (
+                <div key={d} className="bg-red-700 text-white font-semibold p-2 text-center border-r border-red-800">
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* Timetable body */}
+            <div className="relative">
+              <div className="grid grid-cols-[80px_repeat(7,1fr)]">
+                {/* Periods 1-10 */}
+                {Array.from({ length: PERIODS }).map((_, idx) => (
+                  <Fragment key={`row-${idx + 1}`}>
+                    <div className="border-t border-r border-gray-200 bg-white p-1 md:p-2 h-12 flex items-center justify-center font-medium text-sm">
+                      Tiết {idx + 1}
+                    </div>
+                    {/* Empty cells for each day */}
+                    {Array.from({ length: 7 }).map((_, dayIdx) => (
+                      <div key={`cell-${idx+1}-${dayIdx+1}`} className="border-t border-r border-gray-200 bg-white h-12"></div>
+                    ))}
+                  </Fragment>
+                ))}
+              </div>
+
+              {/* Class events */}
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                {events.map((e) => {
+                  // Convert from 1-based to 0-based for array indexing
+                  const dayIndex = e.dow - 1; // 0=Mon, 1=Tue, ..., 6=Sun
+                  const startPeriod = e.startPeriod - 1; // 0-based
+                  const duration = e.endPeriod - e.startPeriod + 1;
+                  
+                  // Calculate position
+                  const left = `calc(80px + ${dayIndex} * (100% - 80px) / 7)`;
+                  const top = `${startPeriod * 48}px`; // 48px = height of each period row
+                  const width = `calc((100% - 80px) / 7 - 4px)`; // 4px for margins
+                  const height = `${duration * 48 - 4}px`; // 4px for margins
+                  
+                  return (
+                    <div 
+                      key={e.id}
+                      className="pointer-events-auto absolute border border-blue-300 bg-blue-50 p-2 rounded text-xs shadow-sm"
+                      style={{
+                        left,
+                        top,
+                        width,
+                        height,
+                        background: e.color || "#e6f0ff",
+                      }}
+                    >
+                      <div className="text-xs font-bold line-clamp-1">{e.title}</div>
+                      {e.group && <div className="mt-0.5 line-clamp-1">Nhóm: {e.group}</div>}
+                      {e.room && <div className="line-clamp-1">Phòng: {e.room}</div>}
+                      {e.teacher && <div className="line-clamp-1">{e.teacher}</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    } else {
+      // Mobile/Portrait view - Day-by-day view with cards
+      const daysOfWeek = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"];
+      return (
+        <div className="flex flex-col gap-4 mt-2 px-3 pb-6">
+          {Array.from({ length: 7 }).map((_, dayIndex) => {
+            const dayEvents = events.filter(e => e.dow === dayIndex + 1);
+            const hasEvents = dayEvents.length > 0;
+            
+            return (
+              <Card key={`day-${dayIndex}`} className={hasEvents ? "" : "opacity-60"}>
+                <CardContent className="p-0">
+                  <div className="bg-red-700 text-white font-semibold p-3 text-center">
+                    {daysOfWeek[dayIndex]} ({fmt(addDays(weekStart, dayIndex))})
+                  </div>
+                  
+                  {hasEvents ? (
+                    <div className="p-3">
+                      {dayEvents.map(event => (
+                        <div key={event.id} className="mb-3 p-3 rounded-md border border-blue-300 bg-blue-50">
+                          <div className="font-bold">{event.title}</div>
+                          {event.group && <div className="mt-1 text-sm">Nhóm: {event.group}</div>}
+                          {event.room && <div className="text-sm">Phòng: {event.room}</div>}
+                          {event.teacher && <div className="text-sm">{event.teacher}</div>}
+                          <div className="mt-1 text-sm font-medium">
+                            Tiết: {event.startPeriod} - {event.endPeriod}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="py-6 text-center text-gray-500">Không có lịch học</div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      );
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -111,13 +235,12 @@ export default function WeeklyTimetable() {
       </IonHeader>
 
       <IonContent>
-        <div className="mx-auto w-full max-w-6xl p-3 sm:p-4">
-
+        <div className="mx-auto w-full max-w-6xl">
           {/* ===== Filter bar ===== */}
-          <div className="flex flex-col gap-2 md:flex-row md:items-center">
-            <div className="w-full md:w-[420px]">
+          <div className="bg-red-700 p-3 flex flex-col gap-3">
+            <div className="w-full">
               <Select value={semesterId} onValueChange={setSemesterId}>
-                <SelectTrigger className="h-10">
+                <SelectTrigger className="h-10 bg-white text-black w-full">
                   <SelectValue placeholder="Chọn học kỳ" />
                 </SelectTrigger>
                 <SelectContent>
@@ -128,9 +251,9 @@ export default function WeeklyTimetable() {
               </Select>
             </div>
 
-            <div className="w-full md:w-[320px]">
+            <div className="w-full">
               <Select value={viewId} onValueChange={setViewId}>
-                <SelectTrigger className="h-10">
+                <SelectTrigger className="h-10 bg-white text-black w-full">
                   <SelectValue placeholder="Loại thời khóa biểu" />
                 </SelectTrigger>
                 <SelectContent>
@@ -141,126 +264,34 @@ export default function WeeklyTimetable() {
               </Select>
             </div>
 
-            <div className="flex w-full items-center gap-2 md:ml-auto md:w-auto">
-              <Button variant="outline" className="gap-2" onClick={() => window.print()}>
-                <Printer className="h-4 w-4" /> In
-              </Button>
+            <div className="flex items-center justify-between w-full">
+              <div className="text-white text-sm">
+                <span className="font-semibold">Tuần {weekNumber}</span>{" "}
+                [{fmt(weekStart)} - {fmt(weekEnd)}]
+              </div>
+              <div className="flex items-center gap-1">
+                <Button size="icon" variant="outline" className="h-8 w-8 bg-white text-red-700 hover:bg-gray-100" 
+                  onClick={() => setWeekOffset(x => x - 1)}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button size="icon" variant="outline" className="h-8 w-8 bg-white text-red-700 hover:bg-gray-100"
+                  onClick={() => setWeekOffset(0)} title="Về tuần hiện tại">
+                  <Settings className="h-4 w-4 rotate-90" />
+                </Button>
+                <Button size="icon" variant="outline" className="h-8 w-8 bg-white text-red-700 hover:bg-gray-100"
+                  onClick={() => setWeekOffset(x => x + 1)}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button size="icon" variant="outline" className="h-8 w-8 bg-white text-red-700 hover:bg-gray-100 ml-1" 
+                  onClick={() => window.print()}>
+                  <Printer className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* ===== Week caption & nav ===== */}
-          <div className="mt-2 flex flex-wrap items-center gap-3">
-            <div className="text-sm text-muted-foreground">
-              <span className="font-semibold">Tuần {weekNumber}</span>{" "}
-              [từ ngày <b>{fmt(weekStart)}</b> đến ngày <b>{fmt(weekEnd)}</b>]
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              <Button size="icon" variant="ghost" onClick={() => setWeekOffset(x => x - 1)}>
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Button size="icon" variant="ghost" onClick={() => setWeekOffset(0)} title="Về tuần hiện tại">
-                <Settings className="h-5 w-5 rotate-90" />
-              </Button>
-              <Button size="icon" variant="ghost" onClick={() => setWeekOffset(x => x + 1)}>
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-
-          {/* ===== Grid ===== */}
-          <Card className="mt-3 overflow-hidden">
-            <CardContent className="p-0">
-              {/* Header row */}
-              <div
-                className="
-                  grid
-                  [grid-template-columns:theme(spacing.24)_repeat(7,minmax(0,1fr))]
-                "
-              >
-                {/* góc trái trống */}
-                <div className="bg-red-700/95 text-white font-semibold px-3 py-2 border-r border-red-800" />
-
-                {["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","Chủ Nhật"].map((d, i) => (
-                  <div
-                    key={d}
-                    className="bg-red-700/95 text-white font-semibold px-3 py-2 border-r border-red-800 text-center"
-                  >
-                    {d}
-                  </div>
-                ))}
-              </div>
-
-              {/* Body grid with periods */}
-              <div className="relative">
-                {/* Base grid cells */}
-                <div
-                  className="
-                    grid
-                    [grid-template-columns:theme(spacing.24)_repeat(7,minmax(0,1fr))]
-                    [grid-template-rows:repeat(10,64px)]
-                  "
-                >
-                  {/* Period labels */}
-                  {Array.from({ length: PERIODS }).map((_, r) => (
-                    <div
-                      key={`p-${r}`}
-                      className="border-r border-t border-gray-200/85 bg-white px-3 py-2 text-sm font-semibold text-gray-700 flex items-center"
-                    >
-                      Tiết {r + 1}
-                    </div>
-                  ))}
-
-                  {/* Day cells (7 * PERIODS) */}
-                  {Array.from({ length: PERIODS * 7 }).map((_, idx) => (
-                    <div key={idx} className="border-t border-r border-gray-200/85 bg-white" />
-                  ))}
-                </div>
-
-                {/* Event blocks – placed absolutely atop the grid */}
-                <div className="pointer-events-none absolute inset-0">
-                  {events.map((e) => {
-                    const col = e.dow;                     // 1..7
-                    const rowStart = e.startPeriod;        // 1..10
-                    const rowSpan = e.endPeriod - e.startPeriod + 1;
-
-                    // CSS variables for placement
-                    const style: React.CSSProperties = {
-                      // translate grid placement to absolute coords using CSS calc()
-                      // left = width of label col + (col-1)*colWidth
-                      // but easier: use CSS grid overlay again:
-                    };
-
-                    // We'll use CSS grid overlay to position blocks:
-                    return (
-                      <div
-                        key={e.id}
-                        className="
-                          grid
-                          [grid-template-columns:theme(spacing.24)_repeat(7,minmax(0,1fr))]
-                          [grid-template-rows:repeat(10,64px)]
-                          h-full w-full
-                        "
-                      >
-                        <div
-                          className="pointer-events-auto m-[2px] rounded border border-blue-300 bg-blue-50 p-2 text-xs leading-snug text-slate-700 shadow-sm"
-                          style={{
-                            gridColumn: `${col + 1} / ${col + 2}`, // +1 vì có cột label đầu
-                            gridRow: `${rowStart} / ${rowStart + rowSpan}`,
-                            background: e.color ?? "#eef2ff",
-                          }}
-                        >
-                          <div className="font-bold text-[12px]">{e.title}</div>
-                          {e.group && <div className="mt-1"><b>Nhóm:</b> {e.group}</div>}
-                          {e.room && <div><b>Phòng:</b> {e.room}</div>}
-                          {e.teacher && <div><b>{e.teacher}</b></div>}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Responsive Timetable - Grid for desktop, Cards for mobile */}
+          {renderTimetable()}
         </div>
       </IonContent>
     </IonPage>
