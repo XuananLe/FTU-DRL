@@ -118,3 +118,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fine-tune the meta rows without changing your HTML shape */
+@layer components {
+  /* Meta rows look like: "Thời gian: <b>18h - 20h</b>" */
+  .event-item.compact .event-meta {
+    @apply flex justify-between text-gray-600;
+  }
+  .event-item.compact .event-meta b {
+    @apply font-extrabold text-gray-900;
+  }
+
+  /* Tighten vertical rhythm further on very small screens */
+  @media (max-width: 380px) {
+    .event-item.compact { @apply w-[340px] px-3 py-2; }
+  }
+}
