@@ -37,7 +37,7 @@ export default function Tab3() {
         {/* Khối thông tin người dùng */}
         <div className="section-head">Thông tin cá nhân</div>
 
-        <IonCard className="profile-card soft">
+        <IonCard className="profile-card soft" routerLink="/tabs/rl-assessment">
           <IonCardContent>
             <div className="avatar big" />
             <div className="info">
@@ -47,7 +47,7 @@ export default function Tab3() {
             </div>
           </IonCardContent>
         </IonCard>
-
+        
         {/* Danh sách action dạng pill */}
         <div className="list-wrap">
           <IonItem button detail className="pill-item" routerLink="/tabs/account-security">

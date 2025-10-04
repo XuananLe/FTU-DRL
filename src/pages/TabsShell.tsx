@@ -10,8 +10,10 @@ import AccountSecurity from "./AccountSecurity";
 import ChangePassword from "./ChangePassword";
 import EventsSchedule from "./EventsSchedule";
 import TermsOfUse from "./TermsOfUse";
+import RLAssessment from "./RLAssessment";
 import SettingsPage from "./SettingsPage";
 import CalendarPage from "./CalendarPage";
+import RLAssessmentForm from "./RLAssessmentForm";
 export default function TabsShell(){
   const role = (localStorage.getItem('role') || 'sinhvien').toLowerCase();
 
@@ -34,6 +36,8 @@ export default function TabsShell(){
         <Route exact path="/tabs/settings" component={SettingsPage} />
         <Route exact path="/tabs/calendar" component={CalendarPage} />
         <Route exact path="/tabs/account-security/change-password" component={ChangePassword} />
+        <Route exact path="/tabs/rl-assessment" component={RLAssessment} />
+        <Route exact path="/tabs/rl-assessment/form" component={RLAssessmentForm} />
         <Route exact path="/tabs" render={() => <Redirect to="/tabs/home" />} />
       </IonRouterOutlet>
 

@@ -1,0 +1,60 @@
+.curved-toolbar::part(background){border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+.zone-title{font-weight:800}
+
+/* Banner trạng thái */
+.banner{
+  display:flex;gap:10px;align-items:center;
+  background:#6d28d9;color:#fff;border-radius:14px;padding:12px 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.08)
+}
+.banner ion-icon{font-size:22px}
+.banner-title{font-weight:900;letter-spacing:.2px}
+.banner-sub{opacity:.9;font-size:13px}
+
+/* Card chung */
+.sheet{border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 8px 26px rgba(0,0,0,.06);overflow:hidden;margin-top:12px}
+.sheet.compact .ion-padding, .sheet.compact ion-card-content{padding:12px 14px}
+.sheet-head{display:flex;gap:8px;align-items:center;padding:12px 14px;border-bottom:1px solid #eee;font-weight:800}
+.clean-item{ --padding-start:0; --inner-padding-end:0 }
+
+/* Key-Value hàng */
+.kv{display:flex;justify-content:space-between;gap:10px;margin:6px 0}
+.kv span{color:#6b7280}
+.kv b{color:#111827}
+
+/* Tiêu đề phần */
+.part-title{
+  margin-top:14px;font-weight:900;color:#0ea5e9;border-left:4px solid #0ea5e9;
+  padding-left:10px
+}
+.subhead{font-weight:800;margin:2px 0 8px}
+
+/* badge điểm */
+.badge-row{
+  display:inline-block;padding:6px 8px;border-radius:10px;font-weight:800;color:#fff;margin:6px 0
+}
+.badge-row.green{background:#22c55e}
+.badge-row.yellow{background:#f59e0b}
+.badge-row.orange{background:#fb923c}
+.badge-row.red{background:#ef4444}
+.desc{margin:4px 0 6px;color:#374151}
+
+/* counter 0..5+ */
+.counter-row{display:flex;gap:6px;margin-bottom:8px}
+.chip{
+  border:1px solid #e5e7eb;border-radius:10px;padding:4px 10px;background:#fff;font-weight:700
+}
+.chip.active{background:#ef4444;border-color:#ef4444;color:#fff}
+
+/* Upload box */
+.upload-box{
+  text-align:center;background:#f8fafc;border:1px dashed #94a3b8;border-radius:12px;padding:16px;font-weight:700;color:#374151
+}
+
+/* Tổng kết */
+.total-card{border-radius:16px;background:#eefbf3;margin-top:12px}
+.total-row{display:flex;gap:10px;align-items:center}
+.total-row ion-icon{font-size:22px;color:#16a34a}
+.total-title{font-weight:900}
+.total-sub{color:#374151}
+.actions{display:flex;gap:10px;margin-top:10px}

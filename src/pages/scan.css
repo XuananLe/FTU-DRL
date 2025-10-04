@@ -1,4 +1,4 @@
-/* === scan.css (tối giản, không trùng lặp) === */
+/* === scan.css (enhanced with Capacitor support) === */
 .qr-wrap{
   position: relative;
   width: 100%;
@@ -10,18 +10,69 @@
   background: #000;
 }
 
-#qr-region.qr-cam{
+.qr-cam-placeholder {
   position: absolute;
-  inset: 0;                       /* <video> của lib sẽ phủ kín */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
 }
 
-/* Overlay là sibling, không nằm trong #qr-region */
+.qr-placeholder-icon {
+  color: #fff;
+}
+
+/* Overlay text */
 .qr-overlay{
   position: absolute; inset: 0;
   display: grid; place-items: center;
   color: #fff; background: rgba(0,0,0,0.55);
+  font-size: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Permission alert */
+.permission-alert {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  text-align: center;
+  border: 1px solid #ffeeba;
 }
 
 /* Nút & card */
-.btn-row{ display:flex; gap:12px; justify-content:center; margin:8px 0 16px; }
+.btn-row{ 
+  display: flex; 
+  gap: 12px; 
+  justify-content: center; 
+  margin: 16px 0; 
+  flex-wrap: wrap;
+}
+
 .event-card ion-item{ --background: transparent; }
+
+/* Capacitor Barcode Scanner styles */
+.scan-button {
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+/* Hide background UI elements when scanner is active */
+body.scanner-active {
+  background: transparent !important;
+}
+
+body.scanner-active ion-content,
+body.scanner-active ion-header,
+body.scanner-active ion-footer {
+  visibility: hidden;
+}
+
+/* Only fab visible during scanning */
+body.scanner-active ion-fab {
+  visibility: visible;
+}

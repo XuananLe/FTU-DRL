@@ -1,0 +1,18 @@
+.curved-toolbar::part(background){
+  border-bottom-left-radius:18px;border-bottom-right-radius:18px;
+}
+.zone-title{font-weight:800}
+
+.sheet{border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 24px rgba(0,0,0,.06);overflow:hidden}
+.sheet-head{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #eee;font-weight:800}
+.sheet-head ion-icon{font-size:18px;color:#374151}
+.sheet-head.warn ion-icon{color:#ef4444}
+
+.kv{display:flex;justify-content:space-between;gap:10px;margin:8px 0}
+.kv span{color:#6b7280}
+.kv b{color:#111827}
+.kv-row{--padding-start:0;--inner-padding-end:0}
+
+.muted{color:#6b7280;margin:4px 0 10px}
+.danger{color:#ef4444}
+.cta{margin-top:10px;display:flex;justify-content:center}
