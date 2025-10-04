@@ -1,60 +1,291 @@
-.curved-toolbar::part(background){border-bottom-left-radius:18px;border-bottom-right-radius:18px}
-.zone-title{font-weight:800}
-
-/* Banner trạng thái */
-.banner{
-  display:flex;gap:10px;align-items:center;
-  background:#6d28d9;color:#fff;border-radius:14px;padding:12px 14px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.08)
+/* Curved toolbar and title styling */
+.curved-toolbar::part(background) {
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
-.banner ion-icon{font-size:22px}
-.banner-title{font-weight:900;letter-spacing:.2px}
-.banner-sub{opacity:.9;font-size:13px}
 
-/* Card chung */
-.sheet{border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 8px 26px rgba(0,0,0,.06);overflow:hidden;margin-top:12px}
-.sheet.compact .ion-padding, .sheet.compact ion-card-content{padding:12px 14px}
-.sheet-head{display:flex;gap:8px;align-items:center;padding:12px 14px;border-bottom:1px solid #eee;font-weight:800}
-.clean-item{ --padding-start:0; --inner-padding-end:0 }
-
-/* Key-Value hàng */
-.kv{display:flex;justify-content:space-between;gap:10px;margin:6px 0}
-.kv span{color:#6b7280}
-.kv b{color:#111827}
-
-/* Tiêu đề phần */
-.part-title{
-  margin-top:14px;font-weight:900;color:#0ea5e9;border-left:4px solid #0ea5e9;
-  padding-left:10px
+.zone-title {
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
-.subhead{font-weight:800;margin:2px 0 8px}
 
-/* badge điểm */
-.badge-row{
-  display:inline-block;padding:6px 8px;border-radius:10px;font-weight:800;color:#fff;margin:6px 0
+/* Status Banner */
+.banner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: linear-gradient(to right, hsl(265, 84%, 40%), hsl(265, 74%, 45%));
+  color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.2);
+  transition: all 0.2s ease;
 }
-.badge-row.green{background:#22c55e}
-.badge-row.yellow{background:#f59e0b}
-.badge-row.orange{background:#fb923c}
-.badge-row.red{background:#ef4444}
-.desc{margin:4px 0 6px;color:#374151}
 
-/* counter 0..5+ */
-.counter-row{display:flex;gap:6px;margin-bottom:8px}
-.chip{
-  border:1px solid #e5e7eb;border-radius:10px;padding:4px 10px;background:#fff;font-weight:700
+.banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(109, 40, 217, 0.25);
 }
-.chip.active{background:#ef4444;border-color:#ef4444;color:#fff}
+
+.banner ion-icon {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.banner-title {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.banner-sub {
+  opacity: 0.9;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* Card styling */
+.sheet {
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 
+              0 10px 30px -5px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-top: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.sheet:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 
+              0 12px 40px -10px rgba(0, 0, 0, 0.12);
+}
+
+.sheet.compact .ion-padding, 
+.sheet.compact ion-card-content {
+  padding: 14px 16px;
+}
+
+.sheet-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 700;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.clean-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+.checkbox-item {
+  --min-height: auto;
+  margin-bottom: 8px;
+}
+
+/* Key-Value row styling */
+.kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+  align-items: center;
+}
+
+.kv span {
+  color: hsl(215, 16%, 47%);
+  font-size: 0.95rem;
+}
+
+.kv b {
+  color: hsl(222, 47%, 11%);
+  font-weight: 600;
+}
+
+/* Section titles */
+.part-title {
+  margin-top: 24px;
+  font-weight: 700;
+  color: hsl(199, 89%, 48%);
+  border-left: 4px solid hsl(199, 89%, 48%);
+  padding: 6px 12px;
+  background-color: rgba(14, 165, 233, 0.05);
+  border-radius: 0 8px 8px 0;
+}
+
+.subhead {
+  font-weight: 700;
+  margin: 6px 0 12px;
+  font-size: 1rem;
+  color: hsl(222, 47%, 11%);
+}
+
+/* Points badges */
+.badge-row {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  margin: 8px 0;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.badge-row.green {
+  background: linear-gradient(to right, hsl(142, 69%, 45%), hsl(142, 71%, 40%));
+}
+
+.badge-row.yellow {
+  background: linear-gradient(to right, hsl(38, 92%, 50%), hsl(38, 92%, 45%));
+}
+
+.badge-row.orange {
+  background: linear-gradient(to right, hsl(28, 96%, 61%), hsl(28, 96%, 56%));
+}
+
+.badge-row.red {
+  background: linear-gradient(to right, hsl(0, 84%, 60%), hsl(0, 84%, 55%));
+}
+
+.desc {
+  margin: 8px 0;
+  color: hsl(215, 25%, 27%);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Counter buttons */
+.counter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chip {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px 14px;
+  background: #fff;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  color: hsl(215, 25%, 27%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.chip:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.chip.active {
+  background: hsl(0, 84%, 60%);
+  border-color: hsl(0, 84%, 55%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
 
 /* Upload box */
-.upload-box{
-  text-align:center;background:#f8fafc;border:1px dashed #94a3b8;border-radius:12px;padding:16px;font-weight:700;color:#374151
+.upload-box {
+  text-align: center;
+  background: rgba(248, 250, 252, 0.6);
+  border: 1px dashed hsl(217, 19%, 67%);
+  border-radius: 12px;
+  padding: 20px;
+  font-weight: 600;
+  color: hsl(215, 25%, 27%);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-/* Tổng kết */
-.total-card{border-radius:16px;background:#eefbf3;margin-top:12px}
-.total-row{display:flex;gap:10px;align-items:center}
-.total-row ion-icon{font-size:22px;color:#16a34a}
-.total-title{font-weight:900}
-.total-sub{color:#374151}
-.actions{display:flex;gap:10px;margin-top:10px}
+.upload-box:hover {
+  background: rgba(248, 250, 252, 0.9);
+  border-color: hsl(217, 19%, 57%);
+}
+
+/* Summary card */
+.total-card {
+  border-radius: 16px;
+  background: linear-gradient(to right bottom, hsl(140, 84%, 95%), hsl(140, 74%, 97%));
+  margin-top: 16px;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  padding: 2px;
+}
+
+.total-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.total-row ion-icon {
+  font-size: 24px;
+  color: hsl(142, 76%, 36%);
+}
+
+.total-title {
+  font-weight: 700;
+  color: hsl(142, 76%, 29%);
+}
+
+.total-sub {
+  color: hsl(215, 25%, 27%);
+  margin-top: 2px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* Radio button and checkbox improvements */
+ion-radio::part(container) {
+  border-width: 2px;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+ion-radio::part(mark) {
+  background: hsl(265, 84%, 40%);
+  transition: transform 0.2s ease;
+}
+
+ion-checkbox::part(container) {
+  border-width: 2px;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+ion-checkbox::part(checkmark) {
+  width: 0.8rem;
+}
+
+/* Fix for checkbox text display */
+ion-checkbox {
+  white-space: normal !important;
+  --padding-start: 0;
+}
+
+ion-label {
+  white-space: normal !important;
+}
+
+
+/* Cho phép item co theo nội dung và label xuống dòng */
+.clean-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: auto;
+  align-items: flex-start; /* label nhiều dòng không bị “đẩy” lệch */
+}
+
+/* Không cần nếu đã tách label; nhưng nếu muốn, vẫn an toàn */
+ion-label.ion-text-wrap {
+  white-space: normal !important;
+}
+
+/* (tuỳ chọn) thu nhỏ icon checkbox chút cho cân đối nhiều dòng */
+ion-checkbox::part(container) { width: 18px; height: 18px; }

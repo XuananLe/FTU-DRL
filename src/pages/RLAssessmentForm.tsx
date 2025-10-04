@@ -31,15 +31,89 @@ function CounterRow({
   );
 }
 
+// small helper UI: 0 1 2 3 4 5+  +  ô nhập chi tiết theo số lần chọn
+function DetailCounterRow({
+  value,
+  onChange,
+  details,
+  setDetails,
+  max = 5,
+  placeholderBase = "Tên hội thảo/cuộc thi"
+}: {
+  value: number;
+  onChange: (n: number) => void;
+  details: string[];
+  setDetails: (arr: string[]) => void;
+  max?: number;
+  placeholderBase?: string;
+}) {
+  const opts = [0, 1, 2, 3, 4, 5];
+
+  const handleClick = (n: number) => {
+    onChange(n);
+    const need = Math.min(n, max);            // 5 nghĩa là 5+
+    if (need > details.length) {
+      setDetails([...details, ...Array(need - details.length).fill("")]);
+    } else {
+      setDetails(details.slice(0, need));
+    }
+  };
+
+  const updateDetail = (i: number, v: string) => {
+    const next = [...details];
+    next[i] = v;
+    setDetails(next);
+  };
+
+  return (
+    <>
+      <div className="counter-row">
+        {opts.map(n => (
+          <button
+            key={n}
+            className={`chip ${value === n ? "active" : ""}`}
+            onClick={() => handleClick(n)}
+            type="button"
+          >
+            {n === 5 ? "5+" : n}
+          </button>
+        ))}
+      </div>
+
+      {/* hiện ô nhập khi value > 0 */}
+      {value > 0 && (
+        <div className="details-wrap">
+          <div className="details-head">Chi tiết sự kiện:</div>
+          {details.map((text, i) => (
+            <IonItem key={i} lines="none" className="detail-item">
+              <IonInput
+                placeholder={`${placeholderBase} ${i + 1}`}
+                value={text}
+                onIonInput={(e) => updateDetail(i, e.detail.value || "")}
+                className="detail-input"
+              />
+            </IonItem>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+
 export default function RLAssessmentForm() {
-  // ====== STATE ======
-  // 1.1 HỌC THUẬT
-  const [ht_21,count_ht_21] = useState(0);  // hội thảo (2đ/lần)
-  const [ht_51,count_ht_51] = useState(0);  // viết đề tài (5đ/lần)
-  const [ht_10,count_ht_10] = useState(0);  // trưởng nhóm/bài tạp chí (10đ/lần)
+    const [ht_21, set_ht_21] = useState(0);
+    const [ht21Details, setHt21Details] = useState<string[]>([]);
+
+    const [ht_51, set_ht_51] = useState(0);              // 5 điểm/bài
+    const [ht51Details, setHt51Details] = useState<string[]>([]);
+
+    const [ht_10, set_ht_10] = useState(0);              // 10 điểm/bài
+    const [ht10Details, setHt10Details] = useState<string[]>([]);
 
   // 1.2 Optional
-  const [opt_12,set_opt_12] = useState(false);
+    const [opt12, setOpt12] = useState(false);
+    const [isDiscounted, setIsDiscounted] = useState(false); // ô phụ khi bật 1.2
 
   // 1.3 KQHT
   const [gpa,set_gpa] = useState<number>(3.6);
@@ -76,7 +150,7 @@ export default function RLAssessmentForm() {
     s += Math.min(ht_21,5) * 2;
     s += Math.min(ht_51,5) * 5;
     s += Math.min(ht_10,5) * 10;
-    if (opt_12) s += 2; // “tinh thần vượt khó” tối đa 2đ
+    if (opt12) s += 2; // “tinh thần vượt khó” tối đa 2đ
     // KQHT: quy đổi demo: GPA/4 * 10 (max 10đ)
     s += Math.min(10, Math.round((gpa/4)*10));
 
@@ -106,7 +180,7 @@ export default function RLAssessmentForm() {
     // Tổng trần 100
     return Math.min(100, s);
   }, [
-    ht_21, ht_51, ht_10, opt_12, gpa,
+    ht_21, ht_51, ht_10, opt12, gpa,
     rule_21, rule_22, vhnt, tn_th, tn_ctv, hmnd, hmnd_checked,
     cd_pl, cd_xh, cb_cv, tt_gk, tt_bk
   ]);
@@ -160,27 +234,63 @@ export default function RLAssessmentForm() {
           <IonCardContent>
             <div className="badge-row green">2 ĐIỂM / LẦN</div>
             <div className="desc">- Hội thảo NCKH cấp trường, cuộc thi học thuật</div>
-            <CounterRow value={ht_21} onChange={count_ht_21} />
-
+            <DetailCounterRow
+                value={ht_21}
+                onChange={set_ht_21}
+                details={ht21Details}
+                setDetails={setHt21Details}
+                placeholderBase="Tên hội thảo/cuộc thi"
+                />
             <div className="badge-row yellow">5 ĐIỂM / BÀI</div>
             <div className="desc">- Viết đề tài NCKH, bài đăng kỷ yếu</div>
-            <CounterRow value={ht_51} onChange={count_ht_51} />
-
+            <DetailCounterRow
+            value={ht_51}
+            onChange={set_ht_51}
+            details={ht51Details}
+            setDetails={setHt51Details}
+            placeholderBase="Tên đề tài/bài báo"
+            />
             <div className="badge-row red">10 ĐIỂM / BÀI</div>
             <div className="desc">- Trưởng nhóm, bài đăng tạp chí</div>
-            <CounterRow value={ht_10} onChange={count_ht_10} />
+            <DetailCounterRow
+            value={ht_10}
+            onChange={set_ht_10}
+            details={ht10Details}
+            setDetails={setHt10Details}
+            placeholderBase="Tên bài báo"
+            />
           </IonCardContent>
         </IonCard>
 
         <IonCard className="sheet compact">
-          <div className="subhead">1.2 TINH THẦN VƯỢT KHÓ <small>(2đ) – OPTIONAL</small></div>
-          <IonCardContent>
-            <IonItem lines="none" className="clean-item">
-              <IonCheckbox checked={opt_12} onIonChange={(e)=>set_opt_12(e.detail.checked)}>
-                Tôi muốn khai báo phần 1.2 (chỉ tick nếu áp dụng)
-              </IonCheckbox>
-            </IonItem>
-          </IonCardContent>
+        <div className="subhead">
+            1.2 TINH THẦN VƯỢT KHÓ <small>(2đ) – OPTIONAL</small>
+        </div>
+        <IonCardContent>
+            <IonItem lines="none" className="clean-item checkbox-item ion-text-wrap">
+                    <IonCheckbox
+                        slot="start"
+                        checked={opt12}
+                        onIonChange={(e) => setOpt12(e.detail.checked)}
+                    />
+                    <IonLabel className="ion-text-wrap">
+                        Tôi muốn khai báo phần 1.2 (chỉ tick nếu áp dụng)
+                    </IonLabel>
+                    </IonItem>
+
+                    {opt12 && (
+                    <IonItem lines="none" className="clean-item checkbox-item ion-text-wrap">
+                        <IonCheckbox
+                        slot="start"
+                        checked={isDiscounted}
+                        onIonChange={(e) => setIsDiscounted(e.detail.checked)}
+                        />
+                        <IonLabel className="ion-text-wrap">
+                        Tôi thuộc đối tượng được miễn giảm học phí và có kết quả học tập từ loại khá trở lên
+                        </IonLabel>
+                    </IonItem>
+                    )}
+        </IonCardContent>
         </IonCard>
 
         <IonCard className="sheet compact">
@@ -261,8 +371,11 @@ export default function RLAssessmentForm() {
             <div className="badge-row orange">5 ĐIỂM / LẦN</div>
             <div className="desc">- Hiến máu nhân đạo</div>
             <CounterRow value={hmnd} onChange={set_hmnd} />
-            <IonItem lines="none" className="clean-item">
-              <IonCheckbox checked={hmnd_checked} onIonChange={(e)=>set_hmnd_checked(e.detail.checked)}>
+            <IonItem lines="none" className="clean-item checkbox-item">
+              <IonCheckbox 
+                checked={hmnd_checked} 
+                onIonChange={(e)=>set_hmnd_checked(e.detail.checked)}
+                labelPlacement="end">
                 Đã tham gia hiến máu nhân đạo (5 điểm)
               </IonCheckbox>
             </IonItem>
@@ -350,13 +463,19 @@ export default function RLAssessmentForm() {
         <IonCard className="sheet compact">
           <div className="subhead">5.2 THÀNH TÍCH ĐẶC BIỆT <small>(10đ)</small></div>
           <IonCardContent>
-            <IonItem className="clean-item" lines="full">
-              <IonCheckbox checked={tt_gk} onIonChange={(e)=>set_tt_gk(e.detail.checked)}>
+            <IonItem className="clean-item checkbox-item" lines="full">
+              <IonCheckbox 
+                checked={tt_gk} 
+                onIonChange={(e)=>set_tt_gk(e.detail.checked)}
+                labelPlacement="end">
                 Có Giấy khen (5 điểm)
               </IonCheckbox>
             </IonItem>
-            <IonItem className="clean-item" lines="none">
-              <IonCheckbox checked={tt_bk} onIonChange={(e)=>set_tt_bk(e.detail.checked)}>
+            <IonItem className="clean-item checkbox-item" lines="none">
+              <IonCheckbox 
+                checked={tt_bk} 
+                onIonChange={(e)=>set_tt_bk(e.detail.checked)}
+                labelPlacement="end">
                 Có Bằng khen (10 điểm)
               </IonCheckbox>
             </IonItem>
