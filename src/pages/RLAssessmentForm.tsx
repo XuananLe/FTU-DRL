@@ -319,13 +319,13 @@ export default function RLAssessmentForm() {
           <div className="subhead">2.1 VĂN BẢN CHỈ ĐẠO <small>(10đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={rule_21} onIonChange={(e)=>set_rule_21(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Chấp hành đầy đủ (10 điểm)</IonLabel>
-                <IonRadio value="ok" />
+                <IonRadio slot="start" value="ok" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Có vi phạm (0 điểm)</IonLabel>
-                <IonRadio value="violate" />
+                <IonRadio slot="start" value="violate" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>
@@ -335,13 +335,13 @@ export default function RLAssessmentForm() {
           <div className="subhead">2.2 NỘI QUY NHÀ TRƯỜNG <small>(15đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={rule_22} onIonChange={(e)=>set_rule_22(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Chấp hành đầy đủ (15 điểm)</IonLabel>
-                <IonRadio value="ok" />
+                <IonRadio slot="start" value="ok" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Có vi phạm (0 điểm)</IonLabel>
-                <IonRadio value="violate" />
+                <IonRadio slot="start" value="violate" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>
@@ -386,13 +386,13 @@ export default function RLAssessmentForm() {
           <div className="subhead">3.3 PHÒNG CHỐNG TỆ NẠN <small>(5đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={pcxn} onIonChange={(e)=>set_pcxn(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Tham gia đầy đủ (5 điểm)</IonLabel>
-                <IonRadio value="yes" />
+                <IonRadio slot="start" value="yes" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Không tham gia (0 điểm)</IonLabel>
-                <IonRadio value="no" />
+                <IonRadio slot="start" value="no" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>
@@ -405,13 +405,13 @@ export default function RLAssessmentForm() {
           <div className="subhead">4.1 CHÍNH SÁCH PHÁP LUẬT <small>(15đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={cd_pl} onIonChange={(e)=>set_cd_pl(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Chấp hành đầy đủ (15 điểm)</IonLabel>
-                <IonRadio value="ok" />
+                <IonRadio slot="start" value="ok" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Có vi phạm (0 điểm)</IonLabel>
-                <IonRadio value="violate" />
+                <IonRadio slot="start" value="violate" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>
@@ -421,13 +421,13 @@ export default function RLAssessmentForm() {
           <div className="subhead">4.2 HOẠT ĐỘNG XÃ HỘI <small>(10đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={cd_xh} onIonChange={(e)=>set_cd_xh(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Tham gia đầy đủ (10 điểm)</IonLabel>
-                <IonRadio value="yes" />
+                <IonRadio slot="start" value="yes" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Không tham gia (0 điểm)</IonLabel>
-                <IonRadio value="no" />
+                <IonRadio slot="start" value="no" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>
@@ -440,21 +440,21 @@ export default function RLAssessmentForm() {
           <div className="subhead">5.1 CÔNG TÁC CÁN BỘ <small>(10đ)</small></div>
           <IonCardContent>
             <IonRadioGroup value={cb_cv} onIonChange={(e)=>set_cb_cv(e.detail.value)}>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Bí thư, lớp trưởng, chủ tịch CLB (10đ)</IonLabel>
-                <IonRadio value="bt" />
+                <IonRadio slot="start" value="bt" />
               </IonItem>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Lớp phó, phó bí thư, phó chủ tịch (6đ)</IonLabel>
-                <IonRadio value="lp" />
+                <IonRadio slot="start" value="lp" />
               </IonItem>
-              <IonItem className="clean-item" lines="full">
+              <IonItem className="clean-item radio-item" lines="full">
                 <IonLabel>Trưởng ban CLB, trưởng nhóm (4đ)</IonLabel>
-                <IonRadio value="tb" />
+                <IonRadio slot="start" value="tb" />
               </IonItem>
-              <IonItem className="clean-item" lines="none">
+              <IonItem className="clean-item radio-item" lines="none">
                 <IonLabel>Không giữ chức vụ (0đ)</IonLabel>
-                <IonRadio value="none" />
+                <IonRadio slot="start" value="none" />
               </IonItem>
             </IonRadioGroup>
           </IonCardContent>

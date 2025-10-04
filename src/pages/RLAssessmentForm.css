@@ -85,6 +85,19 @@
   margin-bottom: 8px;
 }
 
+.radio-item {
+  --min-height: auto;
+  padding: 12px 8px;
+  width: 100%;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  margin-bottom: 1px;
+}
+
+.radio-item:hover {
+  background-color: #f9f9f9;
+}
+
 /* Key-Value row styling */
 .kv {
   display: flex;
@@ -263,14 +276,25 @@ ion-checkbox::part(checkmark) {
   width: 0.8rem;
 }
 
+/* Make radio items take full width */
+ion-radio-group {
+  width: 100%;
+  display: block;
+}
+
+ion-item.clean-item {
+  width: 100%;
+}
+
+/* Improve radio button appearance */
+ion-radio {
+  margin-right: 10px;
+}
+
 /* Fix for checkbox text display */
 ion-checkbox {
   white-space: normal !important;
   --padding-start: 0;
-}
-
-ion-label {
-  white-space: normal !important;
 }
 
 
@@ -282,10 +306,7 @@ ion-label {
   align-items: flex-start; /* label nhiều dòng không bị “đẩy” lệch */
 }
 
-/* Không cần nếu đã tách label; nhưng nếu muốn, vẫn an toàn */
-ion-label.ion-text-wrap {
-  white-space: normal !important;
-}
 
 /* (tuỳ chọn) thu nhỏ icon checkbox chút cho cân đối nhiều dòng */
 ion-checkbox::part(container) { width: 18px; height: 18px; }
+
