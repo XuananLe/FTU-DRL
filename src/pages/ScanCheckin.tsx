@@ -35,7 +35,7 @@ export default function ScanCheckin() {
   const start = async () => {
     if (busy || scanning) return;
     if (!window.isSecureContext) {
-      toastMsg("Cần truy cập bằng HTTPS hoặc localhost để mở camera.");
+      // toastMsg("Cần truy cập bằng HTTPS hoặc localhost để mở camera.");
       return;
     }
     setBusy(true);
@@ -52,12 +52,12 @@ export default function ScanCheckin() {
           startedRef.current = true;
           setScanning(true);
         } catch (e2: any) {
-          toastMsg("Không mở được camera: " + (e2?.message || e2));
+          // toastMsg("Không mở được camera: " + (e2?.message || e2));
           // do NOT clear unless started; and only once
           if (startedRef.current) { try { await qrRef.current?.clear(); } catch {} startedRef.current = false; }
         }
       } else {
-        toastMsg("Không mở được camera: " + msg);
+        // toastMsg("Không mở được camera: " + msg);
         if (startedRef.current) { try { await qrRef.current?.clear(); } catch {} startedRef.current = false; }
       }
     } finally {
