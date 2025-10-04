@@ -494,20 +494,20 @@ export default function RLAssessmentForm() {
 
         {/* Tổng kết */}
         <IonCard className="total-card">
-          <IonCardContent>
+          <IonCardContent className="total-content">
             <div className="total-row">
               <IonIcon icon={trophyOutline} />
-              <div>
+              <div className="total-text">
                 <div className="total-title">TỔNG ĐIỂM TỰ ĐỘNG: <b>{score}/100</b></div>
                 <div className="total-sub">XẾP LOẠI: <b>{rank}</b></div>
               </div>
             </div>
             <div className="actions">
-              <IonButton color="medium" fill="outline">
+              <IonButton color="medium" fill="outline" className="action-btn">
                 <IonIcon slot="start" icon={alertCircleOutline} />
                 Lưu nháp
               </IonButton>
-              <IonButton color="success">
+              <IonButton color="success" className="action-btn">
                 <IonIcon slot="start" icon={checkmarkCircleOutline} />
                 Gửi đánh giá
               </IonButton>
