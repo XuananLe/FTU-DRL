@@ -6,11 +6,11 @@ import "./Tab1.css";
 
 function DRLCard({ score, status, target = 100 }: { score: number; status: string; target?: number }) {
   const pct = Math.min(100, Math.round((score / target) * 100));
-  const statusColor = 
+  const statusColor =
     status === "Xuất sắc" ? "success" :
-    status === "Tốt" ? "success" :
-    status === "Khá" ? "warning" : "medium";
-    
+      status === "Tốt" ? "success" :
+        status === "Khá" ? "warning" : "medium";
+
   return (
     <div className="drl-card">
       <div className="drl-head">
@@ -35,7 +35,7 @@ function DRLCard({ score, status, target = 100 }: { score: number; status: strin
   );
 }
 
-export default function Tab1(){
+export default function Tab1() {
   type EventState = "ok" | "register" | "participate" | "link";
   type EventItem = {
     title: string;
@@ -86,7 +86,7 @@ export default function Tab1(){
     },
     {
       title: "MINI IDEATHON: DESIGN THINKING",
-      imgSeed: "event-4", 
+      imgSeed: "event-4",
       info: [
         "Thời gian: <b>7h30 - 11h30</b>",
         "Ngày: <b>20/09/2025</b>",
@@ -100,7 +100,6 @@ export default function Tab1(){
 
   return (
     <IonPage>
-      {/* Header đỏ bo cong + search bar riêng: đúng pattern Header chứa nhiều Toolbar */}
       <IonHeader>
         <IonToolbar color="danger" className="curved-toolbar">
           <IonTitle className="zone-title">Zone57</IonTitle>
@@ -116,72 +115,80 @@ export default function Tab1(){
         <h2 className="section-title">Sự kiện sắp diễn ra</h2>
 
 
-<div className="event-list flex flex-col gap-2">
-  {events.map((e, i) => (
-    <div key={i} className="event-container">
-      <div
-        className="
+        <div className="event-list flex flex-col gap-2">
+          {events.map((e, i) => (
+            <div key={i} className="event-container">
+              <div
+                className="
           event-item compact
           flex items-center gap-3
           rounded-2xl border border-gray-200 bg-[#FFF6E9]
           px-3 py-2 shadow-sm
-          w-[360px] sm:w-[380px]               /* bóp chiều ngang */
+          w-full max-w-full               /* responsive width */
         "
-      >
-        {/* Poster */}
-        <div className="shrink-0">
-          <img
-            className="h-12 w-12 rounded-full object-cover ring-1 ring-gray-200"
-            src={`/assets/events/${e.imgSeed || `event-${i + 1}`}.jpg`}
-            alt="event"
-          />
-        </div>
+              >
+                {/* Poster */}
+                <div className="shrink-0">
+                  <img
+                    className="h-20 w-20 rounded-full object-cover ring-1 ring-gray-200"
+                    src={`/assets/events/${e.imgSeed || `event-${i + 1}`}.jpg`}
+                    alt="event"
+                  />
+                </div>
 
-        {/* Body */}
-        <div className="min-w-0 flex-1">
-          <div className="line-clamp-1 text-[14px] font-extrabold leading-tight text-[#1E4F79]">
-            {e.title}
-          </div>
+                {/* Body */}
+                <div className="min-w-0 flex-1">
+                  <div className="line-clamp-1 text-[14px] font-extrabold leading-tight text-[#1E4F79]">
+                    {e.title}
+                  </div>
 
-          <div className="mt-1 space-y-[1px] text-[12px] leading-5">
-            {e.info.slice(0, 4).map((t: string, j: number) => (
-              <div
-                key={j}
-                className="event-meta compact"
-                dangerouslySetInnerHTML={{ __html: t }}
-              />
-            ))}
-          </div>
+                  <div className="mt-2 bg-[#fbf3ea] border border-[#f0e4db] rounded-lg px-3 py-2 shadow-sm">
+                    <div className="grid grid-cols-2 gap-y-0.5">
+                      {e.info.slice(0, 4).map((t: string, j: number) => (
+                        <div
+                          key={j}
+                          className="event-meta col-span-2 grid grid-cols-[auto_1fr] items-center"
+                          dangerouslySetInnerHTML={{ __html: t }}
+                        />
+                      ))}
 
-          <div className="mt-1 flex items-center justify-between">
-            <div className="text-[12px] font-semibold text-[#C62020]">
-              {e.drlText ?? "2 DRL mục 1.1"}
+                      <div className="col-span-2 mt-1.5 pt-1 border-t border-[#f0e4db] flex items-center justify-between">
+                        <div className="text-[12px] font-semibold text-[#C41F1F]">
+                          {e.drlText ?? "2 DRL mục 1.1"}
+                        </div>
+
+                        {e.state === "ok" && (
+                          <div className="text-[12px] font-semibold text-[#1A8F3A]">
+                            <span className="text-[#1A8F3A] font-semibold">{">> "}</span>
+                            Đã đăng ký
+                          </div>
+                        )}
+                        {e.state === "register" && (
+                          <div className="text-[12px] font-medium text-amber-700">
+                            <span className="mr-0.5">•</span>
+                            Đã đăng ký
+                          </div>
+                        )}
+                        {e.state === "participate" && (
+                          <div className="text-[12px] font-medium text-rose-700">
+                            <span className="mr-0.5">•</span>
+                            Đã tham gia
+                          </div>
+                        )}
+                        {e.state === "link" && (
+                          <div className="text-[12px] font-semibold text-[#0C4FB3]">
+                            <span className="text-[#0C4FB3] font-semibold">{">> "}</span>
+                            Xem chi tiết
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            {e.state === "ok" && (
-              <div className="text-[12px] font-semibold text-[#1A8F3A]">
-                {">>"} Đã đăng ký
-              </div>
-            )}
-            {e.state === "register" && (
-              <div className="text-[12px] font-medium text-amber-700">• Đã đăng ký</div>
-            )}
-            {e.state === "participate" && (
-              <div className="text-[12px] font-medium text-rose-700">• Đã tham gia</div>
-            )}
-            {e.state === "link" && (
-              <div className="text-[12px] font-semibold text-[#1E4F79]">
-                {">>"} Xem chi tiết
-              </div>
-            )}
-          </div>
+          ))}
         </div>
-      </div>
-    </div>
-  ))}
-</div>
-
-
 
 
       </IonContent>

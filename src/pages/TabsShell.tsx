@@ -1,11 +1,15 @@
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from "@ionic/react";
+import {
+  IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel
+} from "@ionic/react";
 import { Route, Redirect } from "react-router-dom";
-import { home, star, qrCode, time, person } from "ionicons/icons";
+import {
+  home, star, qrCode, time, person, newspaper, mail, settings, peopleCircle, calendar
+} from "ionicons/icons";
+
 import Tab1 from "./Tab1";
 import Tab2 from "./Tab2";
 import Tab3 from "./Tab3";
-import ScanCheckin from "./ScanCheckin"; // quét & check-in (học sinh)
-import ClubQR from "./ClubQR";           // tạo & tải QR (CLB)
+import ScanCheckin from "./ScanCheckin";
 import AccountSecurity from "./AccountSecurity";
 import ChangePassword from "./ChangePassword";
 import EventsSchedule from "./EventsSchedule";
@@ -14,50 +18,67 @@ import RLAssessment from "./RLAssessment";
 import SettingsPage from "./SettingsPage";
 import CalendarPage from "./CalendarPage";
 import RLAssessmentForm from "./RLAssessmentForm";
-export default function TabsShell(){
-  const role = (localStorage.getItem('role') || 'sinhvien').toLowerCase();
+import ClubQR from "./ClubQR";
+import ClubFeed from "./ClubFeed";
+import ClubDashboard from "./ClubDashboard";
+
+type TabDef = { tab: string; href: string; icon: any; label: string };
+
+export default function TabsShell() {
+  const role = (localStorage.getItem("role") || "sinhvien").toLowerCase();
+
+  // Tabs cấu hình theo role
+  const studentTabs: TabDef[] = [
+    { tab: "home",     href: "/tabs/home",    icon: home,      label: "Trang chủ" },
+    { tab: "qr",       href: "/tabs/qr",      icon: qrCode,    label: "Quét QR" },
+    { tab: "profile",  href: "/tabs/profile", icon: person,    label: "Profile" },
+  ];
+
+  const clubTabs: TabDef[] = [
+    { tab: "feed",      href: "/tabs/clb/feed",      icon: newspaper,    label: "Bảng tin" },
+    { tab: "qr",        href: "/tabs/qr",            icon: qrCode,       label: "Tạo QR" },
+    { tab: "dashboard", href: "/tabs/clb/dashboard", icon: home,         label: "Dashboard" },
+  ];
+
+  const tabs = role === "clb" ? clubTabs : studentTabs;
 
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path="/tabs/home" component={Tab1} />
-        <Route exact path="/tabs/favorite" component={Tab2} />
+        <Route exact path="/tabs/home"            component={Tab1} />
+        <Route exact path="/tabs/profile"         component={Tab3} />
+        <Route exact path="/tabs/terms"           component={TermsOfUse} />
+        <Route exact path="/tabs/event-schedule"  component={EventsSchedule} />
+        <Route exact path="/tabs/settings"        component={SettingsPage} />
+        <Route exact path="/tabs/calendar"        component={CalendarPage} />
+        <Route exact path="/tabs/account-security" component={AccountSecurity} />
+        <Route exact path="/tabs/account-security/change-password" component={ChangePassword} />
+        <Route exact path="/tabs/rl-assessment"   component={RLAssessment} />
+        <Route exact path="/tabs/rl-assessment/form" component={RLAssessmentForm} />
 
         <Route
           exact
           path="/tabs/qr"
-          render={() => (role === 'clb' ? <ClubQR/> : <ScanCheckin/>)}
+          render={() => (role === "clb" ? <ClubQR /> : <ScanCheckin />)}
         />
-        <Route exact path="/tabs/account-security" component={AccountSecurity} />
-        <Route exact path="/tabs/recent" component={Tab2} />
-        <Route exact path="/tabs/profile" component={Tab3} />
-        <Route exact path="/tabs/terms" component={TermsOfUse} />
-        <Route exact path="/tabs/event-schedule" component={EventsSchedule} />
-        <Route exact path="/tabs/settings" component={SettingsPage} />
-        <Route exact path="/tabs/calendar" component={CalendarPage} />
-        <Route exact path="/tabs/account-security/change-password" component={ChangePassword} />
-        <Route exact path="/tabs/rl-assessment" component={RLAssessment} />
-        <Route exact path="/tabs/rl-assessment/form" component={RLAssessmentForm} />
-        <Route exact path="/tabs" render={() => <Redirect to="/tabs/home" />} />
+
+        <Route exact path="/tabs/clb/dashboard" component={ClubDashboard} />
+        <Route exact path="/tabs/clb/feed"      component={ClubFeed} />
+
+        {/* Default redirect */}
+        <Route exact path="/tabs" render={() => (
+          <Redirect to={role === "clb" ? "/tabs/clb/dashboard" : "/tabs/home"} />
+        )} />
       </IonRouterOutlet>
 
+      {/* TAB BAR (Ionic requires it under IonTabs) */}
       <IonTabBar slot="bottom">
-        <IonTabButton tab="home" href="/tabs/home">
-          <IonIcon icon={home}/><IonLabel>Trang chủ</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="favorite" href="/tabs/favorite">
-          <IonIcon icon={star}/><IonLabel>Yêu thích</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="qr" href="/tabs/qr">
-          <IonIcon icon={qrCode}/>
-          <IonLabel>{role === 'clb' ? 'Tạo QR' : 'Quét QR'}</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="recent" href="/tabs/recent">
-          <IonIcon icon={time}/><IonLabel>Gần đây</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="profile" href="/tabs/profile">
-          <IonIcon icon={person}/><IonLabel>Profile</IonLabel>
-        </IonTabButton>
+        {tabs.map(({ tab, href, icon, label }) => (
+          <IonTabButton key={tab} tab={tab} href={href}>
+            <IonIcon icon={icon} />
+            <IonLabel>{label}</IonLabel>
+          </IonTabButton>
+        ))}
       </IonTabBar>
     </IonTabs>
   );
