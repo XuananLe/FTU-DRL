@@ -110,6 +110,7 @@
   gap: 0.75rem;
   margin: 0.625rem 0;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .kv span {
@@ -120,6 +121,36 @@
 .kv b {
   color: hsl(222, 47%, 11%);
   font-weight: 600;
+}
+
+/* Fixed value display for GPA and credits */
+.fixed-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(222, 47%, 11%);
+  text-align: right;
+  background-color: #f8f9fa;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  min-width: 4rem;
+  display: inline-block;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+  border: 0.0625rem solid rgba(0, 0, 0, 0.05);
+}
+
+.fixed-value .denominator {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #666;
+  margin-left: 0.1rem;
+}
+
+/* Make fixed values responsive */
+@media (max-width: 576px) {
+  .fixed-value {
+    font-size: 1.125rem;
+    padding: 0.375rem 0.625rem;
+  }
 }
 
 /* Section titles */

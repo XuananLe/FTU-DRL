@@ -116,8 +116,9 @@ export default function RLAssessmentForm() {
     const [isDiscounted, setIsDiscounted] = useState(false); // ô phụ khi bật 1.2
 
   // 1.3 KQHT
-  const [gpa,set_gpa] = useState<number>(3.6);
-  const [credits,set_credits] = useState<number>(28);
+  // Fixed values - no longer editable
+  const gpa = 3.6;
+  const credits = 28;
 
   // 2.x Nội quy
   const [rule_21,set_rule_21] = useState<"ok"|"violate">("ok");
@@ -298,16 +299,11 @@ export default function RLAssessmentForm() {
           <IonCardContent>
             <div className="kv">
               <span>Điểm TB:</span>
-              <b><IonInput type="number" inputmode="decimal" value={gpa}
-                   onIonInput={(e)=>set_gpa(parseFloat(e.detail.value||"0"))}
-                   style={{width:90,textAlign:'right'}} /></b>
-              <IonNote slot="end">/ 4.0</IonNote>
+              <div className="fixed-value">{gpa}<span className="denominator">/4.0</span></div>
             </div>
             <div className="kv">
               <span>Số tín chỉ:</span>
-              <b><IonInput type="number" value={credits}
-                   onIonInput={(e)=>set_credits(parseInt(e.detail.value||"0"))}
-                   style={{width:90,textAlign:'right'}} /></b>
+              <div className="fixed-value">{credits}</div>
             </div>
           </IonCardContent>
         </IonCard>
