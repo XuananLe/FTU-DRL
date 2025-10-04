@@ -12,11 +12,10 @@ import "./RLAssessmentForm.css";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-// small helper UI for “0 1 2 3 4 5+” counter
 function CounterRow({
     value, onChange, max = 5,
 }: { value: number; onChange: (n: number) => void; max?: number }) {
-    const opts = [0, 1, 2, 3, 4, 5];
+    const opts = [1, 2, 3, 4, 5];
     return (
         <div className="counter-row">
             {opts.map(n => (
@@ -26,7 +25,7 @@ function CounterRow({
                     onClick={() => onChange(n)}
                     type="button"
                 >
-                    {n === 5 ? "5+" : n}
+                    {n === 5 ? "5" : n}
                 </button>
             ))}
         </div>
@@ -110,11 +109,11 @@ export default function RLAssessmentForm() {
         max?: number;
         placeholderBase?: string;
     }) {
-        const opts = [0, 1, 2, 3, 4, 5];
+        const opts = [1, 2, 3, 4, 5];
 
         const handleClick = (n: number) => {
             onChange(n);
-            const need = Math.min(n, max);            // 5 nghĩa là 5+
+            const need = Math.min(n, max);            
             if (need > details.length) {
                 setDetails([...details, ...Array(need - details.length).fill("")]);
             } else {
@@ -138,7 +137,7 @@ export default function RLAssessmentForm() {
                             onClick={() => handleClick(n)}
                             type="button"
                         >
-                            {n === 5 ? "5+" : n}
+                            {n === 5 ? "5" : n}
                         </button>
                     ))}
                 </div>
@@ -195,8 +194,7 @@ export default function RLAssessmentForm() {
     const [tn_ctv, set_tn_ctv] = useState(0);   // 5đ/lần
     const [tnCtvDetails, setTnCtvDetails] = useState<string[]>([]); // NEW
 
-    const [hmnd, set_hmnd] = useState(0);          // 5đ/lần
-    const [hmndDetails, setHmndDetails] = useState<string[]>([]); // NEW
+    const [hmndYes, setHmndYes] = useState(false);
     // (nếu không dùng nữa thì bỏ hmnd_checked)
 
 
@@ -221,19 +219,23 @@ export default function RLAssessmentForm() {
         s += Math.min(ht_51, 5) * 5;
         s += Math.min(ht_10, 5) * 10;
         if (opt12) s += 2; // “tinh thần vượt khó” tối đa 2đ
-        // KQHT: quy đổi demo: GPA/4 * 10 (max 10đ)
-        s += Math.min(10, Math.round((gpa / 4) * 10));
 
         // PHẦN 2 (25đ)
         s += (rule_21 === "ok" ? 10 : 0);
         s += (rule_22 === "ok" ? 15 : 0);
-
+        
+        if (gpa >= 3.6) {
+            s += 15
+        } else if (gpa >= 3.2) {
+            s += 8 
+        } else  {
+            s += 4
+        }
         // PHẦN 3 (20đ)
         s += Math.min(vhnt, 5) * 2;
         s += Math.min(tn_th, 5) * 2;
         s += Math.min(tn_ctv, 5) * 5;
-        s += Math.min(hmnd, 5) * 5;
-        if (hmndDetails.length > 0) s += 5; // checkbox “đã tham gia hiến máu ... (5đ)”
+        if (hmndYes) s += 5;
 
         // PHẦN 4 (25đ)
         s += (cd_pl === "ok" ? 15 : 0);
@@ -251,14 +253,14 @@ export default function RLAssessmentForm() {
         return Math.min(100, s);
     }, [
         ht_21, ht_51, ht_10, opt12, gpa,
-        rule_21, rule_22, vhnt, tn_th, tn_ctv, hmnd, hmndDetails,
+        rule_21, rule_22, vhnt, tn_th, tn_ctv, hmndYes,
         cd_pl, cd_xh, cb_cv, tt_gk, tt_bk
     ]);
 
     const rank =
-        score >= 90 ? "TỐT" :
-            score >= 70 ? "KHÁ" :
-                score >= 50 ? "TRUNG BÌNH" :
+        score >= 90 ? "Xuất sắc" :
+            score >= 80 ? "Tốt" :
+                score >= 70 ? "Khá" :
                     "YẾU";
 
     return (
@@ -453,13 +455,15 @@ export default function RLAssessmentForm() {
                         <div className="badge-row orange">5 ĐIỂM / LẦN</div>
                         <div className="desc">- Hiến máu nhân đạo</div>
 
-                        <DetailCounterRow
-                            value={hmnd}
-                            onChange={set_hmnd}
-                            details={hmndDetails}
-                            setDetails={setHmndDetails}
-                            placeholderBase="Ngày/địa điểm hiến máu"
-                        />
+                        <IonItem className="clean-item checkbox-item" lines="none">
+                        <IonCheckbox
+                            checked={hmndYes}
+                            onIonChange={(e) => setHmndYes(e.detail.checked)}
+                            labelPlacement="end"
+                        >
+                            Đã tham gia hiến máu nhân đạo (5 điểm)
+                        </IonCheckbox>
+                        </IonItem>
                     </IonCardContent>
                 </IonCard>
 

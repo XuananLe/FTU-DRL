@@ -13,3 +13,5 @@
 .form-title{ font-weight:800; margin:10px 0 6px; }
 .qr-form ion-item::part(native){ border-radius:12px; }
 .btn-row{ margin-top:10px; display:flex; justify-content:center; gap:12px; }
+
+.curved-toolbar ion-title { text-align:center; width:100%; }

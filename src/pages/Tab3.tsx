@@ -19,8 +19,16 @@ import {
 } from "ionicons/icons";
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import "./Tab3.css";
+import { useIonRouter } from "@ionic/react";
 
 export default function Tab3() {
+  const router = useIonRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/auth", "root", "replace");
+  };
+
   return (
     <IonPage>
       {/* Header đỏ cong + search */}
@@ -72,7 +80,7 @@ export default function Tab3() {
             <IonIcon slot="start" icon={informationCircleOutline} />
             <IonLabel>Cài đặt</IonLabel>
           </IonItem>
-          <IonItem button detail className="pill-item danger">
+          <IonItem button detail className="pill-item danger" onClick={handleLogout}>
             <IonIcon slot="start" icon={logOutOutline} />
             <IonLabel>Đăng xuất</IonLabel>
           </IonItem>

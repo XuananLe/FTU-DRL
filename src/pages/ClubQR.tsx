@@ -177,18 +177,16 @@ export default function ClubQR() {
 
   return (
     <IonPage>
+      
       <IonHeader>
         <IonToolbar color="danger" className="curved-toolbar">
-          <IonTitle className="zone-title">Zone57</IonTitle>
-        </IonToolbar>
-        <IonToolbar className="search-toolbar">
-          <IonSearchbar className="zone-search" placeholder="Tìm kiếm" inputMode="search" />
+        <IonTitle className="zone-title ion-text-center">Zone57</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
         <div className="ion-padding">
-          <div className="form-title">Tạo mã QR checkin sự kiện</div>
+          {/* <div className="form-title">QR</div> */}
 
           <IonGrid className="qr-form">
             <IonRow>

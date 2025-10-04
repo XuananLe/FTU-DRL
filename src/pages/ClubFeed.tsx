@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IonPage, IonContent } from "@ionic/react";
+import { IonPage, IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
@@ -34,10 +34,14 @@ export default function ClubFeed() {
 
   return (
     <IonPage>
-      <IonContent fullscreen className="bg-[#efe6dd]">
-        <div className="mx-auto max-w-[720px] px-4 py-6">
-          <h1 className="mb-4 text-2xl font-extrabold tracking-tight text-[#2b201c]">Zone57</h1>
+      <IonHeader>
+        <IonToolbar color="danger" className="curved-toolbar">
+        <IonTitle className="zone-title ion-text-center">Zone57</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
+      <IonContent fullscreen>
+        <div className="mx-auto max-w-[720px] px-4 py-6">
           <div className="space-y-5">
             {posts.map(post => (
               <Card
@@ -53,10 +57,8 @@ export default function ClubFeed() {
                   <p className="text-[15px] text-[#2b201c]">{post.content}</p>
                 </div>
 
-                {/* Divider */}
                 <div className="my-3 h-px w-full bg-[#2b201c]/60" />
 
-                {/* Footer: interactions */}
                 <div className="flex items-center justify-between">
 
                   <div className="flex items-center gap-3 sm:gap-6">
@@ -94,8 +96,6 @@ export default function ClubFeed() {
               </Card>
             ))}
           </div>
-
-          <div className="py-6 text-center text-sm text-[#7a6f6a]">...</div>
         </div>
       </IonContent>
     </IonPage>

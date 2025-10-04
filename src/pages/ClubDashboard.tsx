@@ -1,4 +1,4 @@
-import { IonPage, IonContent } from "@ionic/react";
+import { IonPage, IonContent, IonToolbar, IonHeader, IonTitle } from "@ionic/react";
 import { Card } from "../../components/ui/card";
 import { Flag, Trophy, Pin, Calendar, Users, BarChart3 } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
@@ -13,8 +13,13 @@ const eventData = [
 export default function ClubDashboard() {
   return (
     <IonPage>
-      {/* If you need a page title bar, add <IonHeader> here */}
-      <IonContent fullscreen className="bg-[#efe6dd]">
+      <IonHeader>
+        <IonToolbar color="danger" className="curved-toolbar">
+        <IonTitle className="zone-title ion-text-center">Zone57</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
         <div className="mx-auto max-w-[720px] px-4 py-6">
           {/* Header */}
           <div className="mb-6">

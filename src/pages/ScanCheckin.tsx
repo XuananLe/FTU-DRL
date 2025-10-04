@@ -102,27 +102,28 @@ export default function ScanCheckin() {
     } finally { setBusy(false); }
   };
 
-  const doStart = async () => {
-    const qr = ensureInstance();
-    const cams = await Html5Qrcode.getCameras();
-    if (!cams.length) throw new Error("Không tìm thấy camera");
-    const back = cams.find(c => /back|rear|environment/i.test(c.label)) || cams[0];
+    const doStart = async () => {
+      const qr = ensureInstance();
+      const cams = await Html5Qrcode.getCameras();
+      if (!cams.length) throw new Error("Không tìm thấy camera");
+      const back = cams.find(c => /back|rear|environment/i.test(c.label)) || cams[0];
 
-    await qr.start(
-      back.id,
-      {
-        fps: 15,
-        qrbox: (vw, vh) => {
-          const side = Math.floor(Math.min(vw, vh) * 0.60);
-          return { width: side, height: side };
+      await qr.start(
+        back.id,
+        {
+          fps: 15,
+          qrbox: (vw, vh) => {
+            const side = Math.floor(Math.min(vw, vh) * 0.60);
+            return { width: side, height: side };
+          },
+          aspectRatio: 1.0,
+          // disableFlip: true, // optional
         },
-        aspectRatio: 1.0,
-        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-      },
-      onScanSuccess,
-      onScanError
-    );
-  };
+        onScanSuccess,
+        onScanError
+      );
+    };
+
 
   const stop = async () => {
     if (busy || !scanning || stoppingRef.current) return;
