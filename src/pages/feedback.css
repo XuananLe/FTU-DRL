@@ -1,0 +1,29 @@
+.bg-soft { --background: #f5f5f5; }
+
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.feedback-card.soft{
+  --background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.mt-2{ margin-top: 8px; }
+.mt-3{ margin-top: 12px; }
+.block{ display:block; }
+
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  margin-top:16px;
+}
+
+.actions ion-button{
+  --border-radius: 12px;
+  min-width: 140px;
+  height: 44px;
+}

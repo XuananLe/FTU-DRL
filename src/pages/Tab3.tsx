@@ -88,7 +88,7 @@ export default function Tab3() {
     <IonCard className="pill-card">
       <IonCardHeader className="ion-no-padding ion-padding-top">
         <IonCardTitle className="app-title">Thông tin ứng dụng</IonCardTitle>
-      </IonCardHeader>
+      </IonCardHeader>                                
 
       <IonCardContent>
         <ul className="app-info-list">
@@ -96,18 +96,24 @@ export default function Tab3() {
           <li><b>Nhà phát triển:</b> Unicare</li>
           <li><b>Email:</b> k62.2311510018@ftu.edu.vn</li>
           <li><b>SĐT:</b> 0949540626</li>
-          <li><b>Phát hành:</b> 10/10/2025</li>
+          <li><b>Phát hành:</b> 10/10/2025</li>                           
           <li><b>Truy cập:</b> https://zone57.edu.vn</li>
-        </ul>
+        </ul>                                                                                                       
 
-        <div className="app-actions">
-          <IonButton className="app-btn outline-danger" fill="outline" color="danger">
-            Gửi ý kiến phản hồi
-          </IonButton>
-          <IonButton className="app-btn solid-danger" color="danger">
-            Cập nhật phiên bản
-          </IonButton>
-        </div>
+      <div className="app-actions">
+        <IonButton
+          className="app-btn outline-danger"
+          fill="outline"
+          color="danger"
+          routerLink="/tabs/feedback"           
+        >
+          Gửi ý kiến phản hồi
+        </IonButton>
+
+        <IonButton className="app-btn solid-danger" color="danger">
+          Cập nhật phiên bản
+        </IonButton>
+      </div>
       </IonCardContent>
     </IonCard>
 

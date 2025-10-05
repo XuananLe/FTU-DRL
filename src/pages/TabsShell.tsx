@@ -19,7 +19,9 @@ import CalendarPage from "./CalendarPage";
 import RLAssessmentForm from "./RLAssessmentForm";
 import ClubQR from "./ClubQR";
 import ClubFeed from "./ClubFeed";
-import ClubDashboard from "./ClubDashboard";
+import FeedbackPage from "./Feedback";
+import ClubMail from "./ClubMail";
+import ClubProfile from "./ClubDashboard";
 
 type TabDef = { tab: string; href: string; icon: any; label: string };
 
@@ -34,10 +36,12 @@ export default function TabsShell() {
   ];
 
   const clubTabs: TabDef[] = [
-    { tab: "feed",      href: "/tabs/clb/feed",      icon: newspaper,    label: "Bảng tin" },
-    { tab: "qr",        href: "/tabs/qr",            icon: qrCode,       label: "Tạo QR" },
-    { tab: "dashboard", href: "/tabs/clb/dashboard", icon: home,         label: "Dashboard" },
+    { tab: "dashboard", href: "/tabs/clb/dashboard", icon: home,   label: "Dashboard" },
+    { tab: "mail",      href: "/tabs/clb/mail",      icon: mail,   label: "Tin nhắn" },
+    { tab: "qr",        href: "/tabs/qr",            icon: qrCode, label: "Tạo QR" },
+    { tab: "feed",      href: "/tabs/clb/feed",      icon: newspaper, label: "Bảng tin" },
   ];
+
 
   const tabs = role === "clb" ? clubTabs : studentTabs;
 
@@ -47,6 +51,7 @@ export default function TabsShell() {
         <Route exact path="/tabs/home"            component={Tab1} />
         <Route exact path="/tabs/profile"         component={Tab3} />
         <Route exact path="/tabs/terms"           component={TermsOfUse} />
+        <Route exact path="/tabs/feedback"        component={FeedbackPage}/>
         <Route exact path="/tabs/event-schedule"  component={EventsSchedule} />
         <Route exact path="/tabs/settings"        component={SettingsPage} />
         <Route exact path="/tabs/calendar"        component={CalendarPage} />
@@ -61,8 +66,9 @@ export default function TabsShell() {
           render={() => (role === "clb" ? <ClubQR /> : <ScanCheckin />)}
         />
 
-        <Route exact path="/tabs/clb/dashboard" component={ClubDashboard} />
+        <Route exact path="/tabs/clb/dashboard" component={ClubProfile} />
         <Route exact path="/tabs/clb/feed"      component={ClubFeed} />
+        <Route exact path="/tabs/clb/mail" component={ClubMail} />
 
         {/* Default redirect */}
         <Route exact path="/tabs" render={() => (
