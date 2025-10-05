@@ -68,12 +68,12 @@ function SignUp() {
         Create an account
       </IonButton>
 
-      <div className="version-wrap">
+      {/* <div className="version-wrap">
         <div className="version-panel">
           <p>Version: DHNT-2025.09G.31</p>
           <p>Design by UNICARE.VN</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -128,7 +128,6 @@ function SignIn() {
         </IonButton>
       </IonItem>
 
-      {/* Remember + quên mật khẩu (giữ nguyên) */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8}}>
         <label style={{fontSize:12,color:"#666"}}>
           <input type="checkbox" style={{marginRight:6}}/> Remember Password
@@ -141,18 +140,18 @@ function SignIn() {
         Sign In
       </IonButton>
 
-      <div className="ion-text-center" style={{ marginTop: 14, fontSize: 14 }}>
+      {/* <div className="ion-text-center" style={{ marginTop: 14, fontSize: 14 }}>
         Don't have an account? <b>Sign up</b>
-      </div>
+      </div> */}
 
-      <div className="sep"><span>Or sign in with</span></div>
+      {/* <div className="sep"><span>Or sign in with</span></div> */}
 
-      <div className="version-wrap">
+      {/* <div className="version-wrap">
         <div className="version-panel">
           <p>Version: DHNT-2025.09G.31</p>
           <p>Design by UNICARE.VN</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default function Tab1() {
         "Thời gian mở đơn: <b>20/9-27/9</b>",
         "Yêu cầu: <b>tham dự trên 80%</b>",
       ],
-      state: "ok", // Đã đăng ký
+      state: "participate",
       drlText: "2 DRL mục 1.1",
     },
     {
