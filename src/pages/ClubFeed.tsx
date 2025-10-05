@@ -1,103 +1,253 @@
-import { useState } from "react";
-import { IonPage, IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/react";
-import { Card } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
-import { Heart, MessageCircle, Share2 } from "lucide-react";
+import React, { useMemo, useRef, useState } from "react";
+import {
+  IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonRefresher, IonRefresherContent,
+  IonInfiniteScroll, IonInfiniteScrollContent, IonToast, IonModal, IonHeader as IonModalHeader,
+  IonToolbar as IonModalToolbar, IonTitle as IonModalTitle, IonButtons, IonButton, IonIcon,
+  IonContent as IonModalContent, IonItem, IonTextarea, useIonToast
+} from "@ionic/react";
+import {
+  thumbsUpOutline, chatbubbleEllipsesOutline, shareSocialOutline, closeOutline
+} from "ionicons/icons";
+import "./club-feed.css";
 
-interface Post {
+/* ========= Types ========= */
+type Post = {
   id: number;
-  author: string;
-  title: string;
-  content: string;
+  club: string;
+  ago: string;
+  caption: string;
+  image?: string;     // placeholder color block if absent
   likes: number;
+  liked?: boolean;
   comments: number;
-  isLiked: boolean;
-}
+};
 
+/* ========= Seed ========= */
+const seedPosts: Post[] = Array.from({ length: 6 }).map((_, i) => ({
+  id: i + 1,
+  club: "CLB A",
+  ago: i === 0 ? "1 giờ trước" : `${i + 1} giờ trước`,
+  caption: "Caption.....",
+  image: "", // leave empty to render placeholder
+  likes: 5 + i,
+  liked: false,
+  comments: 1 + (i % 3),
+}));
+
+/* ========= Component ========= */
 export default function ClubFeed() {
-  const [posts, setPosts] = useState<Post[]>([
-    { id: 1, author: "Nguyễn Văn A", title: "Đăng ký tham gia Workshop Start-up",
-      content: "Workshop về khởi nghiệp dành cho sinh viên FTU. Đăng ký ngay!",
-      likes: 24, comments: 5, isLiked: false },
-    { id: 2, author: "Trần Thị B", title: "Ảnh sự kiện tháng 10",
-      content: "Những khoảnh khắc đáng nhớ từ sự kiện tháng trước.",
-      likes: 42, comments: 12, isLiked: false },
-    { id: 3, author: "Lê Văn C", title: "Kế hoạch CLB tuần này",
-      content: "Các hoạt động sắp tới của CLB trong tuần này.",
-      likes: 18, comments: 3, isLiked: false },
-  ]);
+  const [posts, setPosts] = useState<Post[]>(seedPosts);
+  const [hasMore, setHasMore] = useState(true);
+  const [activePostId, setActivePostId] = useState<number | null>(null);
+  const [commentText, setCommentText] = useState("");
+  const modalRef = useRef<HTMLIonModalElement>(null);
+  const [present] = useIonToast();
 
-  const handleLike = (id: number) =>
-    setPosts(ps => ps.map(p =>
-      p.id === id ? { ...p, isLiked: !p.isLiked, likes: p.isLiked ? p.likes - 1 : p.likes + 1 } : p
-    ));
+  const activePost = useMemo(
+    () => posts.find(p => p.id === activePostId) || null,
+    [activePostId, posts]
+  );
+
+  /* ====== Interactions ====== */
+  const toggleLike = (id: number) => {
+    setPosts(prev =>
+      prev.map(p =>
+        p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p
+      )
+    );
+  };
+
+  const openComments = (id: number) => {
+    setActivePostId(id);
+    modalRef.current?.present();
+  };
+
+  const addComment = () => {
+    if (!commentText.trim()) return;
+    setPosts(prev =>
+      prev.map(p => (p.id === activePostId ? { ...p, comments: p.comments + 1 } : p))
+    );
+    setCommentText("");
+  };
+
+  const sharePost = async (post: Post) => {
+    const text = `${post.club}: ${post.caption}`;
+    const url = `${location.origin}/post/${post.id}`;
+    // Web Share if available
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: post.club, text, url });
+        return;
+      } catch {
+        // ignore cancel
+      }
+    }
+    // Fallback: copy link
+    try {
+      await navigator.clipboard.writeText(url);
+      present({ message: "Đã copy liên kết bài viết", duration: 1400 });
+    } catch {
+      present({ message: "Không thể chia sẻ", duration: 1400, color: "danger" });
+    }
+  };
+
+  /* ====== Refresh / Infinite ====== */
+  const onRefresh = (e: CustomEvent) => {
+    // fake refresh: prepend a new post
+    setTimeout(() => {
+      setPosts(p => [
+        {
+          id: Date.now(),
+          club: "CLB A",
+          ago: "vừa xong",
+          caption: "Caption.....",
+          likes: 0,
+          comments: 0,
+          liked: false,
+        },
+        ...p,
+      ]);
+      (e.target as HTMLIonRefresherElement).complete();
+    }, 700);
+  };
+
+  const loadMore = async (e: CustomEvent<void>) => {
+    setTimeout(() => {
+      setPosts(prev => [
+        ...prev,
+        ...Array.from({ length: 4 }).map((_, k) => ({
+          id: prev.length + k + 1,
+          club: "CLB A",
+          ago: "3 giờ trước",
+          caption: "Caption.....",
+          likes: 2 + k,
+          comments: k % 2,
+          liked: false,
+        })),
+      ]);
+      if (posts.length > 20) setHasMore(false);
+      (e.target as HTMLIonInfiniteScrollElement).complete();
+    }, 800);
+  };
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="danger" className="curved-toolbar">
-        <IonTitle className="zone-title ion-text-center">Zone57</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonContent className="cf-content" fullscreen>
+        <IonRefresher slot="fixed" onIonRefresh={onRefresh}>
+          <IonRefresherContent />
+        </IonRefresher>
 
-      <IonContent fullscreen>
-        <div className="mx-auto max-w-[720px] px-4 py-6">
-          <div className="space-y-5">
-            {posts.map(post => (
-              <Card
-                key={post.id}
-                className="rounded-[22px] border-2 border-[#2b201c] bg-white p-5 shadow-sm"
-              >
-                {/* Author + Title + Content */}
-                <div className="mb-3">
-                  <p className="mb-2 text-[15px] text-[#7a6f6a]">– {post.author}:</p>
-                  <h3 className="mb-3 text-[18px] font-semibold leading-snug text-[#c41414]">
-                    “{post.title}”
-                  </h3>
-                  <p className="text-[15px] text-[#2b201c]">{post.content}</p>
+        <div className="cf-list">
+          {posts.map((p) => (
+            <article key={p.id} className="cf-post">
+              {/* Header row: avatar + club + time */}
+              <div className="cf-row">
+                <div className="cf-avatar" />
+                <div className="cf-meta">
+                  <div className="cf-club">{p.club}</div>
+                  <div className="cf-time">{p.ago}</div>
                 </div>
+              </div>
 
-                <div className="my-3 h-px w-full bg-[#2b201c]/60" />
+              {/* Caption */}
+              <p className="cf-caption">{p.caption}</p>
 
-                <div className="flex items-center justify-between">
+              {/* Image / placeholder */}
+              <div className="cf-media" />
 
-                  <div className="flex items-center gap-3 sm:gap-6">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleLike(post.id)}
-                      className={`h-8 px-2 text-[15px] ${
-                        post.isLiked ? "text-[#c41414]" : "text-[#7a6f6a]"
-                      }`}
-                    >
-                      <Heart className={`mr-2 h-4 w-4 ${post.isLiked ? "fill-current" : ""}`} />
-                      Like ({post.likes})
-                    </Button>
+              {/* Actions */}
+              <div className="cf-actions">
+                <button
+                  className={`cf-action ${p.liked ? "is-liked" : ""}`}
+                  onClick={() => toggleLike(p.id)}
+                >
+                  <IonIcon icon={thumbsUpOutline} />
+                  <span>Thích</span>
+                  {p.likes > 0 && <em className="cf-count">{p.likes}</em>}
+                </button>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-[15px] text-[#7a6f6a]"
-                    >
-                      <MessageCircle className="mr-2 h-4 w-4" />
-                      Comment ({post.comments})
-                    </Button>
+                <button className="cf-action" onClick={() => openComments(p.id)}>
+                  <IonIcon icon={chatbubbleEllipsesOutline} />
+                  <span>Bình luận</span>
+                  {p.comments > 0 && <em className="cf-count">{p.comments}</em>}
+                </button>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-[15px] text-[#7a6f6a]"
-                    >
-                      <Share2 className="mr-2 h-4 w-4" />
-                      Share
-                    </Button>
+                <button className="cf-action" onClick={() => sharePost(p)}>
+                  <IonIcon icon={shareSocialOutline} />
+                  <span>Chia sẻ</span>
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <IonInfiniteScroll
+          onIonInfinite={loadMore}
+          threshold="100px"
+          disabled={!hasMore}
+        >
+          <IonInfiniteScrollContent loadingSpinner="bubbles" loadingText="Đang tải..." />
+        </IonInfiniteScroll>
+      </IonContent>
+
+      {/* ===== Comments Bottom Sheet ===== */}
+      <IonModal ref={modalRef} initialBreakpoint={0.55} breakpoints={[0, 0.55, 0.85]}>
+        <IonModalHeader>
+          <IonModalToolbar className="cf-modal-toolbar">
+            <IonButtons slot="start">
+              <IonButton onClick={() => modalRef.current?.dismiss()}>
+                <IonIcon icon={closeOutline} />
+              </IonButton>
+            </IonButtons>
+            <IonModalTitle>Bình luận</IonModalTitle>
+          </IonModalToolbar>
+        </IonModalHeader>
+        <IonModalContent className="cf-modal-content">
+          {activePost ? (
+            <>
+              <div className="cf-modal-post">
+                <div className="cf-avatar sm" />
+                <div className="cf-modal-head">
+                  <div className="cf-club">{activePost.club}</div>
+                  <div className="cf-time">{activePost.ago}</div>
+                </div>
+              </div>
+
+              <div className="cf-comments">
+                {/* demo comments */}
+                <div className="cf-cmt">
+                  <div className="cf-avatar sm" />
+                  <div className="cf-cmt-body">
+                    <div className="cf-cmt-name">Bạn B</div>
+                    <div className="cf-cmt-text">Rất hay!</div>
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </IonContent>
+                <div className="cf-cmt">
+                  <div className="cf-avatar sm" />
+                  <div className="cf-cmt-body">
+                    <div className="cf-cmt-name">Bạn C</div>
+                    <div className="cf-cmt-text">Cho mình xin ảnh gốc với ạ.</div>
+                  </div>
+                </div>
+              </div>
+
+              <IonItem className="cf-cmt-input" lines="none">
+                <IonTextarea
+                  autoGrow
+                  placeholder="Viết bình luận..."
+                  value={commentText}
+                  onIonInput={(e) => setCommentText(e.detail.value || "")}
+                />
+                <IonButton onClick={addComment} slot="end" strong={true}>
+                  Gửi
+                </IonButton>
+              </IonItem>
+            </>
+          ) : (
+            <div style={{ padding: 16 }}>Đang tải…</div>
+          )}
+        </IonModalContent>
+      </IonModal>
     </IonPage>
   );
 }

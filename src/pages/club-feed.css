@@ -1,0 +1,81 @@
+:root{
+  --cf-text: #262626;
+  --cf-sub: #7a7a7a;
+  --cf-border: #efefef;
+  --cf-placeholder: #d9c9c9; /* ảnh nền hồng xám như mock */
+  --cf-like: #d63c3c;
+}
+
+.cf-toolbar{
+  --background: #fff;
+  --color: var(--cf-text);
+}
+.cf-title{
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.cf-content{
+  --background: #fff;
+}
+.cf-list{
+  display: grid;
+}
+.cf-post{
+  padding: 12px 16px 16px;
+  border-bottom: 1px solid var(--cf-border);
+}
+
+/* header row */
+.cf-row{ display:flex; gap:12px; align-items:center; }
+.cf-avatar{
+  width: 38px; height: 38px; border-radius: 999px; background: #d9d9d9;
+}
+.cf-avatar.sm{ width:28px; height:28px; }
+.cf-meta{ display:grid; gap:2px; }
+.cf-club{ font-weight: 800; color: var(--cf-text); }
+.cf-time{ color: var(--cf-sub); font-size: 12px; }
+
+/* caption + media */
+.cf-caption{ margin: 10px 0; color: var(--cf-text); }
+.cf-media{
+  width: 100%; height: 180px; border-radius: 6px;
+  background: var(--cf-placeholder);
+}
+
+/* actions */
+.cf-actions{
+  margin-top: 10px; display:flex; align-items:center; justify-content:space-between;
+  gap: 8px;
+}
+.cf-action{
+  display:flex; align-items:center; gap:6px;
+  color: var(--cf-sub);
+  background: transparent; border: 0;
+  padding: 8px 6px; border-radius: 8px;
+}
+.cf-action ion-icon{ font-size: 18px; }
+.cf-action .cf-count{
+  font-style: normal; margin-left: 2px; font-size: 12px; color: var(--cf-sub);
+}
+.cf-action.is-liked{ color: var(--cf-like); }
+
+/* modal (comments) */
+.cf-modal-toolbar{ --background: #fff; }
+.cf-modal-content{ --background: #fff; }
+.cf-modal-post{ display:flex; gap:10px; padding: 10px 16px 0 16px; }
+.cf-modal-head{ display:grid; gap:2px; }
+.cf-comments{
+  padding: 8px 16px; display:grid; gap:10px;
+}
+.cf-cmt{ display:flex; gap:10px; }
+.cf-cmt-body{ background:#f5f5f5; border-radius:10px; padding:6px 10px; flex:1; }
+.cf-cmt-name{ font-weight:700; font-size: 13px; margin-bottom:2px; }
+.cf-cmt-text{ font-size: 13px; color:#333; }
+
+.cf-cmt-input{
+  --background: #fff; margin-top: 6px; padding-right: 8px;
+}
+.cf-cmt-input ion-textarea{
+  --padding-top: 8px; --padding-bottom: 8px; --padding-start: 0; --padding-end: 8px;
+}
