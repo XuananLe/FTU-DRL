@@ -76,3 +76,41 @@ body.scanner-active ion-footer {
 body.scanner-active ion-fab {
   visibility: visible;
 }
+
+.qr-wrap{
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto 12px auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Phần tử camera vùng hiển thị */
+.qr-cam{
+  position: absolute;
+  inset: 0;
+}
+
+/* Ép video/canvas fill khung vuông (không bị letterbox) */
+#qr-region, #qr-region > video, #qr-region > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#qr-region > video { object-fit: cover; }
+
+/* Overlay text */
+.qr-overlay{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(0,0,0,0.55);
+  font-size: 16px; padding: 20px; text-align: center;
+}
+
+/* Nút & card */
+.btn-row{ display:flex; gap:12px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
+.event-card ion-item{ --background: transparent; }

@@ -5,7 +5,7 @@ import {
   IonButton, IonItem, IonLabel, IonToast, IonNote
 } from "@ionic/react";
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
-import type {Html5QrcodeFullConfig} from "html5-qrcode"
+import type { Html5QrcodeFullConfig } from "html5-qrcode";
 import Webcam from "react-webcam";
 import "./scan.css";
 
@@ -19,8 +19,8 @@ type EventPayload = {
   loc: string;
   pts?: string;
   source?: string;
-  gps?: { lat: number; lng: number; acc?: number }; // vị trí của QR (điểm check-in)
-  expMin?: number;   // thời gian tối đa được check-in (phút) kể từ d+tm
+  gps?: { lat: number; lng: number; acc?: number };
+  expMin?: number;
 };
 function isEventPayload(x: any): x is EventPayload {
   return x && x.type === "event" && x.t && x.d && x.tm;
@@ -28,7 +28,6 @@ function isEventPayload(x: any): x is EventPayload {
 
 /** ====== Helpers ====== */
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
-
 function parseEventDateTimeISO(d: string, tm: string) {
   const [Y, M, D] = d.split("-").map(Number);
   const [h, m] = tm.split(":").map(Number);
@@ -43,7 +42,6 @@ function haversineMeters(lat1: number, lon1: number, lat2: number, lon2: number)
   const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
-
 const isIOS =
   /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && (navigator as any).maxTouchPoints > 1);
@@ -58,6 +56,9 @@ export default function ScanCheckin() {
   const [scanning, setScanning] = useState(false);
   const [busy, setBusy] = useState(false);
   const [decoded, setDecoded] = useState<EventPayload | null>(null);
+
+  /** ====== Square wrapper refs ====== */
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   /** ====== Camera list/state ====== */
   const [cams, setCams] = useState<{ id: string; label: string }[]>([]);
@@ -84,18 +85,40 @@ export default function ScanCheckin() {
   const [toast, setToast] = useState<{ open: boolean; msg: string }>({ open: false, msg: "" });
   const toastMsg = (msg: string) => setToast({ open: true, msg });
 
-    /** ====== QR start/stop ====== */
+  /** ====== Square wrapper: always square (CSS + JS fallback) ====== */
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const setSquare = () => { el.style.height = `${el.clientWidth}px`; };
+    setSquare();
+    const ro = new ResizeObserver(setSquare);
+    ro.observe(el);
+    const onResize = () => setSquare();
+    window.addEventListener("orientationchange", onResize);
+    window.addEventListener("resize", onResize);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", onResize);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  /** ====== QR start/stop ====== */
   const ensureInstance = () => {
     if (!qrRef.current) {
-      const cfg /* : Html5QrcodeFullConfig */ = {
-        verbose: false, // <-- bắt buộc theo .d.ts
+      const cfg: Html5QrcodeFullConfig = {
+        verbose: false,
         formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-        // tuỳ chọn thêm:
-        // experimentalFeatures: { useBarCodeDetectorIfSupported: true },
       };
       qrRef.current = new Html5Qrcode(REGION_ID, cfg as any);
     }
     return qrRef.current!;
+  };
+
+  // qrbox px dựa theo bề rộng khung → luôn vuông & ổn định
+  const getQrboxPx = () => {
+    const w = wrapRef.current?.clientWidth ?? 320;
+    return Math.floor(w * 0.80); // 80% khung
   };
 
   const start = async () => {
@@ -103,19 +126,15 @@ export default function ScanCheckin() {
     if (!window.isSecureContext) { toastMsg("Cần HTTPS hoặc localhost để mở camera."); return; }
     setBusy(true);
     try {
-      await preflightGPS(); // xin quyền vị trí sớm
+      await preflightGPS();
       await doStart();
       startedRef.current = true;
       setScanning(true);
     } catch (e: any) {
       const msg = String(e?.message || e || "");
       if (/AbortError/i.test(msg)) {
-        try {
-          await sleep(250);
-          await doStart();
-          startedRef.current = true;
-          setScanning(true);
-        } catch (e2: any) {
+        try { await sleep(250); await doStart(); startedRef.current = true; setScanning(true); }
+        catch (e2: any) {
           toastMsg("Không mở được camera: " + (e2?.message || e2));
           if (startedRef.current) { try { qrRef.current?.clear(); } catch {} startedRef.current = false; }
         }
@@ -136,25 +155,18 @@ export default function ScanCheckin() {
         if (startedRef.current) { qrRef.current.clear(); startedRef.current = false; }
       }
       setScanning(false);
-    } catch {
-      /* noop */
-    } finally {
-      stoppingRef.current = false;
-      setBusy(false);
-    }
+    } catch {} finally { stoppingRef.current = false; setBusy(false); }
   };
 
-  /** ====== Camera start helpers (fix iOS) ====== */
+  /** ====== Camera start helpers (iOS-safe) ====== */
   const tryStart = async (cameraConfig: { facingMode?: string } | string) => {
     const qr = ensureInstance();
+    const qrboxPx = getQrboxPx();
     await qr.start(
       cameraConfig as any,
       {
         fps: 15,
-        qrbox: (vw, vh) => {
-          const side = Math.floor(Math.min(vw, vh) * 0.6);
-          return { width: side, height: side };
-        },
+        qrbox: { width: qrboxPx, height: qrboxPx }, // luôn vuông theo px
         aspectRatio: 1.0,
       },
       onScanSuccess,
@@ -174,25 +186,21 @@ export default function ScanCheckin() {
   };
 
   const doStart = async () => {
-    // iOS: ưu tiên facingMode "environment"
+    // iOS: ưu tiên camera sau qua facingMode
     if (isIOS) {
       try {
         await tryStart({ facingMode: "environment" });
         startedRef.current = true;
         setScanning(true);
-        const list = await refreshCameras(); // sau khi grant, label mới đầy đủ
+        const list = await refreshCameras(); // sau khi grant label đầy đủ hơn
         const guessBack = list.find(c => /back|rear|environment/i.test(c.label));
         if (guessBack) setActiveCamId(guessBack.id);
         return;
-      } catch {
-        // tiếp tục fallback ở dưới
-      }
+      } catch { /* fallback dưới */ }
     }
-
-    // Non-iOS hoặc iOS thất bại: chọn theo label/id
+    // Non-iOS hoặc iOS fail: chọn theo label/id
     const list = await refreshCameras();
     if (!list.length) throw new Error("Không tìm thấy camera");
-
     const back = list.find(c => /back|rear|environment/i.test(c.label)) || list[0];
     try {
       await tryStart(back.id);
@@ -200,7 +208,6 @@ export default function ScanCheckin() {
       setScanning(true);
       setActiveCamId(back.id);
     } catch (e2) {
-      // Fallback cuối: lấy camera đầu tiên
       if (list[0]) {
         await tryStart(list[0].id);
         startedRef.current = true;
@@ -212,6 +219,22 @@ export default function ScanCheckin() {
     }
   };
 
+  /** ====== Relayout: restart khi đổi hướng/resize để cập nhật qrbox ====== */
+  useEffect(() => {
+    const relayout = async () => {
+      if (!scanning) return;
+      await stop();
+      await start(); // tính lại qrbox theo khung mới
+    };
+    window.addEventListener("orientationchange", relayout);
+    window.addEventListener("resize", relayout);
+    return () => {
+      window.removeEventListener("orientationchange", relayout);
+      window.removeEventListener("resize", relayout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scanning]);
+
   /** ====== GPS ====== */
   async function preflightGPS() {
     if (!("geolocation" in navigator)) return;
@@ -221,30 +244,23 @@ export default function ScanCheckin() {
         ? await navigator.permissions.query({ name: "geolocation" as any })
         : null;
       if (!perm || perm.state !== "granted") await askUserGPS();
-    } catch {/* ignore */}
+    } catch {}
   }
-
   async function askUserGPS() {
     if (!("geolocation" in navigator)) { setGpsError("Trình duyệt không hỗ trợ định vị."); return null; }
     setGettingGPS(true); setGpsError(null);
     return new Promise<GeolocationPosition | null>((resolve) => {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLat(pos.coords.latitude);
-          setUserLng(pos.coords.longitude);
-          setUserAcc(pos.coords.accuracy ?? null);
-          setGettingGPS(false);
-          resolve(pos);
-        },
+        (pos) => { setUserLat(pos.coords.latitude); setUserLng(pos.coords.longitude); setUserAcc(pos.coords.accuracy ?? null); setGettingGPS(false); resolve(pos); },
         (err) => { setGpsError(err.message || "Không lấy được vị trí."); setGettingGPS(false); resolve(null); },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
     });
   }
 
-  /** ====== Đánh giá điều kiện ====== */
+  /** ====== Eligibility ====== */
   function evaluateEligibility(payload: EventPayload) {
-    // 1) Thời gian
+    // time
     let timeOk = true, timeReason: string | undefined, minutesLeft: number | null = null;
     if (payload.expMin && Number.isFinite(payload.expMin)) {
       const start = parseEventDateTimeISO(payload.d, payload.tm);
@@ -255,15 +271,12 @@ export default function ScanCheckin() {
     }
     setTimeLeftMin(minutesLeft);
 
-    // 2) Khoảng cách
+    // distance
     let distOk = true, distReason: string | undefined, dMeters: number | null = null;
     if (payload.gps && userLat != null && userLng != null) {
       dMeters = haversineMeters(userLat, userLng, payload.gps.lat, payload.gps.lng);
       const dynamicRadius = Math.max(100, (userAcc ?? 0) * 2, (payload.gps.acc ?? 0) * 2);
-      if (dMeters > dynamicRadius) {
-        distOk = false;
-        distReason = `Ngoài phạm vi (cách ~${Math.round(dMeters)}m, giới hạn ~${Math.round(dynamicRadius)}m).`;
-      }
+      if (dMeters > dynamicRadius) { distOk = false; distReason = `Ngoài phạm vi (cách ~${Math.round(dMeters)}m, giới hạn ~${Math.round(dynamicRadius)}m).`; }
     }
     setDistance(dMeters);
 
@@ -282,22 +295,18 @@ export default function ScanCheckin() {
           if (!got && obj.gps) setEligible({ ok: false, reason: "Cần cho phép truy cập vị trí để kiểm tra phạm vi." });
           else evaluateEligibility(obj);
         } else evaluateEligibility(obj);
-        await stop();              // dừng camera sau khi decode -> nhường cho webcam selfie
-        setShowWebcam(true);       // mở khu vực chụp selfie
+        await stop();          // nhường camera cho selfie
+        setShowWebcam(true);
       } else {
         toastMsg("QR không đúng định dạng sự kiện");
       }
     } catch {
-      // Không phải JSON chuẩn -> vẫn hiển thị để dev debug
       toastMsg("Đã quét: " + text);
     }
   };
-  const onScanError = (_msg: string) => { /* có thể log nếu cần */ };
+  const onScanError = (_msg: string) => {};
 
-  useEffect(() => {
-    if (decoded) evaluateEligibility(decoded);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userLat, userLng, userAcc]);
+  useEffect(() => { if (decoded) evaluateEligibility(decoded); /* eslint-disable-next-line */ }, [userLat, userLng, userAcc]);
 
   useEffect(() => {
     const onHide = () => { if (document.visibilityState !== "visible") stop(); };
@@ -317,36 +326,29 @@ export default function ScanCheckin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** ====== React-Webcam config & handlers ====== */
+  /** ====== React-Webcam ====== */
   const videoConstraints: MediaTrackConstraints = {
-    facingMode: "user",       // camera trước cho selfie
+    facingMode: "user",
     width: { ideal: 640 },
     height: { ideal: 640 }
   };
-
   const captureSelfie = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      setPhotoDataUrl(imageSrc);
-      setShowWebcam(false);   // ẩn webcam sau khi chụp
-    } else {
-      toastMsg("Không chụp được ảnh. Hãy thử lại.");
-    }
+    if (imageSrc) { setPhotoDataUrl(imageSrc); setShowWebcam(false); }
+    else { toastMsg("Không chụp được ảnh. Hãy thử lại."); }
   }, []);
 
+  /** ====== Confirm ====== */
   const confirmCheckin = () => {
     if (!decoded) return;
     if (!eligible.ok) { toastMsg(eligible.reason || "Không đủ điều kiện check-in"); return; }
     if (!photoDataUrl) { toastMsg("Vui lòng chụp ảnh xác nhận khuôn mặt trước khi check-in."); return; }
-
     const id = `${decoded.t}|${decoded.d}|${decoded.tm}`;
     const key = "zone57_checkins";
     const arr: any[] = JSON.parse(localStorage.getItem(key) || "[]");
     if (arr.some(x => x.id === id)) { toastMsg("Bạn đã check-in sự kiện này rồi"); return; }
     arr.push({
-      id,
-      at: new Date().toISOString(),
-      payload: decoded,
+      id, at: new Date().toISOString(), payload: decoded,
       userGPS: userLat != null && userLng != null ? { lat: userLat, lng: userLng, acc: userAcc } : undefined,
       distance: distance != null ? Math.round(distance) : undefined,
       selfie: photoDataUrl,
@@ -364,15 +366,15 @@ export default function ScanCheckin() {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {/* Khu vực quét QR */}
+        {/* Scanner square */}
         {!decoded && (
           <>
-            <div className="qr-wrap" style={{ minHeight: 320 }}>
-              <div id={REGION_ID} className="qr-cam" style={{ width: "100%", height: "100%" }} />
+            <div ref={wrapRef} className="qr-wrap">
+              <div id={REGION_ID} className="qr-cam" />
               {!scanning && <div className="qr-overlay">Camera đang tắt</div>}
             </div>
 
-            <div className="btn-row" style={{ gap: 8, display: "flex", flexWrap: "wrap", marginTop: 12 }}>
+            <div className="btn-row">
               {scanning ? (
                 <>
                   <IonButton color="medium" disabled={busy} onClick={stop}>Dừng quét</IonButton>
@@ -384,33 +386,16 @@ export default function ScanCheckin() {
                         if (busy) return;
                         setBusy(true);
                         try {
-                          // xoay vòng camera kế tiếp
                           const idx = Math.max(0, cams.findIndex(c => c.id === activeCamId));
                           const next = cams[(idx + 1) % cams.length];
-
-                          await stop(); // cần dừng trước khi start camera khác
-                          const qr = ensureInstance();
-                          await qr.start(
-                            next.id,
-                            {
-                              fps: 15,
-                              qrbox: (vw, vh) => {
-                                const side = Math.floor(Math.min(vw, vh) * 0.60);
-                                return { width: side, height: side };
-                              },
-                              aspectRatio: 1.0,
-                            },
-                            onScanSuccess,
-                            onScanError
-                          );
+                          await stop();
+                          await tryStart(next.id);
                           startedRef.current = true;
                           setScanning(true);
                           setActiveCamId(next.id);
                         } catch (err: any) {
-                          toastMsg("Không chuyển được camera: " + (err?.message || err));
-                        } finally {
-                          setBusy(false);
-                        }
+                          console.log("Không chuyển được camera: " + (err?.message || err));
+                        } finally { setBusy(false); }
                       }}
                     >
                       Đổi camera
@@ -424,7 +409,7 @@ export default function ScanCheckin() {
           </>
         )}
 
-        {/* Thông tin sự kiện + Selfie */}
+        {/* Event + Selfie */}
         {decoded && (
           <IonCard className="event-card">
             <IonCardHeader><IonCardTitle>{decoded.t}</IonCardTitle></IonCardHeader>
@@ -467,7 +452,7 @@ export default function ScanCheckin() {
                 </IonItem>
               )}
 
-              {/* React-Webcam selfie */}
+              {/* Selfie */}
               <div className="ion-margin-top">
                 <b>Ảnh xác nhận khuôn mặt (bắt buộc)</b>
                 {showWebcam && (
@@ -482,19 +467,19 @@ export default function ScanCheckin() {
                       imageSmoothing
                       style={{ width: "100%", maxWidth: 360, borderRadius: 12, background: "#000" }}
                     />
-                    <div className="btn-row" style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                    <div className="btn-row">
                       <IonButton color="success" onClick={captureSelfie}>Chụp ảnh</IonButton>
                       <IonButton color="medium" onClick={() => setShowWebcam(false)}>Đóng</IonButton>
                     </div>
                     <IonNote color="medium">
-                      Gợi ý: nếu video không phát trên iPhone, hãy chạm vào vùng video để kích hoạt phát inline.
+                      Nếu video không phát trên iPhone, hãy chạm vào vùng video để kích hoạt phát inline.
                     </IonNote>
                   </div>
                 )}
 
                 {!showWebcam && !photoDataUrl && (
-                  <div className="btn-row" style={{ marginTop: 8 }}>
-                    <IonButton onClick={() => { setShowWebcam(true); }} color="medium">Mở camera trước</IonButton>
+                  <div className="btn-row">
+                    <IonButton onClick={() => setShowWebcam(true)} color="medium">Mở camera trước</IonButton>
                   </div>
                 )}
 
@@ -516,7 +501,7 @@ export default function ScanCheckin() {
                 </IonNote>
               )}
 
-              <div className="btn-row" style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
+              <div className="btn-row">
                 <IonButton color="success" disabled={!eligible.ok || !photoDataUrl} onClick={confirmCheckin}>
                   Xác nhận Check-in
                 </IonButton>
