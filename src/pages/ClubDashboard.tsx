@@ -7,8 +7,9 @@ import {
   shareOutline, createOutline, chevronForwardOutline, 
   homeOutline, mailOutline, gridOutline, documentTextOutline,
   chevronBackOutline, peopleOutline, calendarOutline, timeOutline, 
-  personAddOutline, arrowUpOutline, trendingUpOutline,
-  star, starOutline, starHalfOutline
+  personAddOutline, arrowUpOutline, arrowDownOutline, trendingUpOutline,
+  star, starOutline, starHalfOutline, statsChart, analyticsOutline,
+  barChartOutline, pieChartOutline, timeOutline as clockOutline
 } from "ionicons/icons";
 import "./club-profile.css";
 
@@ -32,19 +33,31 @@ type Event = {
 // Define types for statistics
 type MonthlyAttendance = {
   month: string;
-  percentage: number;
-  height: number;
+  current: number;
+  previous: number;
 };
 
 type TopMember = {
   name: string;
   points: number;
+  trend: number; // Percentage change
 };
 
 type EventRating = {
   name: string;
   participationRate: number; // As percentage
   rating: number; // Rating out of 5
+};
+
+type DepartmentStats = {
+  name: string;
+  members: number;
+  percentage: number;
+};
+
+type ActivityHeatmap = {
+  day: number;
+  intensity: number; // 0-5 scale
 };
 
 export default function ClubProfile() {
@@ -120,25 +133,29 @@ export default function ClubProfile() {
     totalHours: 189,
     newMembers: 12,
     attendance: 87,
+    memberGrowth: 18, // % growth
+    retentionRate: 92,
+    femalePercentage: 62,
+    malePercentage: 38
   };
   
-  // Monthly attendance data
+  // Monthly attendance data - compare current vs previous year
   const monthlyAttendance: MonthlyAttendance[] = [
-    { month: "T1", percentage: 85, height: 85 },
-    { month: "T2", percentage: 78, height: 78 },
-    { month: "T3", percentage: 92, height: 92 },
-    { month: "T4", percentage: 88, height: 88 },
-    { month: "T5", percentage: 75, height: 75 },
-    { month: "T6", percentage: 82, height: 82 }
+    { month: "T1", current: 85, previous: 72 },
+    { month: "T2", current: 78, previous: 65 },
+    { month: "T3", current: 92, previous: 80 },
+    { month: "T4", current: 88, previous: 84 },
+    { month: "T5", current: 75, previous: 70 },
+    { month: "T6", current: 82, previous: 74 }
   ];
   
-  // Top members data
+  // Top members data with trend
   const topMembers: TopMember[] = [
-    { name: "Nguyễn Văn A", points: 456 },
-    { name: "Trần Thị B", points: 412 },
-    { name: "Lê Hoàng C", points: 389 },
-    { name: "Phạm Minh D", points: 356 },
-    { name: "Hoàng Thị E", points: 342 }
+    { name: "Nguyễn Văn A", points: 456, trend: 12 },
+    { name: "Trần Thị B", points: 412, trend: 8 },
+    { name: "Lê Hoàng C", points: 389, trend: -3 },
+    { name: "Phạm Minh D", points: 356, trend: 15 },
+    { name: "Hoàng Thị E", points: 342, trend: 5 }
   ];
   
   // Event rating data
@@ -150,8 +167,23 @@ export default function ClubProfile() {
     { name: "Tiệc chào tân sinh viên", participationRate: 97, rating: 4.9 }
   ];
   
+  // Department breakdown
+  const departmentStats: DepartmentStats[] = [
+    { name: "Ban chủ nhiệm", members: 5, percentage: 10.4 },
+    { name: "Ban chuyên môn", members: 12, percentage: 25 },
+    { name: "Ban đối ngoại", members: 8, percentage: 16.7 },
+    { name: "Ban tổ chức", members: 13, percentage: 27.1 },
+    { name: "Ban truyền thông", members: 10, percentage: 20.8 }
+  ];
+  
+  // Activity heatmap - last 28 days
+  const activityHeatmap: ActivityHeatmap[] = Array.from({ length: 28 }, (_, i) => ({
+    day: i + 1,
+    intensity: Math.floor(Math.random() * 6) // Random intensity 0-5
+  }));
+  
   // For stats tab navigation
-  const [statsTab, setStatsTab] = useState<"attendance" | "events">("attendance");
+  const [statsTab, setStatsTab] = useState<"attendance" | "events" | "members" | "analytics">("attendance");
 
   return (
     <IonPage>
@@ -287,6 +319,9 @@ export default function ClubProfile() {
                 <div className="cp-stats-item">
                   <div className="cp-stats-label">Tổng thành viên</div>
                   <div className="cp-stats-value">{clubStats.totalMembers}</div>
+                  <div className="cp-trend-indicator positive">
+                    <IonIcon icon={arrowUpOutline} /> {clubStats.memberGrowth}%
+                  </div>
                 </div>
                 <div className="cp-stats-item">
                   <div className="cp-stats-label">Sự kiện</div>
@@ -317,52 +352,115 @@ export default function ClubProfile() {
               >
                 Sự kiện
               </button>
+              <button 
+                className={`cp-stats-tab ${statsTab === "members" ? "active" : ""}`}
+                onClick={() => setStatsTab("members")}
+              >
+                Thành viên
+              </button>
+              <button 
+                className={`cp-stats-tab ${statsTab === "analytics" ? "active" : ""}`}
+                onClick={() => setStatsTab("analytics")}
+              >
+                Phân tích
+              </button>
             </div>
 
             {statsTab === "attendance" && (
               <>
-                {/* Attendance chart */}
+                {/* Attendance chart - advanced with comparison */}
                 <div className="cp-stats-chart-container">
-                  <div className="cp-stats-list-title">Tỷ lệ tham gia (6 tháng gần đây)</div>
+                  <div className="cp-stats-list-title">Tỷ lệ điểm danh theo tháng</div>
                   <div className="cp-stats-chart">
+                    {/* Grid lines */}
+                    <div className="cp-chart-grid">
+                      <div className="cp-chart-grid-line percent-25"></div>
+                      <div className="cp-chart-grid-line percent-50"></div>
+                      <div className="cp-chart-grid-line percent-75"></div>
+                      
+                      <div className="cp-chart-grid-label percent-0">0%</div>
+                      <div className="cp-chart-grid-label percent-25">25%</div>
+                      <div className="cp-chart-grid-label percent-50">50%</div>
+                      <div className="cp-chart-grid-label percent-75">75%</div>
+                      <div className="cp-chart-grid-label percent-100">100%</div>
+                    </div>
+                    
                     <div className="cp-chart-bar-container">
                       {monthlyAttendance.map((item, index) => (
                         <div key={index} className="cp-chart-bar" style={{ height: '100%' }}>
+                          {/* Current year bar */}
                           <div 
                             className="cp-chart-bar-inner" 
-                            style={{ height: `${item.height}%` }}
+                            style={{ height: `${item.current}%` }}
                           ></div>
+                          
+                          {/* Previous year bar - slightly offset */}
+                          <div 
+                            className="cp-chart-bar-inner secondary" 
+                            style={{ 
+                              height: `${item.previous}%`, 
+                              width: '60%', 
+                              left: '20%',
+                              opacity: 0.8
+                            }}
+                          ></div>
+                          
                           <div className="cp-chart-label">{item.month}</div>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
-                
-                {/* Current attendance rate */}
-                <div className="cp-stats-chart-container">
-                  <div className="cp-stats-list-title">Tỷ lệ điểm danh hiện tại</div>
-                  <div className="cp-circular-chart">
-                    <div className="cp-circular-chart-text">{clubStats.attendance}%</div>
+                  
+                  {/* Legend */}
+                  <div className="cp-chart-legend">
+                    <div className="cp-chart-legend-item">
+                      <div className="cp-chart-legend-color primary"></div>
+                      <span>Năm nay</span>
+                    </div>
+                    <div className="cp-chart-legend-item">
+                      <div className="cp-chart-legend-color secondary"></div>
+                      <span>Năm trước</span>
+                    </div>
                   </div>
                 </div>
-
-                {/* Top members list */}
-                <div className="cp-stats-list">
-                  <div className="cp-stats-list-title">Thành viên hoạt động tích cực</div>
-                  {topMembers.map((member, index) => (
-                    <div key={index} className="cp-stats-list-item">
-                      <div className="cp-stats-item-name">{member.name}</div>
-                      <div className="cp-stats-item-value">{member.points} điểm</div>
+                
+                {/* Activity heatmap - show activity patterns by day */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Lịch sử điểm danh (28 ngày gần đây)</div>
+                  <div className="cp-heatmap">
+                    {activityHeatmap.map((day, index) => (
+                      <div 
+                        key={index} 
+                        className={`cp-heatmap-day cp-heat-${day.intensity}`}
+                        title={`Ngày ${day.day}: ${day.intensity * 20}% tham gia`}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Advanced attendance metrics */}
+                <div className="cp-analytics-grid">
+                  <div className="cp-analytics-card">
+                    <div className="cp-stats-label">Tỷ lệ điểm danh trung bình</div>
+                    <div className="cp-stats-value">{clubStats.attendance}%</div>
+                    <div className="cp-trend-indicator positive">
+                      <IonIcon icon={arrowUpOutline} /> 5.2% so với tháng trước
                     </div>
-                  ))}
+                  </div>
+                  <div className="cp-analytics-card">
+                    <div className="cp-stats-label">Tỷ lệ duy trì thành viên</div>
+                    <div className="cp-stats-value">{clubStats.retentionRate}%</div>
+                    <div className="cp-trend-indicator positive">
+                      <IonIcon icon={arrowUpOutline} /> 2.7% so với kỳ trước
+                    </div>
+                  </div>
                 </div>
               </>
             )}
             
             {statsTab === "events" && (
               <>
-                {/* Event ratings */}
+                {/* Event ratings - improved with more data */}
                 <div className="cp-stats-chart-container">
                   <div className="cp-stats-list-title">Lượt tham gia sự kiện</div>
                   
@@ -385,17 +483,182 @@ export default function ClubProfile() {
                   ))}
                 </div>
                 
-                {/* Participation summary */}
+                {/* Event comparison */}
                 <div className="cp-stats-chart-container">
-                  <div className="cp-stats-list-title">Tỷ lệ tham gia sự kiện</div>
-                  <div className="cp-stats-info" style={{marginTop: '12px'}}>
-                    <div className="cp-stats-item">
-                      <div className="cp-stats-label">Sự kiện có tỷ lệ tham gia cao nhất</div>
-                      <div className="cp-stats-value">97%</div>
+                  <div className="cp-stats-list-title">Phân tích sự kiện</div>
+                  <div className="cp-circular-chart-container">
+                    <div>
+                      <div className="cp-circular-chart" style={{
+                        background: `conic-gradient(var(--cp-accent) 0% ${97 * 3.6}deg, #f1d1d1 ${97 * 3.6}deg 360deg)`
+                      }}>
+                        <div className="cp-circular-chart-text">97%</div>
+                      </div>
+                      <div className="cp-circular-chart-label">Tỷ lệ tham gia cao nhất</div>
                     </div>
-                    <div className="cp-stats-item">
-                      <div className="cp-stats-label">Tỷ lệ tham gia trung bình</div>
-                      <div className="cp-stats-value">89%</div>
+                    <div>
+                      <div className="cp-circular-chart" style={{
+                        background: `conic-gradient(var(--cp-accent) 0% ${89.6 * 3.6}deg, #f1d1d1 ${89.6 * 3.6}deg 360deg)`
+                      }}>
+                        <div className="cp-circular-chart-text">89.6%</div>
+                      </div>
+                      <div className="cp-circular-chart-label">Tỷ lệ tham gia trung bình</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Event satisfaction */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Mức độ hài lòng</div>
+                  <div className="cp-analytics-grid">
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Sự kiện được đánh giá cao nhất</div>
+                      <div className="cp-stats-value">4.9/5</div>
+                      <div className="cp-event-rating-stars" style={{ justifyContent: 'flex-start', marginTop: '4px' }}>
+                        {renderStarRating(4.9)}
+                      </div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Đánh giá trung bình</div>
+                      <div className="cp-stats-value">4.6/5</div>
+                      <div className="cp-event-rating-stars" style={{ justifyContent: 'flex-start', marginTop: '4px' }}>
+                        {renderStarRating(4.6)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            
+            {statsTab === "members" && (
+              <>
+                {/* Department breakdown */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Phân bổ thành viên theo ban</div>
+                  
+                  {departmentStats.map((dept, index) => (
+                    <div key={index} className="cp-event-rating-item">
+                      <div>
+                        <div className="cp-event-rating-name">{dept.name}</div>
+                        <div className="cp-event-rating-bar-container">
+                          <div 
+                            className="cp-event-rating-bar" 
+                            style={{ width: `${dept.percentage * 2}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="cp-stats-item-value">
+                        {dept.members} ({dept.percentage.toFixed(1)}%)
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Gender distribution */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Phân bổ giới tính</div>
+                  <div className="cp-circular-chart-container">
+                    <div>
+                      <div className="cp-circular-chart" style={{
+                        background: `conic-gradient(var(--cp-accent) 0% ${clubStats.femalePercentage * 3.6}deg, #f1d1d1 ${clubStats.femalePercentage * 3.6}deg 360deg)`
+                      }}>
+                        <div className="cp-circular-chart-text">{clubStats.femalePercentage}%</div>
+                      </div>
+                      <div className="cp-circular-chart-label">Nữ</div>
+                    </div>
+                    <div>
+                      <div className="cp-circular-chart" style={{
+                        background: `conic-gradient(#f1d1d1 0% ${clubStats.malePercentage * 3.6}deg, var(--cp-accent) ${clubStats.malePercentage * 3.6}deg 360deg)`
+                      }}>
+                        <div className="cp-circular-chart-text">{clubStats.malePercentage}%</div>
+                      </div>
+                      <div className="cp-circular-chart-label">Nam</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Top members list - with trends */}
+                <div className="cp-stats-list">
+                  <div className="cp-stats-list-title">Thành viên hoạt động tích cực</div>
+                  {topMembers.map((member, index) => (
+                    <div key={index} className="cp-stats-list-item">
+                      <div className="cp-stats-item-name">{member.name}</div>
+                      <div style={{display: 'flex', alignItems: 'center'}}>
+                        <div className="cp-stats-item-value">{member.points} điểm</div>
+                        <div className={`cp-trend-indicator ${member.trend >= 0 ? 'positive' : 'negative'}`} style={{marginLeft: '8px'}}>
+                          <IonIcon icon={member.trend >= 0 ? arrowUpOutline : arrowDownOutline} />
+                          {Math.abs(member.trend)}%
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            
+            {statsTab === "analytics" && (
+              <>
+                {/* Advanced analytics dashboard */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Phân tích tổng hợp</div>
+                  <div className="cp-analytics-grid">
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Tỷ lệ tăng trưởng</div>
+                      <div className="cp-stats-value">+{clubStats.memberGrowth}%</div>
+                      <div className="cp-trend-indicator positive">
+                        <IonIcon icon={arrowUpOutline} /> So với kỳ trước
+                      </div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Tỷ lệ duy trì</div>
+                      <div className="cp-stats-value">{clubStats.retentionRate}%</div>
+                      <div className="cp-trend-indicator positive">
+                        <IonIcon icon={arrowUpOutline} /> 2.7% so với năm trước
+                      </div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Điểm trung bình/thành viên</div>
+                      <div className="cp-stats-value">315</div>
+                      <div className="cp-trend-indicator positive">
+                        <IonIcon icon={arrowUpOutline} /> 15 điểm so với kỳ trước
+                      </div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Tỷ lệ hoạt động tích cực</div>
+                      <div className="cp-stats-value">78%</div>
+                      <div className="cp-trend-indicator positive">
+                        <IonIcon icon={arrowUpOutline} /> 4.3% so với tháng trước
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Membership growth chart */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Phát triển thành viên qua thời gian</div>
+                  <div style={{height: '140px', background: '#f9f9f9', borderRadius: '8px', margin: '16px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <div style={{color: '#999', fontSize: '14px'}}>Biểu đồ tăng trưởng thành viên</div>
+                  </div>
+                </div>
+                
+                {/* Key success metrics */}
+                <div className="cp-stats-chart-container">
+                  <div className="cp-stats-list-title">Chỉ số thành công chính</div>
+                  <div className="cp-analytics-grid">
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Tỷ lệ giữ chân thành viên mới</div>
+                      <div className="cp-stats-value">87%</div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Thời lượng trung bình/sự kiện</div>
+                      <div className="cp-stats-value">3.2 giờ</div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Hiệu quả điểm danh</div>
+                      <div className="cp-stats-value">93%</div>
+                    </div>
+                    <div className="cp-analytics-card">
+                      <div className="cp-stats-label">Mức độ hài lòng chung</div>
+                      <div className="cp-stats-value">4.7/5</div>
                     </div>
                   </div>
                 </div>
