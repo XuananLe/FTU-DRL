@@ -20,27 +20,93 @@
 }
 .cf-list{
   display: grid;
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .cf-post{
-  padding: 12px 16px 16px;
+  padding: 16px 18px 18px;
   border-bottom: 1px solid var(--cf-border);
+  margin-bottom: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 5px rgba(0,0,0,.05);
+  transition: all 0.2s ease;
+}
+.cf-post:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,.08);
 }
 
 /* header row */
-.cf-row{ display:flex; gap:12px; align-items:center; }
-.cf-avatar{
-  width: 38px; height: 38px; border-radius: 999px; background: #d9d9d9;
+.cf-row{ 
+  display: flex; 
+  gap: 12px; 
+  align-items: center;
+  margin-bottom: 2px;
 }
-.cf-avatar.sm{ width:28px; height:28px; }
-.cf-meta{ display:grid; gap:2px; }
-.cf-club{ font-weight: 800; color: var(--cf-text); }
-.cf-time{ color: var(--cf-sub); font-size: 12px; }
+.cf-avatar{
+  width: 42px; 
+  height: 42px; 
+  border-radius: 999px; 
+  background: #d9d9d9;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  border: 2px solid #ffffff;
+}
+.cf-avatar.sm{ 
+  width: 32px; 
+  height: 32px; 
+  border-width: 1px;
+}
+.cf-meta{ 
+  display: grid; 
+  gap: 3px;
+}
+.cf-club{ 
+  font-weight: 800; 
+  color: var(--cf-text);
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+.cf-time{ 
+  color: var(--cf-sub); 
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
 /* caption + media */
-.cf-caption{ margin: 10px 0; color: var(--cf-text); }
+.cf-caption{ 
+  margin: 10px 0; 
+  color: var(--cf-text); 
+  line-height: 1.4;
+  font-size: 14px;
+}
 .cf-media{
-  width: 100%; height: 180px; border-radius: 6px;
+  width: 100%; 
+  height: 220px; 
+  border-radius: 12px;
   background: var(--cf-placeholder);
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+.cf-media:hover {
+  transform: scale(0.99);
 }
 
 /* actions */
@@ -49,16 +115,59 @@
   gap: 8px;
 }
 .cf-action{
-  display:flex; align-items:center; gap:6px;
+  display: flex; 
+  align-items: center; 
+  gap: 6px;
   color: var(--cf-sub);
-  background: transparent; border: 0;
-  padding: 8px 6px; border-radius: 8px;
+  background: transparent; 
+  border: 0;
+  padding: 8px 10px; 
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
-.cf-action ion-icon{ font-size: 18px; }
+.cf-action:hover {
+  background: rgba(0,0,0,.03);
+  transform: scale(1.05);
+}
+.cf-action:active {
+  transform: scale(0.98);
+}
+.cf-action ion-icon{ 
+  font-size: 19px; 
+  transition: transform 0.2s ease;
+}
+.cf-action:hover ion-icon {
+  transform: scale(1.1);
+}
 .cf-action .cf-count{
-  font-style: normal; margin-left: 2px; font-size: 12px; color: var(--cf-sub);
+  font-style: normal; 
+  margin-left: 3px; 
+  font-size: 13px; 
+  color: var(--cf-sub);
+  font-weight: 500;
 }
-.cf-action.is-liked{ color: var(--cf-like); }
+.cf-action.is-liked{ 
+  color: var(--cf-like);
+}
+.cf-action.is-liked ion-icon {
+  filter: drop-shadow(0 0 1px rgba(214, 60, 60, 0.3));
+}
+
+.pulse-animation {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 /* modal (comments) */
 .cf-modal-toolbar{ --background: #fff; }
@@ -66,12 +175,38 @@
 .cf-modal-post{ display:flex; gap:10px; padding: 10px 16px 0 16px; }
 .cf-modal-head{ display:grid; gap:2px; }
 .cf-comments{
-  padding: 8px 16px; display:grid; gap:10px;
+  padding: 10px 16px; 
+  display: grid; 
+  gap: 12px;
 }
-.cf-cmt{ display:flex; gap:10px; }
-.cf-cmt-body{ background:#f5f5f5; border-radius:10px; padding:6px 10px; flex:1; }
-.cf-cmt-name{ font-weight:700; font-size: 13px; margin-bottom:2px; }
-.cf-cmt-text{ font-size: 13px; color:#333; }
+.cf-cmt{ 
+  display: flex; 
+  gap: 12px;
+  animation: fadeIn 0.3s ease;
+}
+.cf-cmt-body{ 
+  background: #f8f8f8; 
+  border-radius: 14px; 
+  padding: 8px 12px; 
+  flex: 1;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
+}
+.cf-cmt-name{ 
+  font-weight: 700; 
+  font-size: 13px; 
+  margin-bottom: 3px;
+  color: #222;
+}
+.cf-cmt-text{ 
+  font-size: 13px; 
+  color: #444;
+  line-height: 1.4;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .cf-cmt-input{
   --background: #fff; margin-top: 6px; padding-right: 8px;

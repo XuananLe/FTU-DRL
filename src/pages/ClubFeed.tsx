@@ -6,9 +6,10 @@ import {
   IonContent as IonModalContent, IonItem, IonTextarea, useIonToast
 } from "@ionic/react";
 import {
-  thumbsUpOutline, chatbubbleEllipsesOutline, shareSocialOutline, closeOutline
+  thumbsUpOutline, chatbubbleEllipsesOutline, shareSocialOutline, closeOutline, timeOutline
 } from "ionicons/icons";
 import "./club-feed.css";
+import "./club-feed-modal.css";
 
 /* ========= Types ========= */
 type Post = {
@@ -23,16 +24,39 @@ type Post = {
 };
 
 /* ========= Seed ========= */
-const seedPosts: Post[] = Array.from({ length: 6 }).map((_, i) => ({
-  id: i + 1,
-  club: "CLB A",
-  ago: i === 0 ? "1 giờ trước" : `${i + 1} giờ trước`,
-  caption: "Caption.....",
-  image: "", // leave empty to render placeholder
-  likes: 5 + i,
-  liked: false,
-  comments: 1 + (i % 3),
-}));
+const clubNames = ["CLB A FTU", "CLB B FTU", "CLB C FTU", "CLB D FTU"];
+const eventImages = [
+  "/assets/events/event-1.jpg",
+  "/assets/events/event-2.jpg", 
+  "/assets/events/event-3.jpg",
+  "/assets/events/event-4.jpg"
+];
+
+const captions = [
+  "Sự kiện đặc biệt sắp diễn ra vào tuần sau! Đăng ký tham gia ngay để nhận nhiều phần quà hấp dẫn và cơ hội networking với các chuyên gia trong ngành. #ftu #workshop #networking",
+  "Chúng mình vừa kết thúc buổi workshop về kỹ năng thuyết trình chuyên nghiệp. Cảm ơn các bạn đã tham gia nhiệt tình! Hãy chia sẻ cảm nghĩ của các bạn về buổi học này nhé.",
+  "Thông báo tuyển thành viên mới! CLB chúng mình đang tìm kiếm những bạn sinh viên năng động, sáng tạo để tham gia vào đội ngũ. Hạn chót nộp đơn: 20/10/2025. Điền form tại link trong bio nhé!",
+  "Tổng kết hoạt động quý III năm 2025. Một quý với nhiều thành tựu đáng nhớ! Chúc mừng các thành viên đã đồng hành cùng CLB trong suốt thời gian qua.",
+  "Hội thảo 'Khởi nghiệp trong kỷ nguyên số' đã diễn ra thành công tốt đẹp. Xin cảm ơn diễn giả và tất cả các bạn đã tham dự!",
+  "Thông báo quan trọng: Lịch họp tuần này sẽ được dời sang thứ 5, ngày 09/10/2025. Mong các bạn thành viên sắp xếp thời gian để tham dự đầy đủ nhé."
+];
+
+const seedPosts: Post[] = Array.from({ length: 6 }).map((_, i) => {
+  const clubIndex = i % clubNames.length;
+  const imageIndex = i % eventImages.length;
+  const captionIndex = i % captions.length;
+  
+  return {
+    id: i + 1,
+    club: clubNames[clubIndex],
+    ago: i === 0 ? "1 giờ trước" : i === 1 ? "2 giờ trước" : i === 2 ? "3 giờ trước" : i === 3 ? "1 ngày trước" : `${i} ngày trước`,
+    caption: captions[captionIndex],
+    image: eventImages[imageIndex],
+    likes: 5 + i * 3,
+    liked: i % 3 === 0,
+    comments: 1 + (i % 5),
+  };
+});
 
 /* ========= Component ========= */
 export default function ClubFeed() {
@@ -50,6 +74,15 @@ export default function ClubFeed() {
 
   /* ====== Interactions ====== */
   const toggleLike = (id: number) => {
+    // Add pulse animation to the like button
+    const likeButton = document.querySelector(`.cf-post-${id} .cf-action:first-child`);
+    if (likeButton) {
+      likeButton.classList.add('pulse-animation');
+      setTimeout(() => {
+        likeButton.classList.remove('pulse-animation');
+      }, 500);
+    }
+    
     setPosts(prev =>
       prev.map(p =>
         p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p
@@ -64,9 +97,33 @@ export default function ClubFeed() {
 
   const addComment = () => {
     if (!commentText.trim()) return;
+    
+    // Update post comment count
     setPosts(prev =>
       prev.map(p => (p.id === activePostId ? { ...p, comments: p.comments + 1 } : p))
     );
+    
+    // Add the new comment to the DOM
+    const commentsContainer = document.querySelector('.cf-comments');
+    if (commentsContainer) {
+      // Random avatar image
+      const randomImageIndex = Math.floor(Math.random() * eventImages.length);
+      const newComment = document.createElement('div');
+      newComment.className = 'cf-cmt cf-cmt-new';
+      newComment.innerHTML = `
+        <div 
+          class="cf-avatar sm" 
+          style="background-image: url(${eventImages[randomImageIndex]}); background-size: cover; background-position: center;"
+        ></div>
+        <div class="cf-cmt-body">
+          <div class="cf-cmt-name">Bạn</div>
+          <div class="cf-cmt-text">${commentText}</div>
+        </div>
+      `;
+      commentsContainer.appendChild(newComment);
+    }
+    
+    // Clear comment input
     setCommentText("");
   };
 
@@ -95,12 +152,17 @@ export default function ClubFeed() {
   const onRefresh = (e: CustomEvent) => {
     // fake refresh: prepend a new post
     setTimeout(() => {
+      // Random club and image
+      const clubIndex = Math.floor(Math.random() * clubNames.length);
+      const imageIndex = Math.floor(Math.random() * eventImages.length);
+      
       setPosts(p => [
         {
           id: Date.now(),
-          club: "CLB A",
+          club: clubNames[clubIndex],
           ago: "vừa xong",
-          caption: "Caption.....",
+          caption: "Thông báo mới: Chúng mình sắp tổ chức sự kiện giao lưu với sinh viên khoa Ngoại giao! Theo dõi để cập nhật thông tin mới nhất nhé. #ftu #giaoluu #sukien",
+          image: eventImages[imageIndex],
           likes: 0,
           comments: 0,
           liked: false,
@@ -115,15 +177,23 @@ export default function ClubFeed() {
     setTimeout(() => {
       setPosts(prev => [
         ...prev,
-        ...Array.from({ length: 4 }).map((_, k) => ({
-          id: prev.length + k + 1,
-          club: "CLB A",
-          ago: "3 giờ trước",
-          caption: "Caption.....",
-          likes: 2 + k,
-          comments: k % 2,
-          liked: false,
-        })),
+        ...Array.from({ length: 2 }).map((_, k) => {
+          // Random indices for more variety
+          const clubIndex = Math.floor(Math.random() * clubNames.length);
+          const imageIndex = Math.floor(Math.random() * eventImages.length);
+          const captionIndex = Math.floor(Math.random() * captions.length);
+          
+          return {
+            id: prev.length + k + 1,
+            club: clubNames[clubIndex],
+            ago: "3 giờ trước",
+            caption: captions[captionIndex],
+            image: eventImages[imageIndex],
+            likes: 2 + Math.floor(Math.random() * 20),
+            comments: Math.floor(Math.random() * 5),
+            liked: Math.random() > 0.7,
+          };
+        }),
       ]);
       if (posts.length > 20) setHasMore(false);
       (e.target as HTMLIonInfiniteScrollElement).complete();
@@ -134,18 +204,34 @@ export default function ClubFeed() {
     <IonPage>
       <IonContent className="cf-content" fullscreen>
         <IonRefresher slot="fixed" onIonRefresh={onRefresh}>
-          <IonRefresherContent />
+          <IonRefresherContent 
+            pullingIcon="chevron-down-outline"
+            pullingText="Kéo để làm mới"
+            refreshingSpinner="circles"
+            refreshingText="Đang cập nhật..."
+          />
         </IonRefresher>
 
         <div className="cf-list">
           {posts.map((p) => (
-            <article key={p.id} className="cf-post">
+            <article key={p.id} className={`cf-post cf-post-${p.id}`}>
               {/* Header row: avatar + club + time */}
               <div className="cf-row">
-                <div className="cf-avatar" />
+                <div 
+                  className="cf-avatar" 
+                  style={p.image ? {
+                    backgroundImage: `url(${p.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  } : undefined}
+                  title={p.club}
+                />
                 <div className="cf-meta">
                   <div className="cf-club">{p.club}</div>
-                  <div className="cf-time">{p.ago}</div>
+                  <div className="cf-time">
+                    <IonIcon icon={timeOutline} style={{ fontSize: '14px', marginRight: '2px' }} />
+                    {p.ago}
+                  </div>
                 </div>
               </div>
 
@@ -153,7 +239,18 @@ export default function ClubFeed() {
               <p className="cf-caption">{p.caption}</p>
 
               {/* Image / placeholder */}
-              <div className="cf-media" />
+              {p.image ? (
+                <div 
+                  className="cf-media" 
+                  style={{
+                    backgroundImage: `url(${p.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                />
+              ) : (
+                <div className="cf-media" />
+              )}
 
               {/* Actions */}
               <div className="cf-actions">
@@ -191,7 +288,7 @@ export default function ClubFeed() {
       </IonContent>
 
       {/* ===== Comments Bottom Sheet ===== */}
-      <IonModal ref={modalRef} initialBreakpoint={0.55} breakpoints={[0, 0.55, 0.85]}>
+      <IonModal ref={modalRef} initialBreakpoint={0.55} breakpoints={[0, 0.55, 0.85]} className="comments-modal">
         <IonModalHeader>
           <IonModalToolbar className="cf-modal-toolbar">
             <IonButtons slot="start">
@@ -214,19 +311,47 @@ export default function ClubFeed() {
               </div>
 
               <div className="cf-comments">
-                {/* demo comments */}
+                {/* demo comments - more realistic */}
                 <div className="cf-cmt">
-                  <div className="cf-avatar sm" />
+                  <div 
+                    className="cf-avatar sm" 
+                    style={{
+                      backgroundImage: `url(${eventImages[0]})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
                   <div className="cf-cmt-body">
-                    <div className="cf-cmt-name">Bạn B</div>
-                    <div className="cf-cmt-text">Rất hay!</div>
+                    <div className="cf-cmt-name">Nguyễn Văn A</div>
+                    <div className="cf-cmt-text">Sự kiện rất hay! Mong chờ được tham gia.</div>
                   </div>
                 </div>
                 <div className="cf-cmt">
-                  <div className="cf-avatar sm" />
+                  <div 
+                    className="cf-avatar sm"
+                    style={{
+                      backgroundImage: `url(${eventImages[1]})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
                   <div className="cf-cmt-body">
-                    <div className="cf-cmt-name">Bạn C</div>
-                    <div className="cf-cmt-text">Cho mình xin ảnh gốc với ạ.</div>
+                    <div className="cf-cmt-name">Trần Thị B</div>
+                    <div className="cf-cmt-text">Cho mình hỏi thời gian cụ thể của sự kiện là khi nào vậy?</div>
+                  </div>
+                </div>
+                <div className="cf-cmt">
+                  <div 
+                    className="cf-avatar sm"
+                    style={{
+                      backgroundImage: `url(${eventImages[2]})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
+                  <div className="cf-cmt-body">
+                    <div className="cf-cmt-name">Lê Hoàng C</div>
+                    <div className="cf-cmt-text">Mình đã đăng ký rồi, các bạn nhớ đăng ký sớm nhé vì số lượng có hạn đó!</div>
                   </div>
                 </div>
               </div>
