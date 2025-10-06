@@ -12,7 +12,6 @@ export default function AdminClubs() {
     <div className="board">
       <IonCard>
         <IonCardHeader>
-          <IonCardTitle>Quản lý CLB <span className="muted">Tổng {clubs.length} CLB</span></IonCardTitle>
         </IonCardHeader>
         <IonCardContent className="card-pad">
           <div className="table">

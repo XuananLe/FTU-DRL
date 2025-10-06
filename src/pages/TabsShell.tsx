@@ -65,7 +65,7 @@ export default function TabsShell() {
           path="/tabs/qr"
           render={() => (role === "clb" ? <ClubQR /> : <ScanCheckin />)}
         />
-
+Dashboard
         <Route exact path="/tabs/clb/dashboard" component={ClubProfile} />
         <Route exact path="/tabs/clb/feed"      component={ClubFeed} />
         <Route exact path="/tabs/clb/mail" component={ClubMail} />
