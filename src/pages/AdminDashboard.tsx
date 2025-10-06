@@ -4,9 +4,11 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonButton, IonIcon, IonMenuButton,
   IonSplitPane,
-  IonMenu
+  IonMenu,
+  IonAlert
 } from "@ionic/react";
-import { downloadOutline, menuOutline, closeOutline } from "ionicons/icons";
+import { downloadOutline, menuOutline, closeOutline, logOutOutline } from "ionicons/icons";
+import { useIonRouter } from "@ionic/react";
 import "./admin.css";
 
 type Series = ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -130,6 +132,8 @@ type MenuKey = "dashboard" | "clubs" | "students" | "approvals";
 export default function AdminDashboard() {
   const [menu, setMenu] = useState<MenuKey>("dashboard");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const router = useIonRouter();
   
   // Add resize listener to update chart sizes
   useEffect(() => {
@@ -142,6 +146,17 @@ export default function AdminDashboard() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // ==== SIGN OUT HANDLER ====
+  const handleSignOut = () => {
+    // Clear auth tokens and user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    setShowSignOutConfirm(false);
+    // Navigate to auth page
+    router.push("/auth", "root", "replace");
+  };
 
   // ==== CHART OPTIONS ====
   const topClubsOptions: ApexCharts.ApexOptions = useMemo(() => ({
@@ -728,6 +743,18 @@ export default function AdminDashboard() {
           >
             Phê duyệt sự kiện
           </button>
+          
+          {/* Sign out button */}
+          <button 
+            className="sign-out-btn"
+            onClick={() => {
+              setShowSignOutConfirm(true);
+              if (window.innerWidth <= 768) document.querySelector('ion-menu')?.close();
+            }}
+          >
+            <IonIcon icon={logOutOutline} className="sign-out-icon" />
+            Đăng xuất
+          </button>
           </div>
         </IonContent>
       </IonMenu>
@@ -767,6 +794,18 @@ export default function AdminDashboard() {
           </div>
         </IonContent>
       </IonPage>
+      
+      {/* Sign Out Confirmation Alert */}
+      <IonAlert
+        isOpen={showSignOutConfirm}
+        header="Xác nhận đăng xuất"
+        message="Bạn có chắc chắn muốn đăng xuất khỏi tài khoản quản trị không?"
+        buttons={[
+          { text: "Hủy", role: "cancel", handler: () => setShowSignOutConfirm(false) },
+          { text: "Đăng xuất", role: "destructive", handler: handleSignOut },
+        ]}
+        onDidDismiss={() => setShowSignOutConfirm(false)}
+      />
     </IonSplitPane>
   );
 }
