@@ -87,7 +87,7 @@ export default function ScanCheckin() {
         const idx = vids.findIndex(d => /back|rear|environment/i.test(d.label));
         const init = idx >= 0 ? idx : 0;
         setInitialIndex(init);     // index thực tế đang dùng ban đầu
-        // KHÔNG set deviceIndex ở đây nữa, để lần bấm đầu mới set
+        setDeviceIndex(init);      // Also set deviceIndex to make it work on first click
         setDevicesReady(true);
       } else {
         setDevicesReady(false);
@@ -300,6 +300,7 @@ export default function ScanCheckin() {
                         const current = (deviceIndex ?? initialIndex);
                         const next = (current + 1) % devices.length;
                         setDeviceIndex(next);     // đổi index → đổi deviceId
+                        setInitialIndex(next);    // Also update initialIndex to ensure consistency
                         setNonce(n => n + 1);     // tăng nonce để chắc chắn remount
                       }}
                     >
