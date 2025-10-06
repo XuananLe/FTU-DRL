@@ -12,6 +12,14 @@ import "./RLAssessmentForm.css";
 import { useRef } from "react";
 import { useEffect } from "react";
 
+interface CounterRowProps {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+}
+
 const CounterRow: React.FC<CounterRowProps> = ({ label, value, onChange, min = 1, max = 5 }) => {
   const handleClick = (num: number) => {
     // If clicking the currently selected value, unselect it (set to 0)
@@ -22,20 +30,21 @@ const CounterRow: React.FC<CounterRowProps> = ({ label, value, onChange, min = 1
     }
   };
 
+  const opts = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+
   return (
     <div className="counter-row">
-      <span className="counter-label">{label}</span>
-      <div className="counter-chips">
-        {Array.from({ length: max - min + 1 }, (_, i) => min + i).map((num) => (
-          <div
-            key={num}
-            className={`counter-chip ${value === num ? "selected" : ""}`}
-            onClick={() => handleClick(num)}
-          >
-            {num}
-          </div>
-        ))}
-      </div>
+      {opts.map(num => (
+        <button
+          key={num}
+          className={`chip ${value === num ? "active" : ""}`}
+          onClick={() => handleClick(num)}
+          type="button"
+          title={value === num ? "Bỏ chọn" : `Chọn ${num}`}
+        >
+          {num}
+        </button>
+      ))}
     </div>
   );
 };
@@ -433,7 +442,7 @@ export default function RLAssessmentForm() {
                     <IonCardContent>
                         <div className="badge-row green">2 ĐIỂM / LẦN</div>
                         <div className="desc">- Tham gia hoạt động văn hóa, văn nghệ, thể thao</div>
-                        <CounterRow value={vhnt} onChange={count_vhnt} />
+                        <CounterRow label="Số lần tham gia" value={vhnt} onChange={count_vhnt} />
                     </IonCardContent>
                 </IonCard>
 
