@@ -12,25 +12,33 @@ import "./RLAssessmentForm.css";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-function CounterRow({
-    value, onChange, max = 5,
-}: { value: number; onChange: (n: number) => void; max?: number }) {
-    const opts = [1, 2, 3, 4, 5];
-    return (
-        <div className="counter-row">
-            {opts.map(n => (
-                <button
-                    key={n}
-                    className={`chip ${value === n ? 'active' : ''}`}
-                    onClick={() => onChange(n)}
-                    type="button"
-                >
-                    {n === 5 ? "5" : n}
-                </button>
-            ))}
-        </div>
-    );
-}
+const CounterRow: React.FC<CounterRowProps> = ({ label, value, onChange, min = 1, max = 5 }) => {
+  const handleClick = (num: number) => {
+    // If clicking the currently selected value, unselect it (set to 0)
+    if (value === num) {
+      onChange(0);
+    } else {
+      onChange(num);
+    }
+  };
+
+  return (
+    <div className="counter-row">
+      <span className="counter-label">{label}</span>
+      <div className="counter-chips">
+        {Array.from({ length: max - min + 1 }, (_, i) => min + i).map((num) => (
+          <div
+            key={num}
+            className={`counter-chip ${value === num ? "selected" : ""}`}
+            onClick={() => handleClick(num)}
+          >
+            {num}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default function RLAssessmentForm() {
     // ==== UPLOAD STATE ====
@@ -109,15 +117,21 @@ export default function RLAssessmentForm() {
         max?: number;
         placeholderBase?: string;
     }) {
-        const opts = [1, 2, 3, 4, 5];
+        const opts = [1, 2, 3, 4, 5]; // Remove the 0 option
 
         const handleClick = (n: number) => {
-            onChange(n);
-            const need = Math.min(n, max);            
-            if (need > details.length) {
-                setDetails([...details, ...Array(need - details.length).fill("")]);
+            // If clicking the currently selected value, unselect it (set to 0)
+            if (value === n) {
+                onChange(0);
+                setDetails([]); // Clear details when unselecting
             } else {
-                setDetails(details.slice(0, need));
+                onChange(n);
+                const need = Math.min(n, max);            
+                if (need > details.length) {
+                    setDetails([...details, ...Array(need - details.length).fill("")]);
+                } else {
+                    setDetails(details.slice(0, need));
+                }
             }
         };
 
@@ -136,6 +150,7 @@ export default function RLAssessmentForm() {
                             className={`chip ${value === n ? "active" : ""}`}
                             onClick={() => handleClick(n)}
                             type="button"
+                            title={value === n ? "Bỏ chọn" : `Chọn ${n}`}
                         >
                             {n === 5 ? "5" : n}
                         </button>
@@ -339,28 +354,24 @@ export default function RLAssessmentForm() {
                         1.2 TINH THẦN VƯỢT KHÓ <small>(2đ) – OPTIONAL</small>
                     </div>
                     <IonCardContent>
-                        <IonItem lines="none" className="clean-item checkbox-item ion-text-wrap">
-                            <IonCheckbox
-                                slot="start"
-                                checked={opt12}
-                                onIonChange={(e) => setOpt12(e.detail.checked)}
-                            />
-                            <IonLabel className="ion-text-wrap">
+                        <div className="custom-checkbox-item" onClick={() => setOpt12(!opt12)}>
+                            <div className={`custom-checkbox ${opt12 ? 'checked' : ''}`}>
+                                {opt12 && <span className="checkmark">✓</span>}
+                            </div>
+                            <label className="checkbox-label">
                                 Tôi muốn khai báo phần 1.2 (chỉ tick nếu áp dụng)
-                            </IonLabel>
-                        </IonItem>
+                            </label>
+                        </div>
 
                         {opt12 && (
-                            <IonItem lines="none" className="clean-item checkbox-item ion-text-wrap">
-                                <IonCheckbox
-                                    slot="start"
-                                    checked={isDiscounted}
-                                    onIonChange={(e) => setIsDiscounted(e.detail.checked)}
-                                />
-                                <IonLabel className="ion-text-wrap">
+                            <div className="custom-checkbox-item" onClick={() => setIsDiscounted(!isDiscounted)}>
+                                <div className={`custom-checkbox ${isDiscounted ? 'checked' : ''}`}>
+                                    {isDiscounted && <span className="checkmark">✓</span>}
+                                </div>
+                                <label className="checkbox-label">
                                     Tôi thuộc đối tượng được miễn giảm học phí và có kết quả học tập từ loại khá trở lên
-                                </IonLabel>
-                            </IonItem>
+                                </label>
+                            </div>
                         )}
                     </IonCardContent>
                 </IonCard>
@@ -455,15 +466,14 @@ export default function RLAssessmentForm() {
                         <div className="badge-row orange">5 ĐIỂM / LẦN</div>
                         <div className="desc">- Hiến máu nhân đạo</div>
 
-                        <IonItem className="clean-item checkbox-item" lines="none">
-                        <IonCheckbox
-                            checked={hmndYes}
-                            onIonChange={(e) => setHmndYes(e.detail.checked)}
-                            labelPlacement="end"
-                        >
-                            Đã tham gia hiến máu nhân đạo (5 điểm)
-                        </IonCheckbox>
-                        </IonItem>
+                        <div className="custom-checkbox-item" onClick={() => setHmndYes(!hmndYes)}>
+                            <div className={`custom-checkbox ${hmndYes ? 'checked' : ''}`}>
+                                {hmndYes && <span className="checkmark">✓</span>}
+                            </div>
+                            <label className="checkbox-label">
+                                Đã tham gia hiến máu nhân đạo (5 điểm)
+                            </label>
+                        </div>
                     </IonCardContent>
                 </IonCard>
 
@@ -548,22 +558,22 @@ export default function RLAssessmentForm() {
                 <IonCard className="sheet compact">
                     <div className="subhead">5.2 THÀNH TÍCH ĐẶC BIỆT <small>(10đ)</small></div>
                     <IonCardContent>
-                        <IonItem className="clean-item checkbox-item" lines="full">
-                            <IonCheckbox
-                                checked={tt_gk}
-                                onIonChange={(e) => set_tt_gk(e.detail.checked)}
-                                labelPlacement="end">
+                        <div className="custom-checkbox-item" onClick={() => set_tt_gk(!tt_gk)}>
+                            <div className={`custom-checkbox ${tt_gk ? 'checked' : ''}`}>
+                                {tt_gk && <span className="checkmark">✓</span>}
+                            </div>
+                            <label className="checkbox-label">
                                 Có Giấy khen (5 điểm)
-                            </IonCheckbox>
-                        </IonItem>
-                        <IonItem className="clean-item checkbox-item" lines="none">
-                            <IonCheckbox
-                                checked={tt_bk}
-                                onIonChange={(e) => set_tt_bk(e.detail.checked)}
-                                labelPlacement="end">
+                            </label>
+                        </div>
+                        <div className="custom-checkbox-item" onClick={() => set_tt_bk(!tt_bk)}>
+                            <div className={`custom-checkbox ${tt_bk ? 'checked' : ''}`}>
+                                {tt_bk && <span className="checkmark">✓</span>}
+                            </div>
+                            <label className="checkbox-label">
                                 Có Bằng khen (10 điểm)
-                            </IonCheckbox>
-                        </IonItem>
+                            </label>
+                        </div>
                     </IonCardContent>
                 </IonCard>
 

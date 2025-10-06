@@ -359,6 +359,210 @@ ion-checkbox {
 /* (tuỳ chọn) thu nhỏ icon checkbox chút cho cân đối nhiều dòng */
 ion-checkbox::part(container) { width: 1.125rem; height: 1.125rem; }
 
+/* Custom Checkbox Styles */
+.custom-checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fdfdfd;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.custom-checkbox-item:hover {
+  background-color: rgba(220, 38, 127, 0.02);
+  border-color: rgba(220, 38, 127, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 2px; /* Align with text baseline */
+}
+
+.custom-checkbox.checked {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.custom-checkbox .checkmark {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  animation: checkmarkAppear 0.2s ease-out;
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.checkbox-label {
+  color: #374151;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  cursor: pointer;
+  flex: 1;
+  margin: 0;
+}
+
+.custom-checkbox-item:hover .checkbox-label {
+  color: #111827;
+}
+
+/* Enhanced Counter Styles */
+.counter-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  min-width: 44px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.chip:hover:not(.active) {
+  background: rgba(220, 38, 38, 0.05);
+  border-color: rgba(220, 38, 38, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.chip.active {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border-color: #dc2626;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  transform: translateY(-1px);
+}
+
+
+
+/* Details section improvements */
+.details-wrap {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  100% {
+    opacity: 1;
+    max-height: 500px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.details-head {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.detail-item {
+  margin-bottom: 0.5rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.detail-input {
+  --padding-start: 0.75rem;
+  --padding-end: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* Badge improvements */
+.badge-row {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0.5rem 0;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.badge-row.green {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.badge-row.yellow {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.badge-row.orange {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.badge-row.red {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
 /* Additional responsive styles */
 @media (max-width: 576px) {
   .actions {
@@ -379,6 +583,29 @@ ion-checkbox::part(container) { width: 1.125rem; height: 1.125rem; }
   
   .total-card {
     max-width: 100%;
+  }
+  
+  .custom-checkbox-item {
+    padding: 0.6rem 0.4rem;
+  }
+  
+  .counter-row {
+    gap: 0.4rem;
+  }
+  
+  .chip {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    min-width: 40px;
+  }
+  
+  .custom-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .checkbox-label {
+    font-size: 0.9rem;
   }
 }
 
