@@ -114,3 +114,45 @@ body.scanner-active ion-fab {
 /* Nút & card */
 .btn-row{ display:flex; gap:12px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
 .event-card ion-item{ --background: transparent; }
+
+.qr-wrap{
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto 12px auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Overlay khi tắt scanner */
+.qr-overlay{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(0,0,0,0.55);
+  font-size: 16px; padding: 20px; text-align: center;
+}
+
+/* Nút & card */
+.btn-row{ display:flex; gap:12px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
+.event-card ion-item{ --background: transparent; }
+
+.qr-wrap{
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto 12px auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+.qr-overlay{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(0,0,0,0.55);
+  font-size: 16px; padding: 20px; text-align: center;
+}
+.btn-row{ display:flex; gap:12px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
+.event-card ion-item{ --background: transparent; }

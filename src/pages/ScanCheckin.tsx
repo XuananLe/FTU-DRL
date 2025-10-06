@@ -4,8 +4,7 @@ import {
   IonCard, IonCardHeader, IonCardTitle, IonCardContent,
   IonButton, IonItem, IonLabel, IonToast, IonNote
 } from "@ionic/react";
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
-import type { Html5QrcodeFullConfig } from "html5-qrcode";
+import { Scanner, type IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import Webcam from "react-webcam";
 import "./scan.css";
 
@@ -39,53 +38,13 @@ function haversineMeters(lat1: number, lon1: number, lat2: number, lon2: number)
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
   const Δφ = toRad(lat2 - lat1);
   const Δλ = toRad(lon2 - lon1);
-  const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+  const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
-const isIOS =
-  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && (navigator as any).maxTouchPoints > 1);
 
 export default function ScanCheckin() {
-  /** ====== QR state ====== */
-  const REGION_ID = "qr-region";
-  const qrRef = useRef<Html5Qrcode | null>(null);
-  const startedRef = useRef(false);
-  const stoppingRef = useRef(false);
-
-  const [scanning, setScanning] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [decoded, setDecoded] = useState<EventPayload | null>(null);
-
-  /** ====== Square wrapper refs ====== */
+  /** ====== UI / square layout ====== */
   const wrapRef = useRef<HTMLDivElement>(null);
-
-  /** ====== Camera list/state ====== */
-  const [cams, setCams] = useState<{ id: string; label: string }[]>([]);
-  const [activeCamId, setActiveCamId] = useState<string | null>(null);
-
-  /** ====== GPS state ====== */
-  const [userLat, setUserLat] = useState<number | null>(null);
-  const [userLng, setUserLng] = useState<number | null>(null);
-  const [userAcc, setUserAcc] = useState<number | null>(null);
-  const [gpsError, setGpsError] = useState<string | null>(null);
-  const [gettingGPS, setGettingGPS] = useState(false);
-
-  /** ====== Validation ====== */
-  const [distance, setDistance] = useState<number | null>(null);
-  const [timeLeftMin, setTimeLeftMin] = useState<number | null>(null);
-  const [eligible, setEligible] = useState<{ ok: boolean; reason?: string }>({ ok: false });
-
-  /** ====== Selfie bằng react-webcam ====== */
-  const [photoDataUrl, setPhotoDataUrl] = useState<string>("");
-  const [showWebcam, setShowWebcam] = useState(false);
-  const webcamRef = useRef<Webcam>(null);
-
-  /** ====== Toast ====== */
-  const [toast, setToast] = useState<{ open: boolean; msg: string }>({ open: false, msg: "" });
-  const toastMsg = (msg: string) => setToast({ open: true, msg });
-
-  /** ====== Square wrapper: always square (CSS + JS fallback) ====== */
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -103,137 +62,79 @@ export default function ScanCheckin() {
     };
   }, []);
 
-  /** ====== QR start/stop ====== */
-  const ensureInstance = () => {
-    if (!qrRef.current) {
-      const cfg: Html5QrcodeFullConfig = {
-        verbose: false,
-        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-      };
-      qrRef.current = new Html5Qrcode(REGION_ID, cfg as any);
+  /** ====== Scan state ====== */
+  const [scanning, setScanning] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [decoded, setDecoded] = useState<EventPayload | null>(null);
+
+  /** ====== Camera devices ====== */
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [deviceIndex, setDeviceIndex] = useState<number | null>(null);
+  const [initialIndex, setInitialIndex] = useState<number>(0);
+  const [devicesReady, setDevicesReady] = useState(false);
+  const [nonce, setNonce] = useState(0);
+
+  const activeDeviceId =
+    (deviceIndex != null ? devices[deviceIndex]?.deviceId : undefined) ??
+    (devices[initialIndex]?.deviceId);
+
+  const refreshDevices = useCallback(async () => {
+    try {
+      const list = await navigator.mediaDevices.enumerateDevices();
+      const vids = list.filter(d => d.kind === "videoinput");
+      setDevices(vids);
+      if (vids.length) {
+        const idx = vids.findIndex(d => /back|rear|environment/i.test(d.label));
+        const init = idx >= 0 ? idx : 0;
+        setInitialIndex(init);     // index thực tế đang dùng ban đầu
+        // KHÔNG set deviceIndex ở đây nữa, để lần bấm đầu mới set
+        setDevicesReady(true);
+      } else {
+        setDevicesReady(false);
+      }
+    } catch {
+      setDevicesReady(false);
     }
-    return qrRef.current!;
-  };
+  }, []);
 
-  // qrbox px dựa theo bề rộng khung → luôn vuông & ổn định
-  const getQrboxPx = () => {
-    const w = wrapRef.current?.clientWidth ?? 320;
-    return Math.floor(w * 0.80); // 80% khung
-  };
+  /** ====== GPS ====== */
+  const [userLat, setUserLat] = useState<number | null>(null);
+  const [userLng, setUserLng] = useState<number | null>(null);
+  const [userAcc, setUserAcc] = useState<number | null>(null);
+  const [gpsError, setGpsError] = useState<string | null>(null);
+  const [gettingGPS, setGettingGPS] = useState(false);
 
+  /** ====== Validation ====== */
+  const [distance, setDistance] = useState<number | null>(null);
+  const [timeLeftMin, setTimeLeftMin] = useState<number | null>(null);
+  const [eligible, setEligible] = useState<{ ok: boolean; reason?: string }>({ ok: false });
+
+  /** ====== Selfie ====== */
+  const [photoDataUrl, setPhotoDataUrl] = useState<string>("");
+  const [showWebcam, setShowWebcam] = useState(false);
+  const webcamRef = useRef<Webcam>(null);
+
+  /** ====== Toast ====== */
+  const [toast, setToast] = useState<{ open: boolean; msg: string }>({ open: false, msg: "" });
+  const toastMsg = (msg: string) => setToast({ open: true, msg });
+
+  /** ====== Start/Stop ====== */
   const start = async () => {
     if (busy || scanning) return;
     if (!window.isSecureContext) { toastMsg("Cần HTTPS hoặc localhost để mở camera."); return; }
     setBusy(true);
     try {
       await preflightGPS();
-      await doStart();
-      startedRef.current = true;
       setScanning(true);
+      // cho stream chạy trước, iOS mới trả label đầy đủ
+      await sleep(300);
+      await refreshDevices();
     } catch (e: any) {
-      const msg = String(e?.message || e || "");
-      if (/AbortError/i.test(msg)) {
-        try { await sleep(250); await doStart(); startedRef.current = true; setScanning(true); }
-        catch (e2: any) {
-          toastMsg("Không mở được camera: " + (e2?.message || e2));
-          if (startedRef.current) { try { qrRef.current?.clear(); } catch {} startedRef.current = false; }
-        }
-      } else {
-        toastMsg("Không mở được camera: " + msg);
-        if (startedRef.current) { try { qrRef.current?.clear(); } catch {} startedRef.current = false; }
-      }
+      toastMsg("Không mở được camera: " + (e?.message || e));
+      setScanning(false);
     } finally { setBusy(false); }
   };
-
-  const stop = async () => {
-    if (busy || !scanning || stoppingRef.current) return;
-    stoppingRef.current = true;
-    setBusy(true);
-    try {
-      if (qrRef.current) {
-        await qrRef.current.stop();
-        if (startedRef.current) { qrRef.current.clear(); startedRef.current = false; }
-      }
-      setScanning(false);
-    } catch {} finally { stoppingRef.current = false; setBusy(false); }
-  };
-
-  /** ====== Camera start helpers (iOS-safe) ====== */
-  const tryStart = async (cameraConfig: { facingMode?: string } | string) => {
-    const qr = ensureInstance();
-    const qrboxPx = getQrboxPx();
-    await qr.start(
-      cameraConfig as any,
-      {
-        fps: 15,
-        qrbox: { width: qrboxPx, height: qrboxPx }, // luôn vuông theo px
-        aspectRatio: 1.0,
-      },
-      onScanSuccess,
-      onScanError
-    );
-  };
-
-  const refreshCameras = async () => {
-    try {
-      const list = await Html5Qrcode.getCameras();
-      const mapped = list.map(c => ({ id: c.id, label: c.label || "" }));
-      setCams(mapped);
-      return mapped;
-    } catch {
-      return [];
-    }
-  };
-
-  const doStart = async () => {
-    // iOS: ưu tiên camera sau qua facingMode
-    if (isIOS) {
-      try {
-        await tryStart({ facingMode: "environment" });
-        startedRef.current = true;
-        setScanning(true);
-        const list = await refreshCameras(); // sau khi grant label đầy đủ hơn
-        const guessBack = list.find(c => /back|rear|environment/i.test(c.label));
-        if (guessBack) setActiveCamId(guessBack.id);
-        return;
-      } catch { /* fallback dưới */ }
-    }
-    // Non-iOS hoặc iOS fail: chọn theo label/id
-    const list = await refreshCameras();
-    if (!list.length) throw new Error("Không tìm thấy camera");
-    const back = list.find(c => /back|rear|environment/i.test(c.label)) || list[0];
-    try {
-      await tryStart(back.id);
-      startedRef.current = true;
-      setScanning(true);
-      setActiveCamId(back.id);
-    } catch (e2) {
-      if (list[0]) {
-        await tryStart(list[0].id);
-        startedRef.current = true;
-        setScanning(true);
-        setActiveCamId(list[0].id);
-      } else {
-        throw e2;
-      }
-    }
-  };
-
-  /** ====== Relayout: restart khi đổi hướng/resize để cập nhật qrbox ====== */
-  useEffect(() => {
-    const relayout = async () => {
-      if (!scanning) return;
-      await stop();
-      await start(); // tính lại qrbox theo khung mới
-    };
-    window.addEventListener("orientationchange", relayout);
-    window.addEventListener("resize", relayout);
-    return () => {
-      window.removeEventListener("orientationchange", relayout);
-      window.removeEventListener("resize", relayout);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scanning]);
+  const stop = () => setScanning(false);
 
   /** ====== GPS ====== */
   async function preflightGPS() {
@@ -244,7 +145,7 @@ export default function ScanCheckin() {
         ? await navigator.permissions.query({ name: "geolocation" as any })
         : null;
       if (!perm || perm.state !== "granted") await askUserGPS();
-    } catch {}
+    } catch { }
   }
   async function askUserGPS() {
     if (!("geolocation" in navigator)) { setGpsError("Trình duyệt không hỗ trợ định vị."); return null; }
@@ -260,7 +161,6 @@ export default function ScanCheckin() {
 
   /** ====== Eligibility ====== */
   function evaluateEligibility(payload: EventPayload) {
-    // time
     let timeOk = true, timeReason: string | undefined, minutesLeft: number | null = null;
     if (payload.expMin && Number.isFinite(payload.expMin)) {
       const start = parseEventDateTimeISO(payload.d, payload.tm);
@@ -271,7 +171,6 @@ export default function ScanCheckin() {
     }
     setTimeLeftMin(minutesLeft);
 
-    // distance
     let distOk = true, distReason: string | undefined, dMeters: number | null = null;
     if (payload.gps && userLat != null && userLng != null) {
       dMeters = haversineMeters(userLat, userLng, payload.gps.lat, payload.gps.lng);
@@ -279,13 +178,11 @@ export default function ScanCheckin() {
       if (dMeters > dynamicRadius) { distOk = false; distReason = `Ngoài phạm vi (cách ~${Math.round(dMeters)}m, giới hạn ~${Math.round(dynamicRadius)}m).`; }
     }
     setDistance(dMeters);
-
-    const ok = timeOk && distOk;
-    setEligible({ ok, reason: !timeOk ? timeReason : !distOk ? distReason : undefined });
+    setEligible({ ok: timeOk && distOk, reason: !timeOk ? timeReason : !distOk ? distReason : undefined });
   }
 
-  /** ====== QR callbacks ====== */
-  const onScanSuccess = async (text: string) => {
+  /** ====== Decode flow ====== */
+  const onDecode = async (text: string) => {
     try {
       const obj = JSON.parse(text);
       if (isEventPayload(obj)) {
@@ -295,7 +192,7 @@ export default function ScanCheckin() {
           if (!got && obj.gps) setEligible({ ok: false, reason: "Cần cho phép truy cập vị trí để kiểm tra phạm vi." });
           else evaluateEligibility(obj);
         } else evaluateEligibility(obj);
-        await stop();          // nhường camera cho selfie
+        stop();
         setShowWebcam(true);
       } else {
         toastMsg("QR không đúng định dạng sự kiện");
@@ -304,27 +201,17 @@ export default function ScanCheckin() {
       toastMsg("Đã quét: " + text);
     }
   };
-  const onScanError = (_msg: string) => {};
 
-  useEffect(() => { if (decoded) evaluateEligibility(decoded); /* eslint-disable-next-line */ }, [userLat, userLng, userAcc]);
+  // API mới: onScan(detectedCodes)
+  const onScan = (detectedCodes: IDetectedBarcode[]) => {
+    const text = detectedCodes?.[0]?.rawValue;
+    if (text) onDecode(text);
+  };
 
-  useEffect(() => {
-    const onHide = () => { if (document.visibilityState !== "visible") stop(); };
-    document.addEventListener("visibilitychange", onHide);
-    window.addEventListener("pagehide", stop);
-    window.addEventListener("beforeunload", stop);
-    return () => {
-      document.removeEventListener("visibilitychange", onHide);
-      window.removeEventListener("pagehide", stop);
-      window.removeEventListener("beforeunload", stop);
-      (async () => {
-        try { if (scanning) await qrRef.current?.stop(); } catch {}
-        try { if (startedRef.current) qrRef.current?.clear(); } catch {}
-        startedRef.current = false;
-      })();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Đúng kiểu: (error: unknown) => void
+  const onError = (_error: unknown) => {
+    // tránh spam toast; có thể log nếu cần
+  };
 
   /** ====== React-Webcam ====== */
   const videoConstraints: MediaTrackConstraints = {
@@ -366,36 +253,54 @@ export default function ScanCheckin() {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {/* Scanner square */}
+        {/* Scanner */}
         {!decoded && (
           <>
             <div ref={wrapRef} className="qr-wrap">
-              <div id={REGION_ID} className="qr-cam" />
-              {!scanning && <div className="qr-overlay">Camera đang tắt</div>}
+              {scanning ? (
+                <Scanner
+                  key={`${activeDeviceId || "default"}:${nonce}`}   // ⭐ force remount mỗi lần đổi camera
+                  onScan={onScan}
+                  onError={onError}
+                  constraints={
+                    activeDeviceId
+                      ? {
+                        deviceId: { exact: activeDeviceId },
+                        aspectRatio: 1,
+                        width: { ideal: 1280 },
+                        height: { ideal: 1280 },
+                      }
+                      : {
+                        facingMode: { ideal: "environment" },
+                        aspectRatio: 1,
+                        width: { ideal: 1280 },
+                        height: { ideal: 1280 },
+                      }
+                  }
+                  styles={{
+                    container: { width: "100%", height: "100%" },
+                    video: { width: "100%", height: "100%", objectFit: "cover" },
+                  }}
+                />
+              ) : (
+                <div className="qr-overlay">Camera đang tắt</div>
+              )}
             </div>
 
             <div className="btn-row">
               {scanning ? (
                 <>
                   <IonButton color="medium" disabled={busy} onClick={stop}>Dừng quét</IonButton>
-                  {cams.length > 1 && (
+
+                  {devicesReady && devices.length > 1 && (
                     <IonButton
                       color="tertiary"
-                      disabled={busy}
-                      onClick={async () => {
-                        if (busy) return;
-                        setBusy(true);
-                        try {
-                          const idx = Math.max(0, cams.findIndex(c => c.id === activeCamId));
-                          const next = cams[(idx + 1) % cams.length];
-                          await stop();
-                          await tryStart(next.id);
-                          startedRef.current = true;
-                          setScanning(true);
-                          setActiveCamId(next.id);
-                        } catch (err: any) {
-                          console.log("Không chuyển được camera: " + (err?.message || err));
-                        } finally { setBusy(false); }
+                      onClick={() => {
+                        if (!devices.length) return;
+                        const current = (deviceIndex ?? initialIndex);
+                        const next = (current + 1) % devices.length;
+                        setDeviceIndex(next);     // đổi index → đổi deviceId
+                        setNonce(n => n + 1);     // tăng nonce để chắc chắn remount
                       }}
                     >
                       Đổi camera
