@@ -74,9 +74,11 @@ export default function ScanCheckin() {
   const [devicesReady, setDevicesReady] = useState(false);
   const [nonce, setNonce] = useState(0);
 
-  const activeDeviceId =
-    (deviceIndex != null ? devices[deviceIndex]?.deviceId : undefined) ??
-    (devices[initialIndex]?.deviceId);
+  // Get the active device ID more reliably
+  const activeDeviceId = 
+    deviceIndex !== null && devices[deviceIndex] 
+      ? devices[deviceIndex].deviceId 
+      : devices[initialIndex]?.deviceId;
 
   const refreshDevices = useCallback(async () => {
     try {
@@ -259,7 +261,7 @@ export default function ScanCheckin() {
             <div ref={wrapRef} className="qr-wrap">
               {scanning ? (
                 <Scanner
-                  key={`${activeDeviceId || "default"}:${nonce}`}   // ⭐ force remount mỗi lần đổi camera
+                  key={`scanner-${activeDeviceId || "default"}-${nonce}`}   // ⭐ force remount mỗi lần đổi camera
                   onScan={onScan}
                   onError={onError}
                   constraints={
@@ -299,9 +301,15 @@ export default function ScanCheckin() {
                         if (!devices.length) return;
                         const current = (deviceIndex ?? initialIndex);
                         const next = (current + 1) % devices.length;
-                        setDeviceIndex(next);     // đổi index → đổi deviceId
-                        setInitialIndex(next);    // Also update initialIndex to ensure consistency
-                        setNonce(n => n + 1);     // tăng nonce để chắc chắn remount
+                        
+                        // Update both state variables in a batch to prevent needing two clicks
+                        setDeviceIndex(next);
+                        setInitialIndex(next);
+                        
+                        // Force remount of the Scanner component with the new camera
+                        setTimeout(() => {
+                          setNonce(n => n + 1);
+                        }, 10);
                       }}
                     >
                       Đổi camera

@@ -5,6 +5,17 @@
 
 .zone-title {
   font-weight: 800;
+  font-size: 18px;
+}
+
+@media (max-width: 576px) {
+  .zone-title {
+    font-size: 16px;
+  }
+  
+  .curved-toolbar {
+    --min-height: 48px;
+  }
 }
 
 .term-actions {
@@ -12,6 +23,30 @@
   align-items: center;
   gap: 10px;
   margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+  .term-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+  }
+  
+  .term-actions .term {
+    font-size: 12px;
+  }
+  
+  .term-actions ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .term-actions .term {
+    display: none;
+  }
 }
 
 .term {
@@ -25,6 +60,50 @@
   grid-template-columns: 220px 1fr;
   gap: 16px;
   padding: 12px 12px 24px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 8px 8px 16px;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-shell {
+    padding: 8px 0;
+  }
+  
+  ion-content {
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  
+  /* Specific styling for admin content */
+  .admin-content {
+    --background: #f5f5f5;
+  }
+  
+  /* Add a mobile menu button that will be shown on small screens */
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .mobile-menu-btn ion-button {
+    margin: 0;
+  }
+  
+  @media (min-width: 769px) {
+    .mobile-menu-btn {
+      display: none;
+    }
+  }
 }
 
 .sidebar {
@@ -35,6 +114,46 @@
   height: fit-content;
   position: sticky;
   top: 12px;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 80%;
+    max-width: 280px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 0 12px 12px 0;
+    padding: 16px;
+    z-index: 1001;
+    overflow-y: auto;
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  /* Overlay for sidebar when open */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
 }
 
 .brand {
@@ -44,6 +163,22 @@
   padding: 8px 4px 12px;
   border-bottom: 1px solid #f0f0f0;
   margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .brand {
+    padding: 12px 8px;
+  }
+  
+  .sidebar-close-btn {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar-close-btn {
+    display: none !important;
+  }
 }
 
 .avatar {
@@ -87,11 +222,27 @@
 /* Main */
 .content {
   min-width: 0;
+  width: 100%;
+  padding: 0 4px;
 }
 
 .page-title {
   margin: 0 0 12px;
   font-weight: 800;
+  font-size: 20px;
+  padding: 0 8px;
+}
+
+@media (max-width: 576px) {
+  .content {
+    padding: 0;
+  }
+  
+  .page-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding: 0 8px;
+  }
 }
 
 /* KPI row */
@@ -100,6 +251,22 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 16px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 0 4px;
+  }
 }
 
 .kpi-card {
@@ -108,6 +275,17 @@
   border-radius: 12px;
   padding: 14px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 576px) {
+  .kpi-card {
+    padding: 10px;
+    margin-bottom: 8px;
+  }
 }
 
 .kpi-label {
@@ -116,9 +294,25 @@
   margin-bottom: 6px;
 }
 
+@media (max-width: 576px) {
+  .kpi-label {
+    font-size: 11px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .kpi-value {
   font-size: 22px;
   font-weight: 800;
+}
+
+@media (max-width: 576px) {
+  .kpi-value {
+    font-size: 18px;
+  }
 }
 
 /* Two-column section */
@@ -126,6 +320,21 @@
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .grid-2 {
+    gap: 10px;
+    padding: 0 4px;
+  }
 }
 
 .card {
@@ -133,6 +342,31 @@
   border: 1px solid #eee;
   border-radius: 12px;
   padding: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 12px 10px;
+  }
+  
+  .card-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 10px 8px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .card-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 }
 
 .card-title {
@@ -152,6 +386,23 @@
   grid-template-columns: 260px 1fr;
   gap: 8px;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .topclubs-wrap {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .topclubs-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .topclubs-list li {
+    margin-right: 12px;
+  }
 }
 
 .topclubs-list {
@@ -178,6 +429,20 @@
 
 .topclubs-chart {
   min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 576px) {
+  .topclubs-chart {
+    height: auto !important;
+    margin: 0 auto;
+  }
+  
+  /* Fix ApexCharts container on mobile */
+  .topclubs-chart .apexcharts-canvas {
+    margin: 0 auto !important;
+  }
 }
 
 /* Pie legend */
@@ -186,6 +451,13 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 6px;
+}
+
+@media (max-width: 480px) {
+  .legend-custom {
+    grid-template-columns: 1fr;
+    font-size: 12px;
+  }
 }
 
 .legend-custom .lg {
@@ -216,10 +488,23 @@
 }
 
 /* Yếu */
+
+/* Fix for ApexCharts responsive behavior */
+.apexcharts-canvas {
+  margin: 0 auto !important;
+}
+
+@media (max-width: 576px) {
+  .apexcharts-legend-series {
+    margin: 2px 5px !important;
+  }
+}
+
 /* Table */
 .table {
   display: grid;
   gap: 6px;
+  overflow-x: auto;
 }
 
 .tr {
@@ -229,6 +514,17 @@
   align-items: center;
   padding: 10px 8px;
   border-bottom: 1px solid #f1f1f1;
+}
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .tr {
+    min-width: 600px; /* Ensure horizontal scrolling on small screens */
+  }
 }
 
 .tr.th {
