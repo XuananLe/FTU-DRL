@@ -45,7 +45,10 @@
   border: 1px solid #eaeaea;
   box-shadow: 0 2px 0 0 #eee;
 }
-.pill-item ion-icon{ color: var(--ion-color-danger); }
+.pill-item ion-icon{ 
+  color: var(--ion-color-danger); 
+  margin-right: 16px;
+}
 .pill-item.danger ion-label{ color: #b30018; font-weight: 600; }
 
 /* nhẹ nhàng giống mock: bo góc + bóng */

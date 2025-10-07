@@ -11,10 +11,11 @@ import {
   IonButton
 } from "@ionic/react";
 import {
-  timeOutline,
+  personCircleOutline,
+  bookOutline,
+  calendarOutline,
+  documentTextOutline,
   settingsOutline,
-  documentLockOutline,
-  informationCircleOutline,
   logOutOutline,
 } from "ionicons/icons";
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
@@ -59,25 +60,25 @@ export default function Tab3() {
         {/* Danh sách action dạng pill */}
         <div className="list-wrap">
           <IonItem button detail className="pill-item" routerLink="/tabs/account-security">
-            <IonIcon slot="start" icon={timeOutline} />
+            <IonIcon slot="start" icon={personCircleOutline} />
             <IonLabel>Tài khoản và bảo mật</IonLabel>
           </IonItem>
 
           <IonItem button detail className="pill-item" routerLink="/tabs/calendar">
-            <IonIcon slot="start" icon={settingsOutline} />
+            <IonIcon slot="start" icon={bookOutline} />
             <IonLabel>Lịch học</IonLabel>
           </IonItem>
           <IonItem button detail className="pill-item" routerLink="/tabs/event-schedule">
-            <IonIcon slot="start" icon={documentLockOutline} />
+            <IonIcon slot="start" icon={calendarOutline} />
             <IonLabel>Lịch sự kiện</IonLabel>
           </IonItem>
           <IonItem button detail className="pill-item" routerLink="/tabs/terms">
-            <IonIcon slot="start" icon={documentLockOutline} />
+            <IonIcon slot="start" icon={documentTextOutline} />
             <IonLabel>Điều khoản sử dụng</IonLabel>
           </IonItem>
 
           <IonItem button detail className="pill-item" routerLink="/tabs/settings">
-            <IonIcon slot="start" icon={informationCircleOutline} />
+            <IonIcon slot="start" icon={settingsOutline} />
             <IonLabel>Cài đặt</IonLabel>
           </IonItem>
           <IonItem button detail className="pill-item danger" onClick={handleLogout}>
