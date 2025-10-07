@@ -1,10 +1,17 @@
 :root {
-  --cm-red: #a21b1b;               /* đỏ chữ/icon */
-  --cm-red-soft: #f6dede;           /* nền search + thanh dưới */
-  --cm-red-press: #e8bcbc;          /* nền active btn dưới */
-  --cm-card-bg: #f5f5f5;            /* nền item list */
-  --cm-text: #6b2a2a;               /* text đỏ nâu */
+  --cm-red: #b30018;               /* unified red theme */
+  --cm-red-soft: #fafafa;          /* light background */
+  --cm-red-press: #e8bcbc;         /* active button background */
+  --cm-card-bg: #f5f5f5;           /* card background */
+  --cm-text: #444;                 /* consistent text color */
 }
+
+/* Header bo cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight: 800; }
 
 /* ===== Header ===== */
 .cm-toolbar {
@@ -70,7 +77,6 @@
   --background: #fff;
 }
 .cm-list {
-  padding: 8px 16px 16px;
   display: grid;
   gap: 14px;
 }
@@ -88,12 +94,12 @@
 }
 .cm-card {
   background: var(--cm-card-bg);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 10px 12px;
   display: grid;
   gap: 4px;
   min-height: 56px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.02) inset;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .cm-item.is-unread .cm-card {
   box-shadow: 0 0 0 2px rgba(162,27,27,0.10) inset;
@@ -124,6 +130,7 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 

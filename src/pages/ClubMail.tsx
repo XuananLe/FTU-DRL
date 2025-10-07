@@ -52,10 +52,10 @@ export default function ClubMail({ hideLocalFooter = true }: { hideLocalFooter?:
     <IonPage>
       {/* ===== Header (giữ layout như mockup) ===== */}
       <IonHeader>
-        <IonToolbar className="cm-toolbar">
-          <IonTitle className="cm-title">Mail/ Tin nhắn</IonTitle>
+        <IonToolbar color="danger" className="curved-toolbar">
+          <IonTitle className="zone-title">Mail/ Tin nhắn</IonTitle>
           <IonButtons slot="end">
-            <IonButton className="cm-icon-btn" fill="clear">
+            <IonButton fill="clear" style={{color: 'white'}}>
               <IonIcon icon={notificationsOffOutline} />
             </IonButton>
           </IonButtons>
@@ -90,7 +90,7 @@ export default function ClubMail({ hideLocalFooter = true }: { hideLocalFooter?:
       </IonHeader>
 
       {/* ===== Content ===== */}
-      <IonContent className="cm-content" fullscreen>
+      <IonContent className="cm-content ion-padding">
         <div className="cm-list">
           {list.map((m) => (
             <div key={m.id} className={`cm-item ${m.unread ? "is-unread" : ""}`}>
