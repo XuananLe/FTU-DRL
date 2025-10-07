@@ -180,13 +180,16 @@ export default function ClubQR() {
       
       <IonHeader>
         <IonToolbar color="danger" className="curved-toolbar">
-        <IonTitle className="zone-title ion-text-center">Zone57</IonTitle>
+        <IonTitle className="zone-title ion-text-center center">Zone57</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
-        <div className="ion-padding">
-          {/* <div className="form-title">QR</div> */}
+      <IonContent className="ion-padding">
+        <div className="qr-form-container">
+          {/* Event Info Section */}
+          <div className="form-section">
+            <h3 className="section-title">Thông tin sự kiện</h3>
+            <div className="section-content">
 
           <IonGrid className="qr-form">
             <IonRow>
@@ -236,95 +239,123 @@ export default function ClubQR() {
                   />
                 </IonItem>
               </IonCol>
-
-              {/* GPS */}
-              <IonCol size="6">
-                <IonItem className="pill" lines="none">
-                  <IonLabel position="stacked">Vĩ độ (lat)</IonLabel>
-                  <IonInput
-                    inputMode="decimal"
-                    value={form.lat}
-                    onIonChange={(e) => setForm({ ...form, lat: (e.detail.value || "").trim() })}
-                    placeholder="VD: 21.027764"
-                  />
-                </IonItem>
-              </IonCol>
-              <IonCol size="6">
-                <IonItem className="pill" lines="none">
-                  <IonLabel position="stacked">Kinh độ (lng)</IonLabel>
-                  <IonInput
-                    inputMode="decimal"
-                    value={form.lng}
-                    onIonChange={(e) => setForm({ ...form, lng: (e.detail.value || "").trim() })}
-                    placeholder="VD: 105.834160"
-                  />
-                </IonItem>
-              </IonCol>
-
-              <IonCol size="12" className="ion-margin-bottom">
-                <IonButton onClick={getCurrentGPS} color="medium" fill="outline" shape="round" disabled={gpsLoading}>
-                  <IonIcon slot="start" icon={locateOutline} />
-                  {gpsLoading ? "Đang lấy vị trí..." : "Lấy vị trí hiện tại"}
-                </IonButton>
-                {gpsAcc !== null && (
-                  <IonNote className="ion-padding-start" color="medium">
-                    Độ chính xác ~ {Math.round(gpsAcc)} m
-                  </IonNote>
-                )}
-                {gpsError && (
-                  <IonNote className="ion-padding-start" color="danger">
-                    {gpsError}
-                  </IonNote>
-                )}
-              </IonCol>
-
-              {/* TTL minutes */}
-              <IonCol size="12">
-                <IonItem className="pill" lines="none">
-                  <IonLabel position="stacked">Thời gian tối đa cho checkin (phút)</IonLabel>
-                  <IonInput
-                    type="number"
-                    inputMode="numeric"
-                    min="0"
-                    value={form.ttlMin}
-                    onIonChange={(e) => setForm({ ...form, ttlMin: (e.detail.value || "").replace(/[^\d]/g, "") })}
-                    placeholder="VD: 120"
-                  />
-                </IonItem>
-                <IonNote color="medium" className="ion-margin-top" style={{ display: "block" }}>
-                  Hết thời gian này QR sẽ hết hạn
-                </IonNote>
-              </IonCol>
-
-              <IonCol size="12">
-                <IonItem className="pill" lines="none">
-                  <IonLabel position="stacked">Điểm DRL / ghi chú</IonLabel>
-                  <IonInput
-                    value={form.points}
-                    onIonChange={(e) => setForm({ ...form, points: e.detail.value || "" })}
-                    placeholder="VD: 2 DRL mục 3.1"
-                  />
-                </IonItem>
-              </IonCol>
             </IonRow>
           </IonGrid>
-
-          <IonButton expand="block" shape="round" color="danger" onClick={generateFromForm}>
-            Tạo QR sự kiện
-          </IonButton>
-
-          <div className="ion-text-center ion-margin-top">
-            {dataUrl && (
-              <>
-                <img ref={imgRef} alt="QR preview" src={dataUrl} style={{ width: 220, height: 220 }} />
-                <div className="btn-row">
-                  <IonButton onClick={downloadQR} shape="round" color="danger">
-                    Tải mã QR
-                  </IonButton>
-                </div>
-              </>
-            )}
+            </div>
           </div>
+
+          {/* Location Section */}
+          <div className="form-section">
+            <h3 className="section-title">Vị trí GPS</h3>
+            <div className="section-content">
+              <IonGrid>
+                <IonRow>
+
+                  <IonCol size="6">
+                    <IonItem className="pill" lines="none">
+                      <IonLabel position="stacked">Vĩ độ (lat)</IonLabel>
+                      <IonInput
+                        inputMode="decimal"
+                        value={form.lat}
+                        onIonChange={(e) => setForm({ ...form, lat: (e.detail.value || "").trim() })}
+                        placeholder="VD: 21.027764"
+                      />
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonItem className="pill" lines="none">
+                      <IonLabel position="stacked">Kinh độ (lng)</IonLabel>
+                      <IonInput
+                        inputMode="decimal"
+                        value={form.lng}
+                        onIonChange={(e) => setForm({ ...form, lng: (e.detail.value || "").trim() })}
+                        placeholder="VD: 105.834160"
+                      />
+                    </IonItem>
+                  </IonCol>
+
+                  <IonCol size="12" className="gps-button-section">
+                    <IonButton onClick={getCurrentGPS} color="medium" fill="outline" expand="block" disabled={gpsLoading}>
+                      <IonIcon slot="start" icon={locateOutline} />
+                      {gpsLoading ? "Đang lấy vị trí..." : "Lấy vị trí hiện tại"}
+                    </IonButton>
+                    {gpsAcc !== null && (
+                      <IonNote className="gps-note success" color="success">
+                        ✓ Độ chính xác ~ {Math.round(gpsAcc)} m
+                      </IonNote>
+                    )}
+                    {gpsError && (
+                      <IonNote className="gps-note error" color="danger">
+                        ⚠ {gpsError}
+                      </IonNote>
+                    )}
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </div>
+          </div>
+
+          {/* Settings Section */}
+          <div className="form-section">
+            <h3 className="section-title">Cài đặt sự kiện</h3>
+            <div className="section-content">
+              <IonGrid>
+                <IonRow>
+
+                  <IonCol size="12">
+                    <IonItem className="pill" lines="none">
+                      <IonLabel position="stacked">Thời gian tối đa cho checkin (phút)</IonLabel>
+                      <IonInput
+                        type="number"
+                        inputMode="numeric"
+                        min="0"
+                        value={form.ttlMin}
+                        onIonChange={(e) => setForm({ ...form, ttlMin: (e.detail.value || "").replace(/[^\d]/g, "") })}
+                        placeholder="VD: 120"
+                      />
+                    </IonItem>
+                    <IonNote color="medium" className="setting-note">
+                      ⏱ Hết thời gian này QR sẽ hết hạn
+                    </IonNote>
+                  </IonCol>
+
+                  <IonCol size="12">
+                    <IonItem className="pill" lines="none">
+                      <IonLabel position="stacked">Điểm DRL / ghi chú</IonLabel>
+                      <IonInput
+                        value={form.points}
+                        onIonChange={(e) => setForm({ ...form, points: e.detail.value || "" })}
+                        placeholder="VD: 2 DRL mục 3.1"
+                      />
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </div>
+          </div>
+
+          {/* Generate Button */}
+          <div className="generate-section">
+            <IonButton expand="block" size="large" color="danger" onClick={generateFromForm} className="generate-button">
+              Tạo QR sự kiện
+            </IonButton>
+          </div>
+
+          {/* QR Preview Section */}
+          {dataUrl && (
+            <div className="qr-preview-section">
+              <h3 className="section-title">Mã QR của bạn</h3>
+              <div className="qr-preview-content">
+                <div className="qr-image-container">
+                  <img ref={imgRef} alt="QR preview" src={dataUrl} className="qr-image" />
+                </div>
+                <IonButton onClick={downloadQR} expand="block" fill="outline" color="danger" className="download-button">
+                  Tải mã QR
+                </IonButton>
+              </div>
+            </div>
+          )}
+
         </div>
       </IonContent>
     </IonPage>

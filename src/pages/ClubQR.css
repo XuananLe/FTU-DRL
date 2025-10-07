@@ -9,9 +9,247 @@
 .zoom-thumb{ height:100%; background:#fff; }
 .zoom-plus{ color:#fff; font-weight:800; font-size:24px; }
 
-/* ---- form / preview ---- */
-.form-title{ font-weight:800; margin:10px 0 6px; }
-.qr-form ion-item::part(native){ border-radius:12px; }
-.btn-row{ margin-top:10px; display:flex; justify-content:center; gap:12px; }
+/* Header bo cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ 
+  font-weight: 800; 
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+}
 
-.curved-toolbar ion-title { text-align:center; width:100%; }
+/* ---- Form Sections ---- */
+.qr-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid rgba(179,0,24,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.section-title {
+  color: #b30018;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: #b30018;
+  border-radius: 2px;
+}
+
+.section-content {
+  margin-top: 12px;
+}
+
+/* ---- Enhanced Form Inputs ---- */
+.qr-form ion-item.pill {
+  --border-radius: 14px;
+  --background: #fafafa;
+  --color: #444;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid rgba(179,0,24,0.1);
+}
+
+.qr-form ion-item.pill ion-label {
+  color: #b30018;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.qr-form ion-item.pill ion-input {
+  --color: #444;
+  font-size: 15px;
+}
+
+/* ---- GPS Section Enhancements ---- */
+.gps-button-section {
+  margin-top: 8px;
+}
+
+.gps-note {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.gps-note.success {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.gps-note.error {
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* ---- Settings Section ---- */
+.setting-note {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(179,0,24,0.05);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* ---- Generate Button ---- */
+.generate-section {
+  margin: 24px 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.generate-button {
+  --border-radius: 16px;
+  height: 56px;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 16px rgba(179,0,24,0.3);
+}
+
+/* ---- QR Preview Section ---- */
+.qr-preview-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 24px;
+  text-align: center;
+  border: 2px solid rgba(179,0,24,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.qr-preview-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.qr-image-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border: 3px solid #b30018;
+}
+
+.qr-image {
+  width: 220px;
+  height: 220px;
+  border-radius: 8px;
+}
+
+.download-button {
+  --border-radius: 12px;
+  height: 48px;
+  font-weight: 600;
+  min-width: 200px;
+}
+
+/* ---- Responsive Design ---- */
+@media (max-width: 576px) {
+  .qr-form-container {
+    margin: 0 -8px;
+  }
+  
+  .form-section {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+  
+  .qr-image {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .qr-image-container {
+    padding: 16px;
+  }
+  
+  .qr-preview-section {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+  
+  .generate-button {
+    height: 52px;
+    font-size: 15px;
+  }
+}
+
+/* ---- Animations ---- */
+.form-section {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.qr-preview-section {
+  animation: zoomIn 0.4s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.generate-button {
+  transition: all 0.2s ease;
+}
+
+.generate-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179,0,24,0.4);
+}

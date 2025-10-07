@@ -10,7 +10,12 @@
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
 }
-.zone-title{ font-weight: 800; }
+.zone-title{ 
+  font-weight: 800; 
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+}
 
 /* ===== Content root ===== */
 .cp-content {
