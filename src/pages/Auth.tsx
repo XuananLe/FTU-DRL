@@ -106,7 +106,7 @@ function SignIn() {
         <div className="auth-logo">
           <img src="/logo.png" alt="FTU Logo" />
         </div>
-        <h2>Welcome Back !</h2>
+        <h2 style={{ textAlign: 'center', margin: '0 auto' }}>Welcome Back !</h2>
       </div>
 
       {/* Vai trò */}

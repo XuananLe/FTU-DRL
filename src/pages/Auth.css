@@ -16,6 +16,15 @@
   background: transparent;
 }
 
+/* Welcome Back text styling */
+.ion-text-center h2 {
+  text-align: center !important;
+  width: 100%;
+  margin: 0 auto 20px;
+  font-weight: 600;
+  color: #333;
+}
+
 /* Auth Page Icon Spacing */
 
 /* Add space between icons and text in form fields */
