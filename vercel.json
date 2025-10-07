@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm install --frozen-lockfile && pnpm build",
+  "outputDirectory": "dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+}
