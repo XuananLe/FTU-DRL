@@ -8,6 +8,7 @@ import {
 import {
   thumbsUpOutline, chatbubbleEllipsesOutline, shareSocialOutline, closeOutline, timeOutline
 } from "ionicons/icons";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./club-feed.css";
 import "./club-feed-modal.css";
 
@@ -378,6 +379,11 @@ export default function ClubFeed() {
           )}
         </IonModalContent>
       </IonModal>
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
+      />
     </IonPage>
   );
 }

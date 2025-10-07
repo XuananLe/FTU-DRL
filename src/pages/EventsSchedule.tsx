@@ -6,6 +6,7 @@ import {
 import {
   timeOutline, businessOutline, pinOutline, globeOutline
 } from "ionicons/icons";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./EventsSchedule.css";
 
 type EventItem = {
@@ -78,6 +79,11 @@ export default function EventsSchedule() {
             ))}
           </IonList>
         </div>
+        
+        <ChatbotLogo 
+          position="bottom-right" 
+          size="small"
+        />
       </IonContent>
     </IonPage>
   );

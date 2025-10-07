@@ -50,7 +50,9 @@ function SignUp() {
   return (
     <div style={{maxWidth: 420, margin: '0 auto'}}>
       <div className="ion-text-center ion-margin-top">
-        <div className="logo-circle" />
+        <div className="auth-logo">
+          <img src="/logo.png" alt="FTU Logo" />
+        </div>
       </div>
 
       <div className="field-stack">
@@ -101,7 +103,9 @@ function SignIn() {
   return (
     <div style={{ maxWidth: 420, margin: "0 auto" }}>
       <div className="ion-text-center ion-margin-top">
-        <div className="logo-circle" />
+        <div className="auth-logo">
+          <img src="/logo.png" alt="FTU Logo" />
+        </div>
         <h2>Welcome Back !</h2>
       </div>
 

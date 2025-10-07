@@ -1,3 +1,21 @@
+/* Auth Page Logo */
+.auth-logo {
+  margin: 20px auto 30px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.auth-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+}
+
 /* Auth Page Icon Spacing */
 
 /* Add space between icons and text in form fields */

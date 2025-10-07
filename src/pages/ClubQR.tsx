@@ -6,6 +6,7 @@ import {
 } from "@ionic/react";
 import { locateOutline } from "ionicons/icons";
 import QRCode from "qrcode";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./ClubQR.css";
 
 type EventForm = {
@@ -358,6 +359,11 @@ export default function ClubQR() {
 
         </div>
       </IonContent>
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
+      />
     </IonPage>
   );
 }

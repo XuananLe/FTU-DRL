@@ -21,6 +21,7 @@ import {
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import "./Tab3.css";
 import { useIonRouter } from "@ionic/react";
+import ChatbotLogo from "../components/ChatbotLogo";
 
 export default function Tab3() {
   const router = useIonRouter();
@@ -120,6 +121,11 @@ export default function Tab3() {
 
 
         </div>
+        
+        <ChatbotLogo 
+          position="bottom-right" 
+          size="small"
+        />
       </IonContent>
     </IonPage>
   );

@@ -1,0 +1,101 @@
+/* Chatbot Logo Component */
+.chatbot-logo {
+  position: fixed;
+  z-index: 1000;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.chatbot-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Size variants */
+.chatbot-logo.small {
+  width: 50px;
+  height: 50px;
+}
+
+.chatbot-logo.medium {
+  width: 60px;
+  height: 60px;
+}
+
+.chatbot-logo.large {
+  width: 70px;
+  height: 70px;
+}
+
+/* Position variants */
+.chatbot-logo.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+.chatbot-logo.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.chatbot-logo.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.chatbot-logo.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+/* Interactive states */
+.chatbot-logo.clickable {
+  cursor: pointer;
+}
+
+.chatbot-logo.clickable:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-logo.clickable:active {
+  transform: scale(0.95);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .chatbot-logo.bottom-right {
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .chatbot-logo.bottom-left {
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .chatbot-logo.top-right {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .chatbot-logo.top-left {
+    top: 15px;
+    left: 15px;
+  }
+}
+
+/* Animation for attention-grabbing */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.chatbot-logo.pulse {
+  animation: pulse 2s infinite;
+}

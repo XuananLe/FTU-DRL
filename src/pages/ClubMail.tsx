@@ -6,6 +6,7 @@ import {
 import {
   notificationsOffOutline, homeOutline, mailOutline, scanOutline, personCircleOutline
 } from "ionicons/icons";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./club-mail.css";
 
 /* ===================== Types ===================== */
@@ -128,6 +129,11 @@ export default function ClubMail({ hideLocalFooter = true }: { hideLocalFooter?:
           </IonToolbar>
         </IonFooter>
       )}
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
+      />
     </IonPage>
   );
 }

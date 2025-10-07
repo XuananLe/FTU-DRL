@@ -29,6 +29,7 @@ import {
   starHalfOutline,
   logOutOutline,
 } from "ionicons/icons";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./club-profile.css";
 
 // ===== Types =====
@@ -750,6 +751,11 @@ export default function ClubProfile() {
           { text: "Đăng xuất", role: "destructive", handler: handleSignOut },
         ]}
         onDidDismiss={() => setShowSignOutConfirm(false)}
+      />
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
       />
     </IonPage>
   );

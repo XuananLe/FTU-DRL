@@ -5,6 +5,7 @@ import {
   IonIcon, IonToast
 } from "@ionic/react";
 import { calendarNumberOutline, locationOutline } from "ionicons/icons";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./Tab1.css";
 
 /* ================= DRL Card ================= */
@@ -362,6 +363,12 @@ export default function Tab1() {
           message={toast.msg}
           duration={1600}
           onDidDismiss={() => setToast({ open: false, msg: "" })}
+        />
+        
+        <ChatbotLogo 
+          position="bottom-right" 
+          size="small" 
+          onClick={() => setShowSuggest(true)}
         />
       </IonContent>
     </IonPage>
