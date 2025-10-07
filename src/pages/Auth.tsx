@@ -7,6 +7,7 @@ import {
   useIonRouter
 } from '@ionic/react';
 import { person, mail, lockClosed, school, eye, eyeOff } from 'ionicons/icons';
+import './Auth.css';
 
 export default function Auth() {
   const [tab, setTab] = useState<'signup'|'signin'>('signup');
@@ -14,12 +15,14 @@ export default function Auth() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          <IonButtons slot="start"><IonBackButton defaultHref="/" /></IonButtons>
-          <IonTitle>TRƯỜNG ĐẠI HỌC NGOẠI THƯƠNG</IonTitle>
+        <IonToolbar color="danger" className="auth-toolbar">
+          <IonTitle className="zone-title" style={{ textAlign: 'center', width: '100%' }}>
+            TRƯỜNG ĐẠI HỌC NGOẠI THƯƠNG
+          </IonTitle>
         </IonToolbar>
         <IonToolbar color="danger" className="seg-toolbar">
-          <IonSegment value={tab} onIonChange={e => setTab(e.detail.value as "signup" | "signin")}>
+          <IonSegment value={tab} onIonChange={e => setTab(e.detail.value as "signup" | "signin")}
+            style={{ justifyContent: 'center', width: '100%' }}>
             <IonSegmentButton value="signup"><IonLabel>Sign Up</IonLabel></IonSegmentButton>
             <IonSegmentButton value="signin"><IonLabel>Sign In</IonLabel></IonSegmentButton>
           </IonSegment>

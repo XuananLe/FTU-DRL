@@ -1,0 +1,30 @@
+/* Auth Page Icon Spacing */
+
+/* Add space between icons and text in form fields */
+.pill ion-icon[slot="start"] {
+  margin-right: 12px;
+}
+
+/* Specific spacing for different form elements */
+.pill ion-input {
+  margin-left: 4px;
+}
+
+.pill ion-select {
+  margin-left: 4px;
+}
+
+/* Additional spacing for better visual hierarchy */
+.field-stack .pill {
+  margin-bottom: 16px;
+}
+
+.field-stack .pill:last-child {
+  margin-bottom: 0;
+}
+
+/* Improve overall form spacing */
+.field-stack {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
