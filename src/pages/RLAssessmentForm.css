@@ -563,6 +563,77 @@ ion-checkbox::part(container) { width: 1.125rem; height: 1.125rem; }
   background: linear-gradient(135deg, #dc2626, #b91c1c);
 }
 
+/* Editable input styles - styled like the original fixed values */
+.editable-input {
+  --background: #f8f9fa;
+  --color: #222428;
+  --padding-start: 0.75rem;
+  --padding-end: 0.75rem;
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
+  --border-radius: 6px;
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: rgba(0, 0, 0, 0.05);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: right;
+  min-width: 4rem;
+  max-width: 6rem; /* Limit width to prevent expansion */
+  flex-shrink: 0; /* Prevent input from shrinking */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.editable-input::part(native) {
+  text-align: right;
+}
+
+.editable-input:focus-within {
+  --background: #ffffff;
+  --border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.editable-input:hover:not(:focus-within) {
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Style the container for editable fields like the original kv rows */
+.editable-kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.625rem 0;
+  align-items: center;
+  flex-wrap: nowrap; /* Prevent wrapping to keep items on same line */
+}
+
+.editable-kv .field-label {
+  color: hsl(215, 16%, 47%);
+  font-size: 0.95rem;
+}
+
+/* Container for input with denominator */
+.input-with-denominator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.input-with-denominator .denominator {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #666;
+  margin-left: 0.1rem;
+}
+
+/* Clean item styling for editable fields */
+.clean-item ion-label {
+  display: none; /* Hide the stacked label since we're using our own */
+}
+
 /* Additional responsive styles */
 @media (max-width: 576px) {
   .actions {
@@ -606,6 +677,20 @@ ion-checkbox::part(container) { width: 1.125rem; height: 1.125rem; }
   
   .checkbox-label {
     font-size: 0.9rem;
+  }
+  
+  .editable-input {
+    font-size: 0.9rem;
+  }
+  
+  .editable-kv {
+    flex-wrap: wrap; /* Allow wrapping on mobile if absolutely necessary */
+    gap: 0.5rem;
+  }
+  
+  .editable-kv .field-label {
+    flex: 1;
+    min-width: 120px; /* Ensure label has enough space */
   }
 }
 

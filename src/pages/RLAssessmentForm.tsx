@@ -1,7 +1,7 @@
 import {
     IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
     IonContent, IonCard, IonCardContent, IonItem, IonLabel, IonIcon,
-    IonRadioGroup, IonRadio, IonCheckbox, IonButton, IonInput, IonNote
+    IonRadioGroup, IonRadio, IonCheckbox, IonButton, IonInput, IonNote, IonToast
 } from "@ionic/react";
 import {
     calendarNumberOutline, idCardOutline, documentAttachOutline,
@@ -200,10 +200,54 @@ export default function RLAssessmentForm() {
     const [opt12, setOpt12] = useState(false);
     const [isDiscounted, setIsDiscounted] = useState(false); // ô phụ khi bật 1.2
 
-    // 1.3 KQHT
-    // Fixed values - no longer editable
-    const gpa = 3.6;
-    const credits = 28;
+    // 1.3 KQHT - User editable values
+    const [gpa, setGpa] = useState<number>(3.6);
+    const [credits, setCredits] = useState<number>(28);
+    const [toastMessage, setToastMessage] = useState<string>("");
+    const [showToast, setShowToast] = useState<boolean>(false);
+
+    // Validation functions
+    const validateGpa = (value: string) => {
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            setToastMessage("Điểm GPA phải là số hợp lệ");
+            setShowToast(true);
+            return false;
+        }
+        if (num < 0 || num > 4.0) {
+            setToastMessage("Điểm GPA phải từ 0.0 đến 4.0");
+            setShowToast(true);
+            return false;
+        }
+        return true;
+    };
+
+    const validateCredits = (value: string) => {
+        const num = parseInt(value);
+        if (isNaN(num) || !Number.isInteger(parseFloat(value))) {
+            setToastMessage("Số tín chỉ phải là số nguyên");
+            setShowToast(true);
+            return false;
+        }
+        if (num < 0 || num > 200) {
+            setToastMessage("Số tín chỉ phải từ 0 đến 200");
+            setShowToast(true);
+            return false;
+        }
+        return true;
+    };
+
+    const handleGpaChange = (value: string) => {
+        if (validateGpa(value)) {
+            setGpa(parseFloat(value));
+        }
+    };
+
+    const handleCreditsChange = (value: string) => {
+        if (validateCredits(value)) {
+            setCredits(parseInt(value));
+        }
+    };
 
     // 2.x Nội quy
     const [rule_21, set_rule_21] = useState<"ok" | "violate">("ok");
@@ -388,13 +432,33 @@ export default function RLAssessmentForm() {
                 <IonCard className="sheet compact">
                     <div className="subhead">1.3 KẾT QUẢ HỌC TẬP <small>(10đ)</small></div>
                     <IonCardContent>
-                        <div className="kv">
-                            <span>Điểm TB:</span>
-                            <div className="fixed-value">{gpa}<span className="denominator">/4.0</span></div>
+                        <div className="editable-kv">
+                            <span className="field-label">Điểm TB: </span>
+                            <div className="input-with-denominator">
+                                <IonInput
+                                    type="number"
+                                    value={gpa}
+                                    step="0.01"
+                                    min="0"
+                                    max="4.0"
+                                    placeholder="3.6"
+                                    onIonInput={(e) => handleGpaChange(e.detail.value!)}
+                                    className="editable-input"
+                                />
+                                <span className="denominator">/4.0</span>
+                            </div>
                         </div>
-                        <div className="kv">
-                            <span>Số tín chỉ:</span>
-                            <div className="fixed-value">{credits}</div>
+                        <div className="editable-kv">
+                            <span className="field-label">Số tín chỉ: </span>
+                            <IonInput
+                                type="number"
+                                value={credits}
+                                min="0"
+                                max="200"
+                                placeholder="28"
+                                onIonInput={(e) => handleCreditsChange(e.detail.value!)}
+                                className="editable-input"
+                            />
                         </div>
                     </IonCardContent>
                 </IonCard>
@@ -674,6 +738,16 @@ export default function RLAssessmentForm() {
 
                 <div style={{ height: 16 }} />
             </IonContent>
+
+            {/* Toast for validation messages */}
+            <IonToast
+                isOpen={showToast}
+                onDidDismiss={() => setShowToast(false)}
+                message={toastMessage}
+                duration={3000}
+                position="top"
+                color="danger"
+            />
         </IonPage>
     );
 }
