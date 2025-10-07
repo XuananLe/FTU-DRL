@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import {
   IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
   IonContent,
   IonButton,
   IonIcon,
   IonAlert,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
   useIonRouter,
 } from "@ionic/react";
 import {
@@ -166,140 +176,193 @@ export default function ClubProfile() {
 
   return (
     <IonPage>
-      <IonContent className="cp-content">
+      <IonHeader>
+        <IonToolbar color="danger" className="curved-toolbar">
+          <IonTitle className="zone-title">CLB Dashboard</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
         {/* Profile Card */}
-        <section className="cp-card">
-          <div className="cp-avatar" />
-          <div className="cp-info">
-            <div className="cp-name">CLB B Trường đại học Ngoại thương - B FTU</div>
-            <div className="cp-handle">@b.ftu</div>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <IonCard className="cp-card">
+                <IonCardContent>
+                  <div className="cp-card-content">
+                    <div className="cp-avatar" />
+                    <div className="cp-info">
+                      <div className="cp-name">CLB B Trường đại học Ngoại thương - B FTU</div>
+                      <div className="cp-handle">@b.ftu</div>
 
-            <div className="cp-metrics">
-              <div className="cp-metric">
-                <span className="cp-metric-value">257</span>
-                <span className="cp-metric-label">Người theo dõi</span>
-              </div>
-              <div className="cp-metric">
-                <span className="cp-metric-value">02</span>
-                <span className="cp-metric-label">Đang theo dõi</span>
-              </div>
-            </div>
+                      <div className="cp-metrics">
+                        <div className="cp-metric">
+                          <span className="cp-metric-value">257</span>
+                          <span className="cp-metric-label">Người theo dõi</span>
+                        </div>
+                        <div className="cp-metric">
+                          <span className="cp-metric-value">02</span>
+                          <span className="cp-metric-label">Đang theo dõi</span>
+                        </div>
+                      </div>
 
-            <div className="cp-actions">
-              <IonButton className="cp-btn ghost" fill="clear">
-                <IonIcon icon={createOutline} />
-                Chỉnh sửa hồ sơ
-              </IonButton>
-              <IonButton className="cp-btn ghost" fill="clear">
-                <IonIcon icon={shareOutline} />
-                Chia sẻ hồ sơ
-              </IonButton>
-            </div>
+                      <div className="cp-actions">
+                        <IonButton className="cp-btn ghost" fill="clear">
+                          <IonIcon icon={createOutline} />
+                          Chỉnh sửa hồ sơ
+                        </IonButton>
+                        <IonButton className="cp-btn ghost" fill="clear">
+                          <IonIcon icon={shareOutline} />
+                          Chia sẻ hồ sơ
+                        </IonButton>
+                      </div>
 
-            {/* Sign out */}
-            <IonButton
-              expand="block"
-              color="danger"
-              className="cp-btn solid-danger"
-              onClick={() => setShowSignOutConfirm(true)}
-            >
-              <IonIcon icon={logOutOutline} slot="start" />
-              Đăng xuất
-            </IonButton>
-          </div>
-        </section>
+                      {/* Sign out */}
+                      <IonButton
+                        expand="block"
+                        color="danger"
+                        className="cp-btn solid-danger"
+                        onClick={() => setShowSignOutConfirm(true)}
+                      >
+                        <IonIcon icon={logOutOutline} slot="start" />
+                        Đăng xuất
+                      </IonButton>
+                    </div>
+                  </div>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
         {/* Tabs */}
-        <nav className="cp-tabs">
-          <button
-            className={`cp-tab ${tab === "members" ? "is-active" : ""}`}
-            onClick={() => setTab("members")}
-          >
-            Thành viên
-          </button>
-          <button
-            className={`cp-tab ${tab === "events" ? "is-active" : ""}`}
-            onClick={() => setTab("events")}
-          >
-            Sự kiện
-          </button>
-          <button
-            className={`cp-tab ${tab === "stats" ? "is-active" : ""}`}
-            onClick={() => setTab("stats")}
-          >
-            Thống kê
-          </button>
-        </nav>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <nav className="cp-tabs">
+                <button
+                  className={`cp-tab ${tab === "members" ? "is-active" : ""}`}
+                  onClick={() => setTab("members")}
+                >
+                  Thành viên
+                </button>
+                <button
+                  className={`cp-tab ${tab === "events" ? "is-active" : ""}`}
+                  onClick={() => setTab("events")}
+                >
+                  Sự kiện
+                </button>
+                <button
+                  className={`cp-tab ${tab === "stats" ? "is-active" : ""}`}
+                  onClick={() => setTab("stats")}
+                >
+                  Thống kê
+                </button>
+              </nav>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
         {/* Members */}
         {tab === "members" && !selectedDept && (
-          <div className="cp-list">
-            {[
-              "Ban chủ nhiệm",
-              "Ban chuyên môn",
-              "Ban đối ngoại",
-              "Ban tổ chức",
-              "Ban truyền thông",
-            ].map((label) => (
-              <button
-                key={label}
-                className="cp-list-item"
-                onClick={() => setSelectedDept(label)}
-              >
-                <span>{label}</span>
-                <IonIcon icon={chevronForwardOutline} />
-              </button>
-            ))}
-          </div>
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12">
+                <IonCard>
+                  <IonCardContent>
+                    <div className="cp-list">
+                      {[
+                        "Ban chủ nhiệm",
+                        "Ban chuyên môn",
+                        "Ban đối ngoại",
+                        "Ban tổ chức",
+                        "Ban truyền thông",
+                      ].map((label) => (
+                        <button
+                          key={label}
+                          className="cp-list-item"
+                          onClick={() => setSelectedDept(label)}
+                        >
+                          <span>{label}</span>
+                          <IonIcon icon={chevronForwardOutline} />
+                        </button>
+                      ))}
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
 
         {tab === "members" && selectedDept && (
-          <div>
-            <div className="cp-dept-header">
-              <button className="cp-back-button" onClick={() => setSelectedDept(null)}>
-                <IonIcon icon={chevronBackOutline} />
-              </button>
-              <h2 className="cp-dept-title">{selectedDept}</h2>
-              <div style={{ width: 20 }} />
-            </div>
-
-            <div className="cp-member-list">
-              {departmentMembers[selectedDept]?.map((member, i) => (
-                <div key={i} className="cp-member-item">
-                  <div className="cp-member-avatar" />
-                  <div className="cp-member-info">
-                    <div className="cp-member-name">{member.name}</div>
-                    <div className="cp-member-role">{member.role}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12">
+                <IonCard>
+                  <IonCardHeader>
+                    <div className="cp-dept-header">
+                      <button className="cp-back-button" onClick={() => setSelectedDept(null)}>
+                        <IonIcon icon={chevronBackOutline} />
+                      </button>
+                      <IonCardTitle className="cp-dept-title">{selectedDept}</IonCardTitle>
+                      <div style={{ width: 20 }} />
+                    </div>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <div className="cp-member-list">
+                      {departmentMembers[selectedDept]?.map((member, i) => (
+                        <div key={i} className="cp-member-item">
+                          <div className="cp-member-avatar" />
+                          <div className="cp-member-info">
+                            <div className="cp-member-name">{member.name}</div>
+                            <div className="cp-member-role">{member.role}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
 
         {/* Events */}
         {tab === "events" && (
-          <>
-            <h2 className="cp-events-year">2025</h2>
-            <div className="cp-timeline">
-              <div className="cp-timeline-line" />
-              {events.map((event, i) => (
-                <div key={i} className="cp-timeline-item">
-                  <div className="cp-timeline-date">{event.date}</div>
-                  <div className="cp-timeline-dot" />
-                  <div className="cp-timeline-content">
-                    <span className="cp-event-title">{event.title}</span>
-                    <IonIcon icon={chevronForwardOutline} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12">
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle className="cp-events-year">Sự kiện 2025</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <div className="cp-timeline">
+                      <div className="cp-timeline-line" />
+                      {events.map((event, i) => (
+                        <div key={i} className="cp-timeline-item">
+                          <div className="cp-timeline-date">{event.date}</div>
+                          <div className="cp-timeline-dot" />
+                          <div className="cp-timeline-content">
+                            <span className="cp-event-title">{event.title}</span>
+                            <IonIcon icon={chevronForwardOutline} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
 
         {/* Stats */}
         {tab === "stats" && (
-          <div className="cp-stats-container">
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12">
+                <div className="cp-stats-container">
             <div className="cp-stats-header">
               <div className="cp-stats-title">Tổng quan hoạt động</div>
               <div className="cp-stats-info">
@@ -671,7 +734,10 @@ export default function ClubProfile() {
                 </div>
               </>
             )}
-          </div>
+                </div>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
       </IonContent>
 

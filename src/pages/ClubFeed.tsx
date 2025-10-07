@@ -202,7 +202,12 @@ export default function ClubFeed() {
 
   return (
     <IonPage>
-      <IonContent className="cf-content" fullscreen>
+      <IonHeader>
+        <IonToolbar color="danger" className="curved-toolbar">
+          <IonTitle className="zone-title">Bảng tin</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="cf-content ion-padding">
         <IonRefresher slot="fixed" onIonRefresh={onRefresh}>
           <IonRefresherContent 
             pullingIcon="chevron-down-outline"

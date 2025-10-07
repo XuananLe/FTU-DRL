@@ -1,10 +1,18 @@
 :root{
-  --cf-text: #262626;
-  --cf-sub: #7a7a7a;
+  --cf-text: #444;
+  --cf-sub: #6b7280;
   --cf-border: #efefef;
-  --cf-placeholder: #d9c9c9; /* ảnh nền hồng xám như mock */
-  --cf-like: #d63c3c;
+  --cf-placeholder: #fafafa; 
+  --cf-like: #b30018;
+  --cf-accent: #b30018;
 }
+
+/* Header bo cong */
+.curved-toolbar::part(background){
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.zone-title{ font-weight: 800; }
 
 .cf-toolbar{
   --background: #fff;
@@ -38,7 +46,7 @@
   border-bottom: 1px solid var(--cf-border);
   margin-bottom: 10px;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: 0 1px 5px rgba(0,0,0,.05);
   transition: all 0.2s ease;
 }
