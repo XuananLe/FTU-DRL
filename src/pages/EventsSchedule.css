@@ -3,27 +3,54 @@
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
 }
-.zone-title{ font-weight: 800; }
+
+/* Center title properly with back button */
+.curved-toolbar {
+  --ion-toolbar-title-text-align: center;
+}
+
+.zone-title{ 
+  font-weight: 800; 
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+}
 
 /* Card container */
 .events-card{
-  background:#fff;
-  border-radius:16px;
-  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.06);
+  background:#ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius:18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
   overflow:hidden;
+  margin-top: 8px;
 }
 
 /* Header trong card */
 .events-card__head{
-  padding:14px 16px 10px;
-  border-bottom:1px solid #eee;
+  padding:18px 20px 14px;
+  border-bottom:1px solid #e5e5e5;
+  text-align: center;
 }
-.head-title{ font-weight:800; font-size:18px; }
-.head-sub{ color:#6b7280; font-size:14px; margin-top:2px; }
+.head-title{ 
+  font-weight:800; 
+  font-size:18px; 
+  color: #1E4F79;
+  margin-bottom: 4px;
+}
+.head-sub{ 
+  color:#666; 
+  font-size:14px; 
+  margin-top:2px; 
+}
 
 /* List */
 .events-list{
   --ion-item-background: transparent;
+  padding: 8px 0;
 }
 
 /* Tựa đề sự kiện + badge Online */
@@ -32,14 +59,16 @@
   align-items:center;
   gap:8px;
   font-weight:700;
-  margin-bottom:8px;
+  margin-bottom:10px;
+  color: #1E4F79;
+  font-size: 15px;
 }
 .badge-soft{
-  background: #eef2ff;
-  color:#4f46e5;
+  background: #4CAF50;
+  color: white;
   border-radius:999px;
-  padding:2px 8px;
-  font-size:11px;
+  padding:3px 8px;
+  font-size:10px;
   font-weight:600;
 }
 
@@ -48,21 +77,40 @@
   display:flex;
   flex-direction:column;
   gap:6px;
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 4px;
 }
 .meta-row{
   display:flex;
   align-items:center;
   gap:8px;
-  font-size:14px;
-  color:#6b7280;
+  font-size:13px;
+  color:#666;
 }
 .meta-row ion-icon{
-  font-size:16px;
+  font-size:14px;
+  color:#999;
+  min-width: 14px;
 }
 
 /* Mobile spacing niceness */
 ion-item{
-  --padding-start: 16px;
-  --padding-end: 12px;
-  --inner-padding-end: 6px;
+  --padding-start: 18px;
+  --padding-end: 16px;
+  --inner-padding-end: 8px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin: 4px 8px;
+  border-radius: 12px;
+  --background: white;
+  --border-color: #e5e5e5;
+  --border-style: solid;
+  --border-width: 1px;
+}
+
+ion-item:hover {
+  --background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }

@@ -34,7 +34,6 @@ export default function AccountSecurity() {
               <div className="item-title">Email</div>
               <IonNote className="muted">k62.2311510018@ftu.edu.vn</IonNote>
             </IonLabel>
-            <IonIcon slot="end" icon={chevronForward} />
           </IonItem>
 
           <IonItem lines="none">
@@ -53,7 +52,6 @@ export default function AccountSecurity() {
             <IonLabel>
               <div className="item-title">Đổi mật khẩu</div>
             </IonLabel>
-            <IonIcon slot="end" icon={chevronForward} />
           </IonItem>
         </IonList>
       </IonContent>
