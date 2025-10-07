@@ -19,7 +19,7 @@ export default function Auth() {
           <IonTitle>TRƯỜNG ĐẠI HỌC NGOẠI THƯƠNG</IonTitle>
         </IonToolbar>
         <IonToolbar color="danger" className="seg-toolbar">
-          <IonSegment value={tab} onIonChange={e => setTab(e.detail.value)}>
+          <IonSegment value={tab} onIonChange={e => setTab(e.detail.value as "signup" | "signin")}>
             <IonSegmentButton value="signup"><IonLabel>Sign Up</IonLabel></IonSegmentButton>
             <IonSegmentButton value="signin"><IonLabel>Sign In</IonLabel></IonSegmentButton>
           </IonSegment>

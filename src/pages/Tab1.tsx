@@ -177,7 +177,7 @@ export default function Tab1() {
 
   const handleRegister = (idx: number) => {
     setEvents((prev) => {
-      const next = prev.map((e, i) => (i === idx ? { ...e, state: "register" } : e));
+      const next = prev.map((e, i) => (i === idx ? { ...e, state: "register" as EventState } : e));
       // Tính lại thiếu dự kiến mới sau khi đăng ký xong
       const committed = sumDRL(next, ["register"]);
       const projMissing = Math.max(0, Math.max(0, target - score) - committed);

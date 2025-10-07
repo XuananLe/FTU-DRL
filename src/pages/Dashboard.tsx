@@ -192,7 +192,7 @@ export default function Dashboard(){
                           type="radialBar"
                           height={140}
                           options={radialOptions}
-                          series={[d.pct as unknown as Series]}
+                          series={[d.pct]}
                         />
                         <div className="donut-label">{d.label}</div>
                       </div>
