@@ -36,7 +36,9 @@
 }
 .cp-avatar{
   width: 64px; height: 64px; border-radius: 999px;
-  background: #d9d9d9;
+  background: url('/assets/events/event-1.jpg') center/cover no-repeat;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .cp-info{ color: #6b2a2a; }
 .cp-name{ font-weight: 700; line-height: 1.2; font-size: 15px; margin-bottom: 2px; }
@@ -87,7 +89,6 @@
   gap: 32px;
   padding: 14px 16px 8px;
   color: var(--cp-text);
-  border-bottom: 1px solid #f0f0f0;
   background: #fff;
   border-radius: 14px;
   margin-bottom: 16px;
@@ -98,7 +99,7 @@
 }
 .cp-tab.is-active{ color: var(--cp-accent); font-weight: 700; }
 .cp-tab.is-active::after{
-  content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
+  content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
   background: var(--cp-accent);
 }
 
@@ -266,7 +267,12 @@
 @media (max-width: 380px){
   .cp-content { padding: 12px 16px 20px; }
   .cp-card{ grid-template-columns: 60px 1fr; }
-  .cp-avatar{ width: 60px; height: 60px; }
+  .cp-avatar{ 
+    width: 60px; 
+    height: 60px; 
+    background: url('/assets/events/event-1.jpg') center/cover no-repeat;
+    border: 2px solid #fff;
+  }
   .cp-name { font-size: 15px; }
   .cp-btn.ghost { font-size: 13px; }
   .cp-tabs { gap: 18px; }
@@ -274,7 +280,12 @@
 
 @media (max-width: 320px){
   .cp-card{ grid-template-columns: 50px 1fr; gap: 10px; }
-  .cp-avatar{ width: 50px; height: 50px; }
+  .cp-avatar{ 
+    width: 50px; 
+    height: 50px; 
+    background: url('/assets/events/event-1.jpg') center/cover no-repeat;
+    border: 2px solid #fff;
+  }
   .cp-metrics { gap: 12px; }
   .cp-actions { gap: 8px; }
   .cp-tabs { gap: 14px; }
