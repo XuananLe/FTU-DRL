@@ -7,6 +7,7 @@ import {
 import { Route, Redirect, useLocation } from "react-router-dom";
 import { menu as menuIcon, downloadOutline } from "ionicons/icons";
 import AdminDashboard from "./AdminDashboard";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./admin.css";
 
 const MENU = [
@@ -88,6 +89,11 @@ export default function AdminShell() {
           </IonContent>
         </div>
       </IonSplitPane>
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
+      />
     </IonPage>
   );
 }

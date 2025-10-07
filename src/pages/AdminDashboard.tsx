@@ -9,6 +9,7 @@ import {
 } from "@ionic/react";
 import { downloadOutline, menuOutline, closeOutline, logOutOutline } from "ionicons/icons";
 import { useIonRouter } from "@ionic/react";
+import ChatbotLogo from "../components/ChatbotLogo";
 import "./admin.css";
 
 type Series = ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -805,6 +806,11 @@ export default function AdminDashboard() {
           { text: "Đăng xuất", role: "destructive", handler: handleSignOut },
         ]}
         onDidDismiss={() => setShowSignOutConfirm(false)}
+      />
+      
+      <ChatbotLogo 
+        position="bottom-right" 
+        size="small"
       />
     </IonSplitPane>
   );
