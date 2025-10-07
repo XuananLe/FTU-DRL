@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "src/**/*.test.*",
+    "**/__tests__/**",
+    "cypress/**",
+    "vitest.config.*"
+  ]
+}
