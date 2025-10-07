@@ -28,3 +28,15 @@
   margin-top: 24px;
   margin-bottom: 24px;
 }
+
+/* Ensure both Sign In and Sign Up buttons are the same size */
+.cta {
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  height: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+}

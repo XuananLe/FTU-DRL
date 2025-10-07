@@ -39,7 +39,7 @@ function DRLCard({
           onClick={onScoreClick}
           aria-label="Gợi ý để đạt mục tiêu"
         >
-          <span>{score}</span>
+          <div className="score-number">{score}</div>
         </button>
       </div>
     </div>

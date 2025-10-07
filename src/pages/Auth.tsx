@@ -139,7 +139,7 @@ function SignIn() {
       </div>
 
       {/* CTA: dùng handleSignIn để điều hướng theo vai trò */}
-      <IonButton expand="block" shape="round" color="danger" className="cta" onClick={handleSignIn}>
+      <IonButton expand="block" shape="round" size="large" color="danger" className="cta" onClick={handleSignIn}>
         Sign In
       </IonButton>
 
