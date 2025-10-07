@@ -71,7 +71,7 @@ export default function Tab3() {
           </IonItem>
           <IonItem button detail className="pill-item" routerLink="/tabs/event-schedule">
             <IonIcon slot="start" icon={calendarOutline} />
-            <IonLabel>Lịch sự kiện</IonLabel>
+            <IonLabel>Sự kiện đăng ký</IonLabel>
           </IonItem>
           <IonItem button detail className="pill-item" routerLink="/tabs/terms">
             <IonIcon slot="start" icon={documentTextOutline} />

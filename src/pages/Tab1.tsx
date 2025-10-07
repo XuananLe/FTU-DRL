@@ -110,7 +110,7 @@ export default function Tab1() {
         "Thời gian mở đơn: <b>20/9-27/9</b>",
         "Yêu cầu: <b>tham dự trên 80%</b>",
       ],
-      state: "participate",
+      state: "link",
       drlText: "2 DRL mục 1.1",
     },
     {
@@ -136,7 +136,7 @@ export default function Tab1() {
         "Yêu cầu: <b>không có</b>",
       ],
       state: "link",
-      drlText: "3 DRL mục 3.1",
+      drlText: "2 DRL mục 3.1",
     },
     {
       title: "MINI IDEATHON: DESIGN THINKING",
@@ -148,7 +148,7 @@ export default function Tab1() {
         "Thời gian mở đơn: <b>18/9/2025</b>",
       ],
       state: "link",
-      drlText: "4 DRL mục 3.1",
+      drlText: "2 DRL mục 3.1",
     },
   ]);
 
