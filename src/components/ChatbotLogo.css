@@ -55,15 +55,15 @@
 /* Interactive states */
 .chatbot-logo.clickable {
   cursor: pointer;
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-  border: 3px solid white;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
 }
 
 .chatbot-logo.clickable:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+  box-shadow: none;
 }
 
 .chatbot-logo.clickable:active {
@@ -71,7 +71,7 @@
 }
 
 .chatbot-logo.active {
-  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+  background: transparent !important;
 }
 
 /* Chat notification */
