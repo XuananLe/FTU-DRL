@@ -133,9 +133,14 @@ const StudentEventTracking: React.FC = () => {
         >
           <IonTitle style={{ 
             fontWeight: 'bold',
-            fontSize: '1.2em'
+            fontSize: '1.2em',
+            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%'
           }}>
-            🎯 Sự kiện của tôi
+            Sự kiện của tôi
           </IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -148,27 +153,37 @@ const StudentEventTracking: React.FC = () => {
         {/* Clean Statistics Overview */}
         <div style={{ 
           background: 'white',
-          padding: '20px',
+          padding: '24px 20px',
           borderBottom: '1px solid #f0f0f0'
         }}>
           <div style={{ 
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             alignItems: 'center',
+            gap: '0',
             maxWidth: '100%'
           }}>
-            <div style={{ textAlign: 'center', flex: 1 }}>
+            <div style={{ 
+              textAlign: 'center', 
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
               <div style={{ 
-                fontSize: '1.8em', 
+                fontSize: '2em', 
                 fontWeight: 'bold',
                 color: '#333',
-                marginBottom: '4px'
+                marginBottom: '6px',
+                lineHeight: '1'
               }}>
                 {trackings.length}
               </div>
               <div style={{ 
                 fontSize: '0.85em', 
-                color: '#666'
+                color: '#666',
+                fontWeight: '500'
               }}>
                 Tổng số
               </div>
@@ -176,23 +191,32 @@ const StudentEventTracking: React.FC = () => {
             
             <div style={{ 
               width: '1px', 
-              height: '40px', 
+              height: '50px', 
               backgroundColor: '#e0e0e0',
-              margin: '0 20px'
+              margin: '0 24px'
             }} />
             
-            <div style={{ textAlign: 'center', flex: 1 }}>
+            <div style={{ 
+              textAlign: 'center', 
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
               <div style={{ 
-                fontSize: '1.8em', 
+                fontSize: '2em', 
                 fontWeight: 'bold',
                 color: '#dc2626',
-                marginBottom: '4px'
+                marginBottom: '6px',
+                lineHeight: '1'
               }}>
                 {getStatusCount(EventStatus.PARTICIPATED) + getStatusCount(EventStatus.CHECKED_OUT)}
               </div>
               <div style={{ 
                 fontSize: '0.85em', 
-                color: '#666'
+                color: '#666',
+                fontWeight: '500'
               }}>
                 Đã tham gia
               </div>
@@ -200,23 +224,32 @@ const StudentEventTracking: React.FC = () => {
             
             <div style={{ 
               width: '1px', 
-              height: '40px', 
+              height: '50px', 
               backgroundColor: '#e0e0e0',
-              margin: '0 20px'
+              margin: '0 24px'
             }} />
             
-            <div style={{ textAlign: 'center', flex: 1 }}>
+            <div style={{ 
+              textAlign: 'center', 
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
               <div style={{ 
-                fontSize: '1.8em', 
+                fontSize: '2em', 
                 fontWeight: 'bold',
                 color: '#dc2626',
-                marginBottom: '4px'
+                marginBottom: '6px',
+                lineHeight: '1'
               }}>
                 {getStatusCount(EventStatus.CHECKED_OUT)}
               </div>
               <div style={{ 
                 fontSize: '0.85em', 
-                color: '#666'
+                color: '#666',
+                fontWeight: '500'
               }}>
                 Hoàn thành
               </div>
