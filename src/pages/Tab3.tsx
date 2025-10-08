@@ -17,6 +17,7 @@ import {
   documentTextOutline,
   settingsOutline,
   logOutOutline,
+  analyticsOutline,
 } from "ionicons/icons";
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import "./Tab3.css";
@@ -72,6 +73,10 @@ export default function Tab3() {
           <IonItem button detail className="pill-item" routerLink="/tabs/event-schedule">
             <IonIcon slot="start" icon={calendarOutline} />
             <IonLabel>Sự kiện đăng ký</IonLabel>
+          </IonItem>
+          <IonItem button detail className="pill-item" routerLink="/tabs/event-tracking">
+            <IonIcon slot="start" icon={analyticsOutline} />
+            <IonLabel>Theo dõi sự kiện của tôi</IonLabel>
           </IonItem>
           <IonItem button detail className="pill-item" routerLink="/tabs/terms">
             <IonIcon slot="start" icon={documentTextOutline} />

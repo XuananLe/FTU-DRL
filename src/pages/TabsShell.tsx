@@ -22,6 +22,7 @@ import ClubFeed from "./ClubFeed";
 import FeedbackPage from "./Feedback";
 import ClubMail from "./ClubMail";
 import ClubProfile from "./ClubDashboard";
+import StudentEventTracking from "./StudentEventTracking";
 
 type TabDef = { tab: string; href: string; icon: any; label: string };
 
@@ -53,6 +54,7 @@ export default function TabsShell() {
           <Route path="/tabs/terms" component={TermsOfUse} />
           <Route path="/tabs/feedback" component={FeedbackPage} />
           <Route path="/tabs/event-schedule" component={EventsSchedule} />
+          <Route path="/tabs/event-tracking" component={StudentEventTracking} />
           <Route path="/tabs/settings" component={SettingsPage} />
           <Route path="/tabs/calendar" component={CalendarPage} />
           <Route path="/tabs/account-security/change-password" component={ChangePassword} />
