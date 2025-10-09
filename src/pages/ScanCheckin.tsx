@@ -250,7 +250,7 @@ export default function ScanCheckin() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="danger" className="curved-toolbar">
-          <IonTitle className="zone-title">Quét QR & Check-in</IonTitle>
+          <IonTitle className="zone-title">Quét QR điểm danh</IonTitle>
         </IonToolbar>
       </IonHeader>
 

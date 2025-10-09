@@ -73,37 +73,39 @@ export default function ClubProfile() {
   const departmentMembers: DepartmentMembers = {
     "Ban chủ nhiệm": [
       { name: "Đặng Ngọc Hiền Nhi", role: "Chủ tịch" },
-      { name: "Ngô Đặng Phương Linh", role: "Phó Chủ tịch" },
+      { name: "Vũ Ngọc Minh", role: "Phó Chủ tịch" },
+      { name: "Ngô Đặng Phương Linh", role: "Phó Chủ tịch" }
     ],
     "Ban chuyên môn": [
-      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
-      { name: "Vũ Tiến Hiển", role: "Phó ban" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Nguyễn Lưu Hà Phương", role: "Trưởng ban" },
+      { name: "Phan Nhật Linh", role: "Phó ban" },
+      { name: "Trần Nhật Hoa", role: "Phó ban" },
     ],
     "Ban đối ngoại": [
-      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
-      { name: "Vũ Tiến Hiển", role: "Phó ban" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Nguyễn Thị Thu Chi", role: "Trưởng ban" },
+      { name: "Lê Thành Dũng", role: "Phó ban" },
+      { name: "Vũ Đức Huy", role: "Phó ban" },
     ],
     "Ban tổ chức": [
-      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
-      { name: "Vũ Tiến Hiển", role: "Phó ban" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Cao Minh Phú", role: "Trưởng ban" },
+      { name: "Vũ Minh Châu", role: "Phó ban" },
     ],
     "Ban truyền thông": [
-      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
-      { name: "Vũ Tiến Hiển", role: "Phó ban" },
-      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Lê Thị Hạnh Hoa", role: "Trưởng ban" },
+      { name: "Nguyễn Thị Thu Hằng", role: "Phó ban" },
+      { name: "Nguyễn Thu Hà", role: "Phó ban" },
+    ],
+    "Ban nhân sự": [
+      { name: "Trần Ngọc Linh", role: "Trưởng ban" },
+      { name: "Bùi Ngọc Diệp", role: "Phó ban" },
     ],
   };
 
   const clubStats = {
-    totalMembers: 48,
+    totalMembers: 16,
     totalEvents: 24,
     totalHours: 189,
-    newMembers: 12,
+    newMembers: 4,
     attendance: 87,
     memberGrowth: 18,
     retentionRate: 92,
@@ -137,11 +139,12 @@ export default function ClubProfile() {
   ];
 
   const departmentStats: DepartmentStats[] = [
-    { name: "Ban chủ nhiệm", members: 5, percentage: 10.4 },
-    { name: "Ban chuyên môn", members: 12, percentage: 25 },
-    { name: "Ban đối ngoại", members: 8, percentage: 16.7 },
-    { name: "Ban tổ chức", members: 13, percentage: 27.1 },
-    { name: "Ban truyền thông", members: 10, percentage: 20.8 },
+    { name: "Ban chủ nhiệm", members: 3, percentage: 18.75 },
+    { name: "Ban chuyên môn", members: 3, percentage: 18.75 },
+    { name: "Ban đối ngoại", members: 3, percentage: 18.75 },
+    { name: "Ban tổ chức", members: 2, percentage: 12.5 },
+    { name: "Ban truyền thông", members: 3, percentage: 18.75 },
+    { name: "Ban nhân sự", members: 2, percentage: 12.5 },
   ];
 
   const activityHeatmap: ActivityHeatmap[] = Array.from(
@@ -276,6 +279,7 @@ export default function ClubProfile() {
                         "Ban đối ngoại",
                         "Ban tổ chức",
                         "Ban truyền thông",
+                        "Ban nhân sự",
                       ].map((label) => (
                         <button
                           key={label}
