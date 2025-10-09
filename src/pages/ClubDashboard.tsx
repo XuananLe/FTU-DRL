@@ -93,9 +93,9 @@ export default function ClubProfile() {
       { name: "Vũ Tiến Hiển", role: "Thành viên" },
     ],
     "Ban truyền thông": [
-      { name: "Thắng Ngọt", role: "Trưởng ban" },
-      { name: "Your holiday boyfriend", role: "Phó ban" },
-      { name: "Mãi yêu FTU", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
+      { name: "Vũ Tiến Hiển", role: "Phó ban" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
     ],
   };
 
