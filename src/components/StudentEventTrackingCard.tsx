@@ -25,6 +25,7 @@ import {
   warning
 } from 'ionicons/icons';
 import { EventStatus, EventTracking, Event } from '../types/event-tracking';
+import { LinkedInShare } from './LinkedInShare';
 
 interface Props {
   tracking: EventTracking;
@@ -446,6 +447,16 @@ export const StudentEventTrackingCard: React.FC<Props> = ({
             )}
           </div>
         )}
+
+        {/* LinkedIn Share Component */}
+        <div style={{ 
+          marginTop: '16px',
+          paddingTop: '16px',
+          borderTop: '1px solid #e9ecef',
+          textAlign: 'center'
+        }}>
+          <LinkedInShare tracking={tracking} event={event} />
+        </div>
       </IonCardContent>
     </IonCard>
   );
