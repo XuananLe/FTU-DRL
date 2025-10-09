@@ -21,7 +21,11 @@ const MENU = [
 export default function AdminShell() {
   const { pathname } = useLocation();
   const [term] = useState("Kỳ học: Hè 2025");
+  if (!term) {
+    return <div>Loading...</div>;
+  }
 
+  
   return (
     <IonPage>
       <IonSplitPane when="lg" contentId="main">

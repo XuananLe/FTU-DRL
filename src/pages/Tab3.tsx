@@ -100,7 +100,7 @@ export default function Tab3() {
       <IonCardContent>
         <ul className="app-info-list">
           <li><b>Tên ứng dụng:</b> Zone57</li>
-          <li><b>Nhà phát triển:</b> Unicare</li>
+          <li><b>Nhà phát triển:</b> Care4U</li>
           <li><b>Email:</b> k62.2311510018@ftu.edu.vn</li>
           <li><b>SĐT:</b> 0949540626</li>
           <li><b>Phát hành:</b> 10/10/2025</li>                           

@@ -60,7 +60,7 @@ export default function TermsOfUse() {
             </div>
             <div className="contact-row">
               <IonIcon icon={locationOutline} />
-              <span>Nhóm Unicare, Trường Đại học Ngoại Thương, Hà Nội</span>
+              <span>Nhóm Care4U, Trường Đại học Ngoại Thương, Hà Nội</span>
             </div>
           </div>
 

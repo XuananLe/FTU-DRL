@@ -72,31 +72,30 @@ export default function ClubProfile() {
 
   const departmentMembers: DepartmentMembers = {
     "Ban chủ nhiệm": [
-      { name: "Tên ai đó :))))", role: "Chủ tịch" },
-      { name: "Tên ai đó :))))", role: "Phó Chủ tịch" },
-      { name: "Tên ai đó :))))", role: "Phó Chủ tịch" },
+      { name: "Đặng Ngọc Hiền Nhi", role: "Chủ tịch" },
+      { name: "Ngô Đặng Phương Linh", role: "Phó Chủ tịch" },
     ],
     "Ban chuyên môn": [
-      { name: "Tên ai đó :))))", role: "Trưởng ban" },
-      { name: "Tên ai đó :))))", role: "Phó ban" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
+      { name: "Vũ Tiến Hiển", role: "Phó ban" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
     ],
     "Ban đối ngoại": [
-      { name: "Tên ai đó :))))", role: "Trưởng ban" },
-      { name: "Tên ai đó :))))", role: "Phó ban" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
+      { name: "Vũ Tiến Hiển", role: "Phó ban" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
     ],
     "Ban tổ chức": [
-      { name: "Tên ai đó :))))", role: "Trưởng ban" },
-      { name: "Tên ai đó :))))", role: "Phó ban" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Trưởng ban" },
+      { name: "Vũ Tiến Hiển", role: "Phó ban" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
+      { name: "Vũ Tiến Hiển", role: "Thành viên" },
     ],
     "Ban truyền thông": [
-      { name: "Tên ai đó :))))", role: "Trưởng ban" },
-      { name: "Tên ai đó :))))", role: "Phó ban" },
-      { name: "Tên ai đó :))))", role: "Thành viên" },
+      { name: "Thắng Ngọt", role: "Trưởng ban" },
+      { name: "Your holiday boyfriend", role: "Phó ban" },
+      { name: "Mãi yêu FTU", role: "Thành viên" },
     ],
   };
 
@@ -192,8 +191,8 @@ export default function ClubProfile() {
                   <div className="cp-card-content">
                     <div className="cp-avatar" />
                     <div className="cp-info">
-                      <div className="cp-name">CLB B Trường đại học Ngoại thương - B FTU</div>
-                      <div className="cp-handle">@b.ftu</div>
+                      <div className="cp-name">CLB Kinh doanh Quốc tế - IBC FTU</div>
+                      <div className="cp-handle">@ibc.ftu</div>
 
                       <div className="cp-metrics">
                         <div className="cp-metric">
